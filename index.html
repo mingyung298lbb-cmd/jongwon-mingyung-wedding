@@ -1,41 +1,174 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>이종원 ♥ 이민경 모바일 청첩장</title>
 <meta name="description" content="2027년 3월 21일 오전 11시 · 아벤티움 웨딩홀">
 <style>
-:root{--bg:#f5f1ea;--paper:#fffdf9;--ink:#2f312c;--muted:#77756f;--green:#708268;--line:#e6ded1;--wood:#a18161}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(#f8f5ef,#eee7dd);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink)}
-main{max-width:520px;margin:auto;min-height:100vh;background:var(--paper);box-shadow:0 0 36px #0000000d}.hero{padding:28px 20px 22px}.kicker{text-align:center;letter-spacing:.22em;font-size:11px;color:var(--green);text-transform:uppercase;margin-bottom:12px}
-.cover{aspect-ratio:5/7;border-radius:28px;background:linear-gradient(145deg,#d8d0c1,#f7f4ee 46%,#c7d2c0);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:0 15px 35px #594c3a19}
-.cover:before,.cover:after{content:"";position:absolute;border-radius:50%;background:#ffffff88;filter:blur(1px)}.cover:before{width:180px;height:180px;right:-55px;top:60px}.cover:after{width:150px;height:150px;left:-45px;bottom:70px}
-.names{position:relative;text-align:center;font-family:Georgia,serif;font-size:30px;letter-spacing:.02em}.date{text-align:center;margin-top:20px;font-size:16px}.place{text-align:center;color:var(--muted);font-size:14px;margin-top:5px}
-section{padding:8px 20px 24px}.title{font-size:12px;letter-spacing:.18em;color:var(--green);text-transform:uppercase;margin:0 0 12px}.box{border:1px solid var(--line);border-radius:20px;background:#fff;padding:18px 16px;box-shadow:0 9px 24px #594c3a0d}
-.invite{font-size:15px;line-height:1.9;text-align:center;word-break:keep-all}.row{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.label{color:var(--muted);font-size:13px}.value{text-align:right;font-size:14px;font-weight:650}
-.gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ph{aspect-ratio:5/7;border:1px solid var(--line);border-radius:18px;background:linear-gradient(160deg,#f4efe7,#e6eee2);display:flex;align-items:center;justify-content:center;color:#818078;font-size:12px;text-align:center;padding:12px}
-.account{margin-bottom:10px}.account b{display:block;margin-bottom:5px}.account p{margin:0 0 10px;color:#484943;font-size:14px}.copy{width:100%;border:0;border-radius:13px;background:var(--green);color:white;padding:11px;font-weight:700;font-size:14px}
-.maplink{display:block;text-align:center;text-decoration:none;color:white;background:var(--wood);padding:12px;border-radius:13px;font-weight:700}.foot{text-align:center;padding:4px 20px 34px;color:var(--muted);font-size:11px}
+:root{--paper:#fffdf9;--ink:#30312d;--muted:#77756e;--green:#71836a;--green2:#e8eee4;--line:#e8e1d6;--wood:#9a7658;--shadow:0 12px 30px #55472f14}
+*{box-sizing:border-box}
+html{background:#eee8df}
+body{margin:0;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;background:linear-gradient(#f6f1e9,#eee7dd)}
+main{max-width:540px;margin:0 auto;min-height:100vh;background:var(--paper);box-shadow:0 0 36px #0000000d}
+.hero{padding:22px 18px 28px}
+.heroimg{width:100%;aspect-ratio:5/7;object-fit:cover;border-radius:27px;display:block;background:#e9ece6;box-shadow:0 16px 36px #493c291f}
+.names{text-align:center;font-family:"Batang","Noto Serif KR",serif;font-size:30px;margin-top:20px;letter-spacing:.03em}
+.date{text-align:center;margin-top:8px;font-size:15px}
+.place{text-align:center;margin-top:5px;color:var(--muted);font-size:14px}
+section{padding:0 18px 28px}
+.title{font-size:12px;font-weight:800;letter-spacing:.13em;color:var(--green);margin:0 0 12px}
+.box{border:1px solid var(--line);background:#fff;border-radius:20px;padding:17px 16px;box-shadow:var(--shadow)}
+.invite{font-size:15px;line-height:1.95;text-align:center;word-break:keep-all}
+.row{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.label{color:var(--muted);font-size:13px;flex:0 0 72px}
+.value{font-size:14px;font-weight:650;text-align:right;line-height:1.55}
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gcard{border:0;padding:0;background:#eef1eb;border-radius:17px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;aspect-ratio:5/7}
+.gcard img{width:100%;height:100%;object-fit:cover;display:block}
+.gcard:last-child:nth-child(odd){grid-column:1/-1;max-width:50%;justify-self:center;width:100%}
+.mapbox{padding:12px}
+.route-map{border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#edf0ee}
+.route-map svg{width:100%;height:auto;display:block}
+.route-list{display:grid;gap:8px;margin-top:12px}
+.route{padding:10px 11px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:12px;line-height:1.65}
+.route b{color:#3d7d58}
+.account{margin-bottom:10px}
+.account b{display:block;margin-bottom:6px}
+.account p{margin:0 0 10px;font-size:14px}
+.copy{width:100%;border:0;border-radius:13px;background:var(--green);color:#fff;padding:11px;font-weight:800;font-size:14px}
+.foot{text-align:center;color:var(--muted);font-size:11px;padding:2px 18px 34px}
+.modal{position:fixed;inset:0;background:#000d;display:none;align-items:center;justify-content:center;z-index:99;padding:18px}
+.modal.on{display:flex}
+.modal img{max-width:94vw;max-height:82vh;border-radius:14px;object-fit:contain}
+.close,.nav{position:absolute;border:0;background:#ffffffdd;color:#222;width:42px;height:42px;border-radius:999px;font-size:24px;box-shadow:0 4px 18px #0004}
+.close{top:18px;right:18px}.prev{left:12px;top:50%}.next{right:12px;top:50%}
 </style>
+<script src="gallery-1.js"></script>
+<script src="gallery-2.js"></script>
+<script src="gallery-3.js"></script>
 </head>
-<body><main>
-<div class="hero"><div class="kicker">Wedding Invitation</div><div class="cover"><div class="names">Jongwon ♥ Mingyung</div></div>
-<div class="date">2027. 03. 21. SUN · 11:00 AM</div><div class="place">아벤티움 웨딩홀</div></div>
-<section><p class="title">Invitation</p><div class="box invite">저희 두 사람이 서로의 곁을 지키며 한 길을 걸어가려 합니다.<br>소중한 날 함께해 주시고 축복해 주시면 감사하겠습니다.</div></section>
-<section><p class="title">Wedding Info</p><div class="box">
-<div class="row"><span class="label">신랑 · 신부</span><span class="value">이종원 · 이민경</span></div>
-<div class="row"><span class="label">예식일</span><span class="value">2027년 3월 21일 일요일</span></div>
-<div class="row"><span class="label">시간</span><span class="value">오전 11시</span></div>
-<div class="row"><span class="label">장소</span><span class="value">아벤티움 웨딩홀</span></div>
-<div class="row"><span class="label">주소</span><span class="value">서울특별시 중구 청파로 464<br>브라운스톤서울 3층</span></div>
-</div></section>
-<section><p class="title">Gallery</p><div class="gallery"><div class="ph">웨딩 사진<br>업데이트 예정</div><div class="ph">웨딩 사진<br>업데이트 예정</div><div class="ph">웨딩 사진<br>업데이트 예정</div><div class="ph">웨딩 사진<br>업데이트 예정</div></div></section>
-<section><p class="title">Location</p><div class="box"><div class="row"><span class="label">예식장</span><span class="value">아벤티움 웨딩홀</span></div><div class="row"><span class="label">오시는 길</span><span class="value">서울역 도보 약 10분<br>충정로역 도보 약 3분</span></div></div></section>
-<section><p class="title">마음 전하실 곳</p>
-<div class="box account"><b>신부 이민경</b><p>신한은행 110-437-514138</p><button class="copy" onclick="copyText('110437514138')">계좌번호 복사</button></div>
-<div class="box account"><b>신랑 이종원</b><p>카카오뱅크 3333-3017-77804</p><button class="copy" onclick="copyText('3333301777804')">계좌번호 복사</button></div>
+<body>
+<main>
+<div class="hero">
+  <img id="heroImage" class="heroimg" alt="이종원 이민경 웨딩 사진">
+  <div class="names">이종원 ♥ 이민경</div>
+  <div class="date">2027. 03. 21. 일요일 · 오전 11시</div>
+  <div class="place">아벤티움 웨딩홀</div>
+</div>
+
+<section>
+  <div class="box invite">
+    저희 두 사람이 서로의 곁을 지키며 한 길을 걸어가려 합니다.<br>
+    소중한 날 함께해 주시고 축복해 주시면 감사하겠습니다.
+  </div>
 </section>
+
+<section>
+  <p class="title">예식 안내</p>
+  <div class="box">
+    <div class="row"><span class="label">신랑 · 신부</span><span class="value">이종원 · 이민경</span></div>
+    <div class="row"><span class="label">예식일</span><span class="value">2027년 3월 21일 일요일</span></div>
+    <div class="row"><span class="label">시간</span><span class="value">오전 11시</span></div>
+    <div class="row"><span class="label">장소</span><span class="value">아벤티움 웨딩홀</span></div>
+    <div class="row"><span class="label">주소</span><span class="value">서울특별시 중구 청파로 464<br>브라운스톤서울 3층</span></div>
+  </div>
+</section>
+
+<section>
+  <p class="title">갤러리</p>
+  <div id="gallery" class="gallery"></div>
+</section>
+
+<section>
+  <p class="title">오시는 길</p>
+  <div class="box mapbox">
+    <div class="route-map" aria-label="아벤티움 웨딩홀 약도">
+      <svg viewBox="0 0 800 540" role="img" aria-labelledby="mt md">
+        <title id="mt">아벤티움 웨딩홀 약도</title>
+        <desc id="md">첨부해 주신 아벤티움 약도의 주요 도로와 지하철 출구를 모바일용으로 재구성했습니다.</desc>
+        <rect width="800" height="540" fill="#e8ebea"/>
+        <g fill="#747a7a">
+          <rect x="184" y="28" width="57" height="470" rx="3"/>
+          <rect x="432" y="28" width="57" height="470" rx="3"/>
+          <rect x="618" y="28" width="57" height="470" rx="3"/>
+          <rect x="82" y="132" width="630" height="47" rx="3"/>
+          <rect x="241" y="340" width="434" height="47" rx="3"/>
+        </g>
+        <g fill="#fff" font-size="17" font-family="sans-serif" text-anchor="middle">
+          <text x="212" y="82">서소문고가</text>
+          <text x="460" y="82">염천교</text>
+          <text x="646" y="82">만리재로</text>
+          <text x="124" y="163">◀ 서대문</text>
+          <text x="660" y="163">한강대교 ▶</text>
+          <text x="622" y="371">원효대교 ▶</text>
+        </g>
+        <g fill="#464a48" font-size="18" font-family="sans-serif">
+          <text x="278" y="103">중앙일보</text>
+          <text x="278" y="225">서소문공원</text>
+          <text x="554" y="105">서울스퀘어</text>
+          <text x="570" y="226">서울역</text>
+          <text x="540" y="301">롯데마트 · 서울역 서부광장</text>
+          <text x="270" y="424">한국경제신문사</text>
+          <text x="72" y="452">중림동</text>
+        </g>
+        <rect x="276" y="263" width="175" height="95" rx="7" fill="#fff" stroke="#cf8299" stroke-width="3"/>
+        <text x="363" y="303" fill="#cf4e7b" font-size="25" font-family="sans-serif" text-anchor="middle">P</text>
+        <text x="363" y="338" fill="#363936" font-size="28" font-weight="700" font-family="sans-serif" text-anchor="middle">아벤티움</text>
+        <circle cx="242" cy="474" r="22" fill="#fff" stroke="#2f9a59" stroke-width="4"/>
+        <text x="242" y="482" fill="#2f9a59" font-size="24" font-weight="700" font-family="sans-serif" text-anchor="middle">2</text>
+        <text x="278" y="482" fill="#278c50" font-size="23" font-weight="700" font-family="sans-serif">충정로역 4번출구</text>
+      </svg>
+    </div>
+    <div class="route-list">
+      <div class="route"><b>2·5호선 충정로역 4번 출구</b><br>도보 약 5분 · 출구 방향 70m 직진 후 횡단보도 건너편 브라운스톤서울 3층</div>
+      <div class="route"><b>1·4호선 서울역 15번 출구</b><br>도보 약 14분 · 서울역 서부광장 방향, 한국경제신문사 맞은편 브라운스톤서울 3층</div>
+      <div class="route"><b>본관 주차장</b> 브라운스톤서울 · 서울특별시 중구 청파로 464<br><b>별관 주차장</b> 서소문공원 주차장 · 중구 칠패로 5</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="title">마음 전하실 곳</p>
+  <div class="box account">
+    <b>신부 이민경</b>
+    <p>신한은행 110-437-514138</p>
+    <button class="copy" onclick="copyText('110437514138')">계좌번호 복사</button>
+  </div>
+  <div class="box account">
+    <b>신랑 이종원</b>
+    <p>카카오뱅크 3333-3017-77804</p>
+    <button class="copy" onclick="copyText('3333301777804')">계좌번호 복사</button>
+  </div>
+</section>
+
 <div class="foot">이종원 · 이민경 · 2027.03.21 · 아벤티움 웨딩홀</div>
 </main>
-<script>async function copyText(t){try{await navigator.clipboard.writeText(t);alert('계좌번호가 복사되었습니다.')}catch(e){prompt('계좌번호를 복사해 주세요.',t)}}</script>
-</body></html>
+
+<div id="modal" class="modal" onclick="if(event.target===this)closeGallery()">
+  <button class="close" type="button" onclick="closeGallery()">×</button>
+  <button class="nav prev" type="button" onclick="move(-1)">‹</button>
+  <img id="modalImg" alt="확대 웨딩 사진">
+  <button class="nav next" type="button" onclick="move(1)">›</button>
+</div>
+
+<script>
+let idx=0;
+function openGallery(i){idx=i;document.getElementById('modalImg').src=window.galleryPhotos[idx];document.getElementById('modal').classList.add('on')}
+function closeGallery(){document.getElementById('modal').classList.remove('on')}
+function move(d){idx=(idx+d+window.galleryPhotos.length)%window.galleryPhotos.length;document.getElementById('modalImg').src=window.galleryPhotos[idx]}
+async function copyText(t){try{await navigator.clipboard.writeText(t);alert('계좌번호가 복사되었습니다.')}catch(e){prompt('계좌번호를 복사해 주세요.',t)}}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('heroImage').src=window.galleryPhotos[0];
+  const g=document.getElementById('gallery');
+  window.galleryPhotos.forEach((src,i)=>{
+    const b=document.createElement('button'); b.className='gcard'; b.type='button'; b.onclick=()=>openGallery(i);
+    const im=document.createElement('img'); im.src=src; im.alt='웨딩 사진 '+(i+1); im.loading='lazy';
+    b.appendChild(im); g.appendChild(b);
+  });
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGallery();if(e.key==='ArrowLeft')move(-1);if(e.key==='ArrowRight')move(1)});
+</script>
+</body>
+</html>
