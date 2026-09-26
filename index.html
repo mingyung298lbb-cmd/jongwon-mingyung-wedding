@@ -120,6 +120,19 @@ section{padding:0 18px 27px}
 <script src="gallery-3.js"></script>
 </head>
 <body>
+<button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
+  <span class="bgm-note">♫</span>
+  <span class="bgm-off">×</span>
+</button>
+
+<audio
+  id="bgm"
+  src="coffeehouse_game_jazz_original_4min.m4a"
+  preload="auto"
+  loop
+  playsinline
+></audio>
+
 <main>
   <div class="hero">
     <div class="hero-card">
