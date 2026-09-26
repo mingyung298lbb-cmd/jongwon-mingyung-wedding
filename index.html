@@ -53,9 +53,13 @@ section{padding:0 18px 27px}
 .route-list{display:grid;gap:8px;margin-top:12px}
 .route{padding:10px 11px;border-radius:12px;background:rgba(255,255,255,.91);border:1px solid var(--line);font-size:12px;line-height:1.65}
 .route b{color:#427a53}
+.account-group{margin-bottom:18px}
+.account-group-title{font-size:14px;font-weight:800;color:var(--green);margin:0 0 9px 2px}
 .account{margin-bottom:10px}
 .account b{display:block;margin-bottom:6px}
-.account p{margin:0 0 10px;font-size:14px}
+.account p{margin:0 0 10px;font-size:14px;line-height:1.65}
+.account .owner{color:var(--muted);font-size:12px;margin-top:-3px}
+.account.pending{color:#91958d;text-align:center;padding:18px 16px}
 .copy{width:100%;border:0;border-radius:13px;background:var(--green);color:#fff;padding:11px;font-weight:800;font-size:14px;cursor:pointer}
 .foot{text-align:center;color:var(--muted);font-size:11px;padding:1px 18px 8px}
 
@@ -157,15 +161,46 @@ section{padding:0 18px 27px}
 
   <section>
     <p class="title">마음 전하실 곳</p>
-    <div class="box account">
-      <b>신부 이민경</b>
-      <p>신한은행 110-437-514138</p>
-      <button class="copy" type="button" onclick="copyText('110437514138')">계좌번호 복사</button>
+
+    <div class="account-group">
+      <div class="account-group-title">신랑측</div>
+
+      <div class="box account">
+        <b>신랑 이종원</b>
+        <p>카카오뱅크 3333-30-1777804</p>
+        <button class="copy" type="button" onclick="copyText('3333301777804')">계좌번호 복사</button>
+      </div>
+
+      <div class="box account pending">
+        신랑 부 이진곤 · 계좌 준비 예정
+      </div>
+
+      <div class="box account pending">
+        신랑 모 김민서 · 계좌 준비 예정
+      </div>
     </div>
-    <div class="box account">
-      <b>신랑 이종원</b>
-      <p>카카오뱅크 3333-30-1777804</p>
-      <button class="copy" type="button" onclick="copyText('3333301777804')">계좌번호 복사</button>
+
+    <div class="account-group">
+      <div class="account-group-title">신부측</div>
+
+      <div class="box account">
+        <b>신부 이민경</b>
+        <p>신한은행 110-437-514138</p>
+        <button class="copy" type="button" onclick="copyText('110437514138')">계좌번호 복사</button>
+      </div>
+
+      <div class="box account">
+        <b>신부 부 이범수</b>
+        <p>기업은행 00806433701022</p>
+        <button class="copy" type="button" onclick="copyText('00806433701022')">계좌번호 복사</button>
+      </div>
+
+      <div class="box account">
+        <b>신부 모 조문영</b>
+        <p>카카오뱅크 3333-05-9504488</p>
+        <p class="owner">예금주: 이민경</p>
+        <button class="copy" type="button" onclick="copyText('3333059504488')">계좌번호 복사</button>
+      </div>
     </div>
   </section>
 
