@@ -392,5 +392,54 @@ async function copyText(t){
   catch(e){prompt("계좌번호를 복사해 주세요.",t)}
 }
 </script>
+<script>
+const bgm = document.getElementById("bgm");
+const bgmToggle = document.getElementById("bgmToggle");
+
+let isMuted = false;
+let hasStarted = false;
+
+bgm.volume = 0.45;
+bgm.loop = true;
+
+/* 첫 재생 */
+async function startBgm() {
+  if (hasStarted) return;
+
+  try {
+    bgm.currentTime = 0.03;   // 시작 클릭감 줄이기
+    await bgm.play();
+    hasStarted = true;
+  } catch (e) {
+    // 자동재생 막히면 첫 터치 때 다시 시도
+  }
+}
+
+/* 첫 사용자 터치 시 재생 보장 */
+function unlockBgm() {
+  startBgm();
+  window.removeEventListener("touchstart", unlockBgm);
+  window.removeEventListener("click", unlockBgm);
+}
+
+window.addEventListener("load", startBgm);
+window.addEventListener("touchstart", unlockBgm, { passive: true });
+window.addEventListener("click", unlockBgm);
+
+/* 음소거 버튼 */
+bgmToggle.addEventListener("click", async function () {
+  if (!hasStarted) {
+    await startBgm();
+  }
+
+  isMuted = !isMuted;
+  bgm.muted = isMuted;
+  bgmToggle.classList.toggle("muted", isMuted);
+  bgmToggle.setAttribute(
+    "aria-label",
+    isMuted ? "배경음악 켜기" : "배경음악 음소거"
+  );
+});
+</script>
 </body>
 </html>
