@@ -37,26 +37,15 @@ body::before{
 
   background-image: url("wedding-pattern.svg");
   background-repeat: repeat;
-  background-size: 700px auto;
+  background-size: 560px auto;
   background-position: center top;
 
-  opacity: 0.42;
+  opacity: 0.82;
 }
 
-/* 두 번째 패턴도 화면에 고정 */
+/* 배경은 한 장만 사용해 첫 시안의 선명도 유지 */
 body::after{
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-
-  background-image: url("wedding-pattern.svg");
-  background-repeat: repeat;
-  background-size: 820px auto;
-  background-position: calc(50% + 110px) 180px;
-
-  opacity: 0.14;
+  content: none;
 }
 
 .bgm-toggle{
