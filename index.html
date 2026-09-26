@@ -150,6 +150,20 @@ section{padding:0 18px 27px}
   line-height: 1.2;
   cursor: pointer;
 }
+.copy-mini{
+  display:inline-block;
+  width:auto;
+  margin-top:5px;
+  padding:3px 7px;
+  border:1px solid rgba(114,133,106,.38);
+  border-radius:7px;
+  background:rgba(255,255,255,.78);
+  color:var(--green);
+  font-size:10px;
+  font-weight:700;
+  line-height:1.1;
+  cursor:pointer;
+}
 .foot{text-align:center;color:var(--muted);font-size:11px;padding:1px 18px 8px}
 
 /* Gallery modal: all album cards use the same behavior */
@@ -246,7 +260,7 @@ section{padding:0 18px 27px}
     <p class="title">Location</p>
     <div class="box">
       <div class="row"><span class="label">예식장</span><span class="value">아벤티움 웨딩홀</span></div>
-      <div class="row"><span class="label">주소</span><span class="value">서울특별시 중구 청파로 464<br>브라운스톤서울 3층</span></div>
+      <div class="row"><span class="label">주소</span><span class="value">서울특별시 중구 청파로 464<br>브라운스톤서울 3층<br><button class="copy-mini" type="button" onclick="copyText('서울특별시 중구 청파로 464 브라운스톤서울 3층','주소가 복사되었습니다.')">주소 복사</button></span></div>
       <svg class="map-img" viewBox="0 0 800 540" role="img" aria-label="아벤티움 웨딩홀 약도">
 <rect width="800" height="540" fill="#eef0ee"/>
 <g fill="#747a7a"><rect x="184" y="28" width="57" height="470"/><rect x="432" y="28" width="57" height="470"/><rect x="618" y="28" width="57" height="470"/><rect x="82" y="132" width="630" height="47"/><rect x="241" y="340" width="434" height="47"/></g>
@@ -397,9 +411,9 @@ modal.addEventListener("touchend",e=>{
   move(dx>0?-1:1);
 },{passive:true});
 
-async function copyText(t){
-  try{await navigator.clipboard.writeText(t);alert("계좌번호가 복사되었습니다.")}
-  catch(e){prompt("계좌번호를 복사해 주세요.",t)}
+async function copyText(t,msg="계좌번호가 복사되었습니다."){
+  try{await navigator.clipboard.writeText(t);alert(msg)}
+  catch(e){prompt(msg.replace("복사되었습니다.","복사해 주세요."),t)}
 }
 </script>
 <script>
