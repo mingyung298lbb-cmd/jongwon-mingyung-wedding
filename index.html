@@ -185,8 +185,7 @@ section{padding:0 18px 27px}
 
 <audio
   id="bgm"
-  src="coffeehouse_game_jazz_original_4min.m4a"
-  preload="auto"
+  preload="none"
   loop
   playsinline
 ></audio>
@@ -409,41 +408,68 @@ async function copyText(t){
 <script>
 const bgm = document.getElementById("bgm");
 const bgmToggle = document.getElementById("bgmToggle");
+const BGM_SRC = "coffeehouse_game_jazz_original_4min.m4a";
 
 let isMuted = false;
 let hasStarted = false;
+let bgmPrepared = false;
 
 bgm.volume = 0.45;
 bgm.loop = true;
 
-/* 첫 재생 */
+/* 음원은 첫 사용자 상호작용 전까지 다운로드하지 않음 */
+function prepareBgm() {
+  if (bgmPrepared) return;
+  bgm.src = BGM_SRC;
+  bgm.load();
+  bgmPrepared = true;
+}
+
+/* 첫 사용자 상호작용에서 로드 + 재생 */
 async function startBgm() {
-  if (hasStarted) return;
+  if (hasStarted) return true;
+
+  prepareBgm();
 
   try {
-    bgm.currentTime = 0.03;   // 시작 클릭감 줄이기
+    bgm.currentTime = 0.03;
     await bgm.play();
     hasStarted = true;
+    return true;
   } catch (e) {
-    // 자동재생 막히면 첫 터치 때 다시 시도
+    return false;
   }
 }
 
-/* 첫 사용자 터치 시 재생 보장 */
-function unlockBgm() {
-  startBgm();
-  window.removeEventListener("touchstart", unlockBgm);
-  window.removeEventListener("click", unlockBgm);
+/* 페이지 아무 곳이나 처음 터치/클릭하면 재생.
+   BGM 버튼 자체는 아래 전용 핸들러가 처리함. */
+async function unlockBgm(e) {
+  if (e.target && e.target.closest && e.target.closest("#bgmToggle")) return;
+
+  const started = await startBgm();
+  if (started) {
+    window.removeEventListener("touchstart", unlockBgm);
+    window.removeEventListener("click", unlockBgm);
+  }
 }
 
-window.addEventListener("load", startBgm);
 window.addEventListener("touchstart", unlockBgm, { passive: true });
 window.addEventListener("click", unlockBgm);
 
-/* 음소거 버튼 */
-bgmToggle.addEventListener("click", async function () {
+/* 음소거 버튼:
+   아직 재생 전이면 첫 클릭은 '재생 시작', 이후부터 음소거 토글 */
+bgmToggle.addEventListener("click", async function (e) {
+  e.stopPropagation();
+
   if (!hasStarted) {
-    await startBgm();
+    const started = await startBgm();
+    if (started) {
+      isMuted = false;
+      bgm.muted = false;
+      bgmToggle.classList.remove("muted");
+      bgmToggle.setAttribute("aria-label", "배경음악 음소거");
+    }
+    return;
   }
 
   isMuted = !isMuted;
