@@ -12,16 +12,50 @@
   --paper:rgba(255,255,252,.91);--shadow:0 10px 30px rgba(57,70,48,.09)
 }
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;min-height:100%}
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
 body{
-  color:var(--ink);
-  font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
-  background-color:#fbfcf8;
-  background-image:url("wedding-pattern.svg");
-  background-repeat:repeat;
-  background-position:top center;
-  background-size:460px auto;
-  background-attachment:scroll
+  color: var(--ink);
+  font-family: "Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  background-color: #fbfcf8;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 1차 배경 */
+body::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+
+  background-image: url("wedding-pattern.svg");
+  background-repeat: repeat;
+  background-size: 520px auto;
+  background-position: center top;
+
+  opacity: 0.95;
+}
+
+/* 2차 배경 - 살짝 어긋나게 */
+body::after{
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+
+  background-image: url("wedding-pattern.svg");
+  background-repeat: repeat;
+  background-size: 610px auto;
+  background-position: calc(50% + 140px) 170px;
+
+  opacity: 0.42;
 }
 button{font:inherit}
 main{width:min(100%,540px);margin:0 auto;min-height:100vh;padding:0 0 34px;background:rgba(255,255,252,.16)}
