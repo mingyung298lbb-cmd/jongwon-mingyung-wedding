@@ -57,6 +57,50 @@ body::after{
 
   opacity: 0.42;
 }
+
+.bgm-toggle{
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 10002;
+
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255,255,255,.92);
+  color: #333;
+  box-shadow: 0 4px 14px rgba(0,0,0,.12);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  line-height: 1;
+}
+
+.bgm-toggle .bgm-note{
+  display: inline-block;
+}
+
+.bgm-toggle .bgm-off{
+  display: none;
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #c43b3b;
+  line-height: 1;
+}
+
+.bgm-toggle.muted .bgm-off{
+  display: inline-block;
+}
+
 button{font:inherit}
 main{width:min(100%,540px);margin:0 auto;min-height:100vh;padding:0 0 34px;background:rgba(255,255,252,.16)}
 .hero{padding:22px 18px 26px}
