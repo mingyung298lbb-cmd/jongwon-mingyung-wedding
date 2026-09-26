@@ -175,7 +175,8 @@ section{padding:0 18px 27px}
 
 <audio
   id="bgm"
-  preload="none"
+  src="coffeehouse_game_jazz_original_4min.m4a"
+  preload="metadata"
   loop
   playsinline
 ></audio>
@@ -398,28 +399,17 @@ async function copyText(t){
 <script>
 const bgm = document.getElementById("bgm");
 const bgmToggle = document.getElementById("bgmToggle");
-const BGM_SRC = "coffeehouse_game_jazz_original_4min.m4a";
 
 let isMuted = false;
 let hasStarted = false;
-let bgmPrepared = false;
 
 bgm.volume = 0.45;
 bgm.loop = true;
 
-/* 음원은 첫 사용자 상호작용 전까지 다운로드하지 않음 */
-function prepareBgm() {
-  if (bgmPrepared) return;
-  bgm.src = BGM_SRC;
-  bgm.load();
-  bgmPrepared = true;
-}
-
-/* 첫 사용자 상호작용에서 로드 + 재생 */
+/* 파일 전체는 미리 받지 않고 메타데이터만 준비.
+   첫 사용자 상호작용에서 즉시 스트리밍 재생 시작 */
 async function startBgm() {
   if (hasStarted) return true;
-
-  prepareBgm();
 
   try {
     bgm.currentTime = 0.03;
