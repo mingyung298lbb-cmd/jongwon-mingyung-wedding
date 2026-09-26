@@ -24,38 +24,39 @@ body{
   background-color: #fbfcf8;
   position: relative;
   overflow-x: hidden;
+  isolation: isolate;
 }
 
-/* 1차 배경 */
+/* 화면에 고정되는 배경: 스크롤해도 움직이지 않음 */
 body::before{
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: -2;
+  z-index: 0;
 
   background-image: url("wedding-pattern.svg");
   background-repeat: repeat;
   background-size: 700px auto;
   background-position: center top;
 
-  opacity: 0.34;
+  opacity: 0.42;
 }
 
-/* 2차 배경 - 살짝 어긋나게 */
+/* 두 번째 패턴도 화면에 고정 */
 body::after{
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
 
   background-image: url("wedding-pattern.svg");
   background-repeat: repeat;
   background-size: 820px auto;
   background-position: calc(50% + 110px) 180px;
 
-  opacity: 0.12;
+  opacity: 0.14;
 }
 
 .bgm-toggle{
@@ -102,7 +103,7 @@ body::after{
 }
 
 button{font:inherit}
-main{width:min(100%,540px);margin:0 auto;min-height:100vh;padding:0 0 34px;background:rgba(255,255,252,.16)}
+main{position:relative;z-index:1;width:min(100%,540px);margin:0 auto;min-height:100vh;padding:0 0 34px;background:rgba(255,255,252,.16)}
 .hero{padding:22px 18px 26px}
 .hero-card{background:var(--paper);border-radius:26px;padding:14px 14px 25px;box-shadow:var(--shadow);backdrop-filter:blur(2px)}
 .heroimg{width:100%;aspect-ratio:5/7;object-fit:cover;border-radius:19px;display:block;background:#edf0e8}
