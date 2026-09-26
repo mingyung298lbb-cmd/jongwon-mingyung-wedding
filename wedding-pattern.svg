@@ -1,95 +1,150 @@
-<svg width="720" height="720" viewBox="0 0 720 720" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="720" height="720" fill="transparent"/>
+<svg width="720" height="720" viewBox="0 0 720 720" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="leafG" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#d7e8b7"/><stop offset=".55" stop-color="#9fc36d"/><stop offset="1" stop-color="#6f9d48"/>
+  </linearGradient>
+  <linearGradient id="leafG2" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#c8ddae"/><stop offset="1" stop-color="#5f8d4b"/>
+  </linearGradient>
+  <radialGradient id="petalG" cx=".45" cy=".38" r=".8">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".72" stop-color="#fbfbf8"/><stop offset="1" stop-color="#e8e5dc"/>
+  </radialGradient>
+  <symbol id="sprout" viewBox="0 0 40 44">
+    <path d="M20 39 C20 30 20 20 20 10" stroke="#789b55" stroke-width="1.8" stroke-linecap="round"/>
+    <ellipse cx="13" cy="20" rx="8" ry="4.8" fill="url(#leafG)" transform="rotate(28 13 20)"/>
+    <ellipse cx="27" cy="15" rx="8" ry="4.8" fill="url(#leafG2)" transform="rotate(-28 27 15)"/>
+  </symbol>
+  <symbol id="leaf" viewBox="0 0 34 22">
+    <ellipse cx="17" cy="11" rx="14" ry="6" fill="url(#leafG)" transform="rotate(-16 17 11)"/>
+    <path d="M6 15 C13 11 20 8 28 6" stroke="#6f914d" stroke-width="1" fill="none" opacity=".65"/>
+  </symbol>
+  <symbol id="flower" viewBox="0 0 46 58">
+    <path d="M23 53 C23 43 22 36 23 28" stroke="#769557" stroke-width="1.6" stroke-linecap="round"/>
+    <ellipse cx="18" cy="39" rx="6" ry="3.6" fill="url(#leafG2)" transform="rotate(35 18 39)"/>
+    <g stroke="#e5e2da" stroke-width=".8">
+      <ellipse cx="23" cy="14" rx="7" ry="10" fill="url(#petalG)"/>
+      <ellipse cx="23" cy="30" rx="7" ry="10" fill="url(#petalG)"/>
+      <ellipse cx="14" cy="22" rx="7" ry="10" fill="url(#petalG)" transform="rotate(90 14 22)"/>
+      <ellipse cx="32" cy="22" rx="7" ry="10" fill="url(#petalG)" transform="rotate(90 32 22)"/>
+      <ellipse cx="17" cy="16" rx="6" ry="8" fill="url(#petalG)" transform="rotate(-40 17 16)"/>
+    </g>
+    <circle cx="23" cy="22" r="4" fill="#e6b63a"/>
+  </symbol>
+  <symbol id="buds" viewBox="0 0 50 58">
+    <path d="M24 56 C25 42 26 27 26 12 M25 35 C17 29 13 23 10 17 M26 28 C34 22 38 17 41 11" stroke="#758e52" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <g fill="#eef0df" stroke="#cad3b5" stroke-width=".8">
+      <circle cx="9" cy="16" r="5"/><circle cx="14" cy="23" r="4.5"/><circle cx="40" cy="10" r="5"/><circle cx="36" cy="18" r="4.5"/><circle cx="26" cy="10" r="4.8"/>
+    </g>
+  </symbol>
+  <symbol id="branch" viewBox="0 0 54 72">
+    <path d="M24 70 C25 52 28 34 29 8" stroke="#6f8d50" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <path d="M27 45 C17 39 12 31 8 24 M28 34 C38 28 43 20 47 12 M26 54 C36 49 42 45 47 38" stroke="#6f8d50" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="10" cy="23" rx="8" ry="4.5" fill="url(#leafG2)" transform="rotate(34 10 23)"/>
+    <ellipse cx="17" cy="36" rx="8" ry="4.5" fill="url(#leafG)" transform="rotate(25 17 36)"/>
+    <ellipse cx="45" cy="13" rx="8" ry="4.5" fill="url(#leafG2)" transform="rotate(-32 45 13)"/>
+    <ellipse cx="40" cy="27" rx="8" ry="4.5" fill="url(#leafG)" transform="rotate(-28 40 27)"/>
+    <ellipse cx="46" cy="39" rx="7" ry="4.2" fill="url(#leafG2)" transform="rotate(-18 46 39)"/>
+  </symbol>
+  <symbol id="tree" viewBox="0 0 70 82">
+    <path d="M34 79 C34 64 35 51 35 36" stroke="#8e6348" stroke-width="4" stroke-linecap="round"/>
+    <path d="M35 55 L25 42 M35 49 L45 36" stroke="#8e6348" stroke-width="1.7"/>
+    <g fill="#9fc46f" opacity=".95">
+      <circle cx="20" cy="25" r="7"/><circle cx="31" cy="18" r="8"/><circle cx="43" cy="21" r="7"/><circle cx="52" cy="30" r="7"/><circle cx="15" cy="35" r="6"/><circle cx="28" cy="32" r="8"/><circle cx="40" cy="34" r="8"/><circle cx="31" cy="43" r="7"/><circle cx="47" cy="42" r="6"/>
+    </g>
+    <g fill="#c5da98" opacity=".8">
+      <circle cx="23" cy="18" r="4"/><circle cx="39" cy="15" r="4"/><circle cx="55" cy="24" r="4"/><circle cx="19" cy="42" r="4"/>
+    </g>
+  </symbol>
+</defs>
 
-  <!-- 작은 새싹 -->
-  <g opacity="0.7" stroke="#A9BEA1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M82 78C82 66 82 56 82 48"/>
-    <path d="M82 62C74 54 66 52 58 54C62 64 70 70 82 72"/>
-    <path d="M82 62C90 54 98 52 106 54C102 64 94 70 82 72"/>
-  </g>
+<rect width="720" height="720" fill="#fff"/>
 
-  <g opacity="0.65" stroke="#B4C7AB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M292 116C292 104 292 94 292 86"/>
-    <path d="M292 100C284 92 276 90 269 92C272 101 280 108 292 109"/>
-    <path d="M292 100C300 92 308 90 315 92C312 101 304 108 292 109"/>
-  </g>
+<use href="#flower" transform="translate(12 18) scale(.62)"/>
+<use href="#buds" transform="translate(82 8) scale(.58)"/>
+<use href="#buds" transform="translate(175 7) scale(.78)"/>
+<use href="#branch" transform="translate(270 0) scale(.86)"/>
+<use href="#flower" transform="translate(354 12) scale(.64)"/>
+<use href="#leaf" transform="translate(430 18) scale(.55)"/>
+<use href="#buds" transform="translate(555 4) scale(.7)"/>
+<use href="#buds" transform="translate(666 12) scale(.6)"/>
 
-  <g opacity="0.68" stroke="#AFC3A6" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M554 84C554 72 554 62 554 54"/>
-    <path d="M554 68C546 60 538 58 530 60C534 70 542 76 554 78"/>
-    <path d="M554 68C562 60 570 58 578 60C574 70 566 76 554 78"/>
-  </g>
+<use href="#sprout" transform="translate(36 70) scale(.65)"/>
+<use href="#tree" transform="translate(112 53) scale(.72)"/>
+<use href="#sprout" transform="translate(225 77) scale(.72)"/>
+<use href="#branch" transform="translate(600 55) scale(.8)"/>
+<use href="#tree" transform="translate(480 45) scale(.78)"/>
 
-  <!-- 작은 꽃 -->
-  <g opacity="0.75">
-    <circle cx="170" cy="206" r="7" fill="#FFFFFF"/>
-    <circle cx="170" cy="190" r="7" fill="#F8FBF5"/>
-    <circle cx="184" cy="198" r="7" fill="#FFFFFF"/>
-    <circle cx="156" cy="198" r="7" fill="#F8FBF5"/>
-    <circle cx="170" cy="206" r="3.5" fill="#D6E3C9"/>
-  </g>
+<use href="#leaf" transform="translate(12 125) scale(.5) rotate(20 17 11)"/>
+<use href="#buds" transform="translate(72 115) scale(.7)"/>
+<use href="#leaf" transform="translate(190 118) scale(.7) rotate(-12 17 11)"/>
+<use href="#flower" transform="translate(310 118) scale(.72)"/>
+<use href="#branch" transform="translate(405 100) scale(.63)"/>
+<use href="#buds" transform="translate(548 105) scale(.75)"/>
+<use href="#buds" transform="translate(670 105) scale(.6)"/>
 
-  <g opacity="0.72">
-    <circle cx="462" cy="198" r="6.5" fill="#FFFFFF"/>
-    <circle cx="462" cy="184" r="6.5" fill="#F8FBF5"/>
-    <circle cx="474" cy="191" r="6.5" fill="#FFFFFF"/>
-    <circle cx="450" cy="191" r="6.5" fill="#F8FBF5"/>
-    <circle cx="462" cy="198" r="3.2" fill="#D6E3C9"/>
-  </g>
+<use href="#buds" transform="translate(18 188) scale(.76)"/>
+<use href="#branch" transform="translate(103 190) scale(.66)"/>
+<use href="#flower" transform="translate(188 194) scale(.68)"/>
+<use href="#buds" transform="translate(270 168) scale(.64)"/>
+<use href="#leaf" transform="translate(338 188) scale(.55) rotate(-25 17 11)"/>
+<use href="#flower" transform="translate(435 207) scale(.7)"/>
+<use href="#buds" transform="translate(525 198) scale(.68)"/>
+<use href="#sprout" transform="translate(612 190) scale(.68)"/>
+<use href="#flower" transform="translate(670 173) scale(.62)"/>
 
-  <g opacity="0.7">
-    <circle cx="624" cy="276" r="6.5" fill="#FFFFFF"/>
-    <circle cx="624" cy="262" r="6.5" fill="#F8FBF5"/>
-    <circle cx="636" cy="269" r="6.5" fill="#FFFFFF"/>
-    <circle cx="612" cy="269" r="6.5" fill="#F8FBF5"/>
-    <circle cx="624" cy="276" r="3.2" fill="#D6E3C9"/>
-  </g>
+<use href="#sprout" transform="translate(55 262) scale(.55)"/>
+<use href="#buds" transform="translate(138 250) scale(.72)"/>
+<use href="#tree" transform="translate(252 235) scale(.78)"/>
+<use href="#buds" transform="translate(355 248) scale(.72)"/>
+<use href="#sprout" transform="translate(430 273) scale(.55)"/>
+<use href="#tree" transform="translate(575 242) scale(.8)"/>
+<use href="#sprout" transform="translate(675 252) scale(.65)"/>
 
-  <!-- 나뭇잎 -->
-  <g opacity="0.6" stroke="#C1D2B8" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M118 360C132 346 150 344 164 354C152 366 136 370 118 360Z"/>
-    <path d="M141 350C138 356 135 362 132 367"/>
-  </g>
+<use href="#flower" transform="translate(5 315) scale(.58)"/>
+<use href="#buds" transform="translate(125 315) scale(.68)"/>
+<use href="#leaf" transform="translate(220 325) scale(.48) rotate(26 17 11)"/>
+<use href="#flower" transform="translate(305 318) scale(.67)"/>
+<use href="#sprout" transform="translate(410 325) scale(.65)"/>
+<use href="#buds" transform="translate(620 315) scale(.72)"/>
+<use href="#leaf" transform="translate(542 324) scale(.48) rotate(-18 17 11)"/>
 
-  <g opacity="0.56" stroke="#C6D6BE" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M356 332C370 318 388 316 402 326C390 338 374 342 356 332Z"/>
-    <path d="M379 322C376 328 373 334 370 339"/>
-  </g>
+<use href="#tree" transform="translate(68 355) scale(.75)"/>
+<use href="#sprout" transform="translate(130 395) scale(.56)"/>
+<use href="#flower" transform="translate(190 365) scale(.62)"/>
+<use href="#buds" transform="translate(330 370) scale(.74)"/>
+<use href="#branch" transform="translate(470 360) scale(.72)"/>
+<use href="#tree" transform="translate(640 354) scale(.75)"/>
 
-  <g opacity="0.58" stroke="#C0D1B7" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M560 402C574 388 592 386 606 396C594 408 578 412 560 402Z"/>
-    <path d="M583 392C580 398 577 404 574 409"/>
-  </g>
+<use href="#buds" transform="translate(18 438) scale(.66)"/>
+<use href="#flower" transform="translate(78 420) scale(.62)"/>
+<use href="#buds" transform="translate(165 437) scale(.64)"/>
+<use href="#sprout" transform="translate(294 430) scale(.7)"/>
+<use href="#leaf" transform="translate(370 445) scale(.55) rotate(-20 17 11)"/>
+<use href="#tree" transform="translate(530 415) scale(.72)"/>
+<use href="#buds" transform="translate(650 420) scale(.62)"/>
 
-  <!-- 아주 작은 점 장식 -->
-  <g fill="#DDE8D5" opacity="0.55">
-    <circle cx="236" cy="254" r="2.2"/>
-    <circle cx="248" cy="262" r="1.8"/>
-    <circle cx="260" cy="250" r="1.8"/>
+<use href="#buds" transform="translate(38 500) scale(.72)"/>
+<use href="#sprout" transform="translate(118 510) scale(.55)"/>
+<use href="#buds" transform="translate(240 492) scale(.72)"/>
+<use href="#flower" transform="translate(315 500) scale(.67)"/>
+<use href="#branch" transform="translate(460 478) scale(.75)"/>
+<use href="#flower" transform="translate(585 503) scale(.68)"/>
+<use href="#sprout" transform="translate(684 495) scale(.55)"/>
 
-    <circle cx="514" cy="126" r="2.2"/>
-    <circle cx="526" cy="134" r="1.8"/>
-    <circle cx="538" cy="122" r="1.8"/>
+<use href="#tree" transform="translate(10 550) scale(.76)"/>
+<use href="#flower" transform="translate(128 568) scale(.62)"/>
+<use href="#branch" transform="translate(185 548) scale(.64)"/>
+<use href="#tree" transform="translate(345 548) scale(.78)"/>
+<use href="#buds" transform="translate(430 570) scale(.66)"/>
+<use href="#buds" transform="translate(595 555) scale(.74)"/>
+<use href="#tree" transform="translate(655 548) scale(.7)"/>
 
-    <circle cx="102" cy="520" r="2.2"/>
-    <circle cx="114" cy="528" r="1.8"/>
-    <circle cx="126" cy="516" r="1.8"/>
-
-    <circle cx="408" cy="566" r="2.2"/>
-    <circle cx="420" cy="574" r="1.8"/>
-    <circle cx="432" cy="562" r="1.8"/>
-  </g>
-
-  <!-- 아래쪽 새싹 -->
-  <g opacity="0.68" stroke="#AEBFA6" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M220 632C220 620 220 610 220 602"/>
-    <path d="M220 616C212 608 204 606 197 608C200 617 208 624 220 625"/>
-    <path d="M220 616C228 608 236 606 243 608C240 617 232 624 220 625"/>
-  </g>
-
-  <g opacity="0.65" stroke="#B2C4AA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M500 618C500 606 500 596 500 588"/>
-    <path d="M500 602C492 594 484 592 476 594C480 604 488 610 500 612"/>
-    <path d="M500 602C508 594 516 592 524 594C520 604 512 610 500 612"/>
-  </g>
+<use href="#leaf" transform="translate(12 635) scale(.48) rotate(15 17 11)"/>
+<use href="#branch" transform="translate(70 620) scale(.75)"/>
+<use href="#buds" transform="translate(210 625) scale(.66)"/>
+<use href="#flower" transform="translate(290 628) scale(.62)"/>
+<use href="#buds" transform="translate(375 615) scale(.78)"/>
+<use href="#sprout" transform="translate(485 625) scale(.68)"/>
+<use href="#branch" transform="translate(565 612) scale(.65)"/>
+<use href="#flower" transform="translate(675 640) scale(.58)"/>
 </svg>
