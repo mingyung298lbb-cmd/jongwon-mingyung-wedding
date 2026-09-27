@@ -17,7 +17,8 @@
 <meta name="twitter:title" content="이종원 ♥ 이민경 모바일 청첩장">
 <meta name="twitter:description" content="2027년 3월 21일 오전 11시 · 아벤티움 웨딩홀">
 <meta name="twitter:image" content="https://jongwon-mingyung-wedding.onrender.com/share-preview.jpg?v=20260927-1">
-<link rel="preload" as="image" href="date3-21.png?v=20260927-3" fetchpriority="high">
+<link rel="preload" as="image" href="hero-main.jpg?v=20260927-1" fetchpriority="high">
+<link rel="preload" as="image" href="date3-21.png?v=20260927-3">
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"></noscript>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -436,7 +437,6 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   .modal{padding-left:34px;padding-right:34px}
 }
 </style>
-<script src="hero-photo.js" defer></script>
 <!-- build: 2026-09-27-performance-optimized -->
 </head>
 <body>
@@ -455,7 +455,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 <main>
   <div class="hero">
     <div class="hero-card">
-      <img id="heroImage" class="heroimg" alt="이종원 이민경 웨딩 사진" loading="eager" fetchpriority="high" decoding="async">
+      <img id="heroImage" class="heroimg" src="hero-main.jpg?v=20260927-1" alt="이종원 이민경 웨딩 사진" loading="eager" fetchpriority="high" decoding="sync">
       <div class="names">이종원 ♥ 이민경</div>
       <div class="date">2027. 03. 21. 일요일 · 오전 11시</div>
       <div class="place">아벤티움 웨딩홀</div>
@@ -493,7 +493,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
     <div class="gallery">
       <button class="gcard empty" type="button" data-album="0" aria-label="갤러리 1">준비 예정</button>
       <button class="gcard" type="button" data-album="1" aria-label="갤러리 2">
-        <img id="galleryCover" alt="갤러리 2 대표 사진" loading="lazy" decoding="async">
+        <img id="galleryCover" src="hero-main.jpg?v=20260927-1" alt="갤러리 2 대표 사진" loading="lazy" decoding="async">
         <span class="badge">7 photos</span>
       </button>
       <button class="gcard empty" type="button" data-album="2" aria-label="갤러리 3">준비 예정</button>
@@ -675,16 +675,6 @@ window.addEventListener("scroll",()=>{
 
 const albums=[[],[],[],[]];
 let galleryLoadPromise=null;
-
-function setHeroPhoto(){
-  if(!window.heroPhoto)return;
-  const hero=document.getElementById("heroImage");
-  const cover=document.getElementById("galleryCover");
-  if(hero && !hero.getAttribute("src")) hero.src=window.heroPhoto;
-  if(cover && !cover.getAttribute("src")) cover.src=window.heroPhoto;
-}
-
-document.addEventListener("DOMContentLoaded",setHeroPhoto,{once:true});
 
 function loadScriptOnce(src){
   return new Promise((resolve,reject)=>{
