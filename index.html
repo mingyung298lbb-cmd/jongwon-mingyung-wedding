@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>이종원 ♥ 이민경 모바일 청첩장</title>
 <meta name="description" content="2027년 3월 21일 오전 11시 · 아벤티움 웨딩홀">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta property="og:type" content="website">
 <meta property="og:title" content="이종원 ♥ 이민경 모바일 청첩장">
 <meta property="og:description" content="2027년 3월 21일 오전 11시 · 아벤티움 웨딩홀">
@@ -20,10 +17,12 @@
 <meta name="twitter:title" content="이종원 ♥ 이민경 모바일 청첩장">
 <meta name="twitter:description" content="2027년 3월 21일 오전 11시 · 아벤티움 웨딩홀">
 <meta name="twitter:image" content="https://jongwon-mingyung-wedding.onrender.com/share-preview.jpg?v=20260927-1">
-<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"></noscript>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{
   --ink:#33362f;--muted:#777970;--green:#72856a;--line:#e1e5db;
@@ -436,10 +435,8 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   .modal{padding-left:34px;padding-right:34px}
 }
 </style>
-<script src="gallery-1.js"></script>
-<script src="gallery-2.js"></script>
-<script src="gallery-3.js"></script>
-<!-- build: 2026-09-27-strong-parent-panel-calendar-font-fix -->
+<script src="hero-photo.js" defer></script>
+<!-- build: 2026-09-27-performance-optimized -->
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -449,8 +446,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 
 <audio
   id="bgm"
-  src="coffeehouse_game_jazz_original_4min.m4a"
-  preload="metadata"
+  preload="none"
   loop
   playsinline
 ></audio>
@@ -458,7 +454,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 <main>
   <div class="hero">
     <div class="hero-card">
-      <img id="heroImage" class="heroimg" alt="이종원 이민경 웨딩 사진">
+      <img id="heroImage" class="heroimg" alt="이종원 이민경 웨딩 사진" loading="eager" fetchpriority="high" decoding="async">
       <div class="names">이종원 ♥ 이민경</div>
       <div class="date">2027. 03. 21. 일요일 · 오전 11시</div>
       <div class="place">아벤티움 웨딩홀</div>
@@ -496,7 +492,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
     <div class="gallery">
       <button class="gcard empty" type="button" data-album="0" aria-label="갤러리 1">준비 예정</button>
       <button class="gcard" type="button" data-album="1" aria-label="갤러리 2">
-        <img id="galleryCover" alt="갤러리 2 대표 사진" loading="lazy">
+        <img id="galleryCover" alt="갤러리 2 대표 사진" loading="lazy" decoding="async">
         <span class="badge">7 photos</span>
       </button>
       <button class="gcard empty" type="button" data-album="2" aria-label="갤러리 3">준비 예정</button>
@@ -527,7 +523,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   </section>
 
   <section class="calendar-section">
-    <img class="calendar-img" src="date3-21.png?v=20260927-3" alt="2027년 3월 웨딩 달력" loading="lazy">
+    <img class="calendar-img" src="date3-21.png?v=20260927-3" alt="2027년 3월 웨딩 달력" loading="lazy" decoding="async">
   </section>
 
   <section id="rsvpSection">
@@ -676,10 +672,54 @@ window.addEventListener("scroll",()=>{
   if(window.scrollX!==0) window.scrollTo(0,window.scrollY);
 },{passive:true});
 
-const albums=[[],window.galleryPhotos||[],[],[]];
+const albums=[[],[],[],[]];
+let galleryLoadPromise=null;
 
-document.getElementById("heroImage").src=window.galleryPhotos[0];
-document.getElementById("galleryCover").src=window.galleryPhotos[0];
+function setHeroPhoto(){
+  if(!window.heroPhoto)return;
+  const hero=document.getElementById("heroImage");
+  const cover=document.getElementById("galleryCover");
+  if(hero && !hero.getAttribute("src")) hero.src=window.heroPhoto;
+  if(cover && !cover.getAttribute("src")) cover.src=window.heroPhoto;
+}
+
+document.addEventListener("DOMContentLoaded",setHeroPhoto,{once:true});
+
+function loadScriptOnce(src){
+  return new Promise((resolve,reject)=>{
+    const existing=document.querySelector('script[data-lazy-src="'+src+'"]');
+    if(existing){
+      if(existing.dataset.loaded==="1") return resolve();
+      existing.addEventListener("load",resolve,{once:true});
+      existing.addEventListener("error",reject,{once:true});
+      return;
+    }
+    const s=document.createElement("script");
+    s.src=src;
+    s.async=false;
+    s.dataset.lazySrc=src;
+    s.addEventListener("load",()=>{s.dataset.loaded="1";resolve();},{once:true});
+    s.addEventListener("error",reject,{once:true});
+    document.head.appendChild(s);
+  });
+}
+
+function loadGalleryData(){
+  if(galleryLoadPromise)return galleryLoadPromise;
+  window.galleryPhotos=[];
+  galleryLoadPromise=loadScriptOnce("gallery-1.js")
+    .then(()=>loadScriptOnce("gallery-2.js"))
+    .then(()=>loadScriptOnce("gallery-3.js"))
+    .then(()=>{
+      albums[1]=window.galleryPhotos||[];
+      return albums[1];
+    })
+    .catch(err=>{
+      galleryLoadPromise=null;
+      throw err;
+    });
+  return galleryLoadPromise;
+}
 
 let currentAlbum=0;
 let currentIndex=0;
@@ -705,7 +745,11 @@ function renderModal(){
   nextBtn.classList.toggle("hidden",currentIndex===photos.length-1);
 }
 
-function openAlbum(albumIndex){
+async function openAlbum(albumIndex){
+  if(albumIndex===1){
+    try{await loadGalleryData();}
+    catch(err){console.error(err);}
+  }
   currentAlbum=albumIndex;
   currentIndex=0;
   renderModal();
@@ -731,6 +775,17 @@ function move(step){
 document.querySelectorAll("[data-album]").forEach(btn=>{
   btn.addEventListener("click",()=>openAlbum(Number(btn.dataset.album)));
 });
+
+const gallerySection=document.querySelector(".gallery");
+if(gallerySection && "IntersectionObserver" in window){
+  const galleryObserver=new IntersectionObserver(entries=>{
+    if(entries.some(entry=>entry.isIntersecting)){
+      loadGalleryData().catch(console.error);
+      galleryObserver.disconnect();
+    }
+  },{rootMargin:"180px 0px"});
+  galleryObserver.observe(gallerySection);
+}
 
 closeBtn.addEventListener("click",closeGallery);
 prevBtn.addEventListener("click",()=>move(-1));
@@ -887,7 +942,18 @@ async function loadPublicComments(){
   }
 }
 
-loadPublicComments();
+const guestbookSection=document.getElementById("guestbookSection");
+if(guestbookSection && "IntersectionObserver" in window){
+  const commentObserver=new IntersectionObserver(entries=>{
+    if(entries.some(entry=>entry.isIntersecting)){
+      loadPublicComments();
+      commentObserver.disconnect();
+    }
+  },{rootMargin:"250px 0px"});
+  commentObserver.observe(guestbookSection);
+}else{
+  window.addEventListener("load",loadPublicComments,{once:true});
+}
 
 async function copyText(t,msg="계좌번호가 복사되었습니다."){
   try{await navigator.clipboard.writeText(t);alert(msg)}
@@ -912,6 +978,10 @@ async function startBgm() {
   if (hasStarted) return true;
 
   try {
+    if (!bgm.getAttribute("src")) {
+      bgm.src = "coffeehouse_game_jazz_original_4min.m4a";
+      bgm.load();
+    }
     bgm.currentTime = 0.03;
     await bgm.play();
     hasStarted = true;
