@@ -1,4 +1,4 @@
-const SPREADSHEET_ID = "여기에_구글시트_ID";
+const SPREADSHEET_ID = "1n2akSR6xazk_QRXTjTaUpkTxCtqe0K52V0VKKl1AQUk";
 const RSVP_SHEET = "RSVP";
 const COMMENT_SHEET = "댓글";
 
