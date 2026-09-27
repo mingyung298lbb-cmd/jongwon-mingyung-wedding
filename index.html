@@ -496,7 +496,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
     <div class="gallery">
       <button class="gcard empty" type="button" data-album="0" aria-label="갤러리 1">준비 예정</button>
       <button class="gcard" type="button" data-album="1" aria-label="갤러리 2">
-        <img id="galleryCover" src="gallery-photo-1.jpg?v=20260927-3" alt="갤러리 2 대표 사진" loading="lazy" decoding="async">
+        <img id="galleryCover" src="/gallery-photo-1.jpg?v=distinct-cover-20260927-4" alt="갤러리 2 대표 사진" loading="lazy" decoding="async">
         <span class="badge">7 photos</span>
       </button>
       <button class="gcard empty" type="button" data-album="2" aria-label="갤러리 3">준비 예정</button>
@@ -666,13 +666,13 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   <button id="modalClose" class="close" type="button" aria-label="갤러리 닫기">×</button>
   <button id="modalPrev" class="nav prev hidden" type="button" aria-label="이전 사진">‹</button>
   <div id="modalSlides" class="modal-slides">
-    <img class="modal-img modal-slide active" src="hero-main.jpg?v=gallery-1-20260927-3" alt="웨딩 갤러리 1" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="gallery/photo-2.jpg?v=gallery-2-20260927-3" alt="웨딩 갤러리 2" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="gallery/photo-3.jpg?v=gallery-3-20260927-3" alt="웨딩 갤러리 3" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="gallery/photo-4.jpg?v=gallery-4-20260927-3" alt="웨딩 갤러리 4" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="gallery/photo-5.jpg?v=gallery-5-20260927-3" alt="웨딩 갤러리 5" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="gallery/photo-6.jpg?v=gallery-6-20260927-3" alt="웨딩 갤러리 6" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="gallery/photo-7.jpg?v=gallery-7-20260927-3" alt="웨딩 갤러리 7" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide active" src="/gallery-photo-1.jpg?v=distinct-1-20260927-4" alt="웨딩 갤러리 1" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="/gallery-photo-2.jpg?v=distinct-2-20260927-4" alt="웨딩 갤러리 2" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="/gallery-photo-3.jpg?v=distinct-3-20260927-4" alt="웨딩 갤러리 3" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="/gallery-photo-4.jpg?v=distinct-4-20260927-4" alt="웨딩 갤러리 4" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="/gallery-photo-5.jpg?v=distinct-5-20260927-4" alt="웨딩 갤러리 5" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="/gallery-photo-6.jpg?v=distinct-6-20260927-4" alt="웨딩 갤러리 6" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="/gallery-photo-7.jpg?v=distinct-7-20260927-4" alt="웨딩 갤러리 7" decoding="async" fetchpriority="low">
   </div>
   <div id="emptyModal" class="empty-modal">사진 준비 예정</div>
   <button id="modalNext" class="nav next hidden" type="button" aria-label="다음 사진">›</button>
@@ -685,13 +685,13 @@ window.addEventListener("scroll",()=>{
 },{passive:true});
 
 const albums=[[],[
-  "https://jongwon-mingyung-wedding.onrender.com/gallery-photo-1.jpg?v=20260927-3",
-  "https://jongwon-mingyung-wedding.onrender.com/gallery-photo-2.jpg?v=20260927-3",
-  "https://jongwon-mingyung-wedding.onrender.com/gallery-photo-3.jpg?v=20260927-3",
-  "https://jongwon-mingyung-wedding.onrender.com/gallery-photo-4.jpg?v=20260927-3",
-  "https://jongwon-mingyung-wedding.onrender.com/gallery-photo-5.jpg?v=20260927-3",
-  "https://jongwon-mingyung-wedding.onrender.com/gallery-photo-6.jpg?v=20260927-3",
-  "https://jongwon-mingyung-wedding.onrender.com/gallery-photo-7.jpg?v=20260927-3"
+  "/gallery-photo-1.jpg?v=distinct-1-20260927-4",
+  "/gallery-photo-2.jpg?v=distinct-2-20260927-4",
+  "/gallery-photo-3.jpg?v=distinct-3-20260927-4",
+  "/gallery-photo-4.jpg?v=distinct-4-20260927-4",
+  "/gallery-photo-5.jpg?v=distinct-5-20260927-4",
+  "/gallery-photo-6.jpg?v=distinct-6-20260927-4",
+  "/gallery-photo-7.jpg?v=distinct-7-20260927-4"
 ],[],[]];
 
 let currentAlbum=0;
@@ -714,7 +714,10 @@ function renderModal(){
   }
 
   modalSlides.forEach((slide,index)=>{
-    slide.classList.toggle("active",index===currentIndex);
+    const active=index===currentIndex;
+    slide.classList.toggle("active",active);
+    slide.style.display=active?"block":"none";
+    slide.setAttribute("aria-hidden",active?"false":"true");
   });
 
   counter.textContent=(currentIndex+1)+" / "+photos.length;
