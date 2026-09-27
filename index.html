@@ -393,10 +393,17 @@ section{
   font-weight:700;
   letter-spacing:.08em;
 }
+.family-section{
+  position:relative;
+}
 .rsvp-jump-wrap{
+  position:absolute;
+  right:24px;
+  top:-24px;
+  z-index:4;
   display:flex;
-  justify-content:flex-start;
-  margin:0 0 7px;
+  justify-content:flex-end;
+  margin:0;
 }
 .rsvp-jump{
   border:1px solid rgba(114,133,106,.42);
@@ -625,7 +632,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   .modal{padding-left:34px;padding-right:34px}
 }
 </style>
-<!-- build: 2026-09-28-gallery-rsvp-jump -->
+<!-- build: 2026-09-28-rsvp-jump-family-top-right -->
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -669,7 +676,10 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
     </div>
   </section>
 
-  <section>
+  <section class="family-section">
+    <div class="rsvp-jump-wrap">
+      <button class="rsvp-jump" type="button" onclick="document.getElementById('rsvpSection').scrollIntoView({behavior:'smooth',block:'start'})">참석여부 설문하기</button>
+    </div>
     <div class="family-panel">
       <div class="family-only">
         <div class="family-card">
@@ -687,9 +697,6 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   </section>
 
   <section>
-    <div class="rsvp-jump-wrap">
-      <button class="rsvp-jump" type="button" onclick="document.getElementById('rsvpSection').scrollIntoView({behavior:'smooth',block:'start'})">참석여부 설문하기</button>
-    </div>
     <p class="title">Gallery</p>
     <div class="gallery">
       <button class="gcard empty" type="button" data-album="0" aria-label="갤러리 1" onclick="openAlbum(0);return false;">준비 예정</button>
