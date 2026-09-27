@@ -427,7 +427,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
     <p class="title">참석 여부 전달</p>
     <div class="box">
       <p class="rsvp-intro">원활한 예식 준비를 위해<br>참석 여부를 알려주시면 감사하겠습니다.</p>
-      <form id="rsvpForm" class="rsvp-form" action="https://script.google.com/macros/s/AKfycbwspfrSZAF-kdLH9KooS6Hih1p9yc8l2OCvKzMTetoAF7hzPGkkCQETeAGTZGN2eSMC/exec" method="post" target="rsvpFrame">
+      <form id="rsvpForm" class="rsvp-form" action="https://script.google.com/macros/s/AKfycbybioDaB01inDyZ3F2CaGw0DCSY5FK6Ooo_0SMUIMh6gyb-7mkW_EKZXfqHZgbPjPuj/exec" method="post" target="rsvpFrame">
         <input type="hidden" name="action" value="rsvp">
         <div class="form-field">
           <label>어느 쪽 하객이신가요?</label>
@@ -482,7 +482,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   <section id="guestbookSection">
     <p class="title">축하 한마디</p>
     <div class="box">
-      <form id="commentForm" class="comment-form" action="https://script.google.com/macros/s/AKfycbwspfrSZAF-kdLH9KooS6Hih1p9yc8l2OCvKzMTetoAF7hzPGkkCQETeAGTZGN2eSMC/exec" method="post" target="commentFrame">
+      <form id="commentForm" class="comment-form" action="https://script.google.com/macros/s/AKfycbybioDaB01inDyZ3F2CaGw0DCSY5FK6Ooo_0SMUIMh6gyb-7mkW_EKZXfqHZgbPjPuj/exec" method="post" target="commentFrame">
         <input type="hidden" name="action" value="comment">
         <div class="form-field">
           <label for="commentName">성함</label>
@@ -645,7 +645,7 @@ modal.addEventListener("touchend",e=>{
   move(dx>0?-1:1);
 },{passive:true});
 
-const RSVP_API_URL = "https://script.google.com/macros/s/AKfycbwspfrSZAF-kdLH9KooS6Hih1p9yc8l2OCvKzMTetoAF7hzPGkkCQETeAGTZGN2eSMC/exec";
+const RSVP_API_URL = "https://script.google.com/macros/s/AKfycbybioDaB01inDyZ3F2CaGw0DCSY5FK6Ooo_0SMUIMh6gyb-7mkW_EKZXfqHZgbPjPuj/exec";
 
 function formatPhone(value){
   const digits=value.replace(/\D/g,"").slice(0,11);
