@@ -395,16 +395,13 @@ section{
 }
 .family-section{
   position:relative;
-  padding-top:27px;
+  padding-top:0;
+  padding-bottom:16px;
 }
 .rsvp-jump-wrap{
-  position:absolute;
-  right:24px;
-  top:-24px;
-  z-index:4;
   display:flex;
   justify-content:flex-end;
-  margin:0;
+  margin:10px 4px 0 0;
 }
 .rsvp-jump{
   border:1px solid rgba(114,133,106,.42);
@@ -633,7 +630,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   .modal{padding-left:34px;padding-right:34px}
 }
 </style>
-<!-- build: 2026-09-28-rsvp-jump-balanced-spacing -->
+<!-- build: 2026-09-28-rsvp-below-family-balanced -->
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -678,9 +675,6 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   </section>
 
   <section class="family-section">
-    <div class="rsvp-jump-wrap">
-      <button class="rsvp-jump" type="button" onclick="document.getElementById('rsvpSection').scrollIntoView({behavior:'smooth',block:'start'})">참석여부 설문하기</button>
-    </div>
     <div class="family-panel">
       <div class="family-only">
         <div class="family-card">
@@ -694,6 +688,9 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
           <div class="parent-line"><span class="parent-role">어머니</span><strong class="parent-name">조문영</strong></div>
         </div>
       </div>
+    </div>
+    <div class="rsvp-jump-wrap">
+      <button class="rsvp-jump" type="button" onclick="document.getElementById('rsvpSection').scrollIntoView({behavior:'smooth',block:'start'})">참석여부 설문하기</button>
     </div>
   </section>
 
