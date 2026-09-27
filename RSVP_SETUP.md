@@ -18,7 +18,7 @@
 ## Apps Script 배포
 1. Google Sheet에서 **확장 프로그램 → Apps Script**
 2. `rsvp-apps-script.gs` 내용을 붙여넣기
-3. 코드의 `SPREADSHEET_ID`를 현재 Google Sheet ID로 변경
+3. `SPREADSHEET_ID`는 현재 비공개 Google Sheet에 이미 연결되어 있습니다
 4. 프로젝트 설정에서 시간대를 **Asia/Seoul**로 설정
 5. **배포 → 새 배포 → 웹 앱**
 6. 실행 사용자: **나**
@@ -26,5 +26,5 @@
 8. 배포 후 생성된 `https://script.google.com/macros/s/.../exec` 주소를 복사
 9. `index.html`의 `RSVP_API_URL`에 붙여넣기
 
-Google Sheet 자체 공유 설정은 **제한됨** 상태로 유지합니다.
+Google Sheet 자체 공유 설정은 **제한됨** 상태로 유지합니다. 현재 시트는 소유자 외 공유되지 않은 상태로 확인되었습니다.
 웹 앱은 제출을 받아 시트에 쓰지만, RSVP 목록은 외부에 반환하지 않습니다.
