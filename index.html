@@ -23,7 +23,7 @@
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#33362f;--muted:#777970;--green:#72856a;--line:#e1e5db;
@@ -175,12 +175,55 @@ section{
 .row:last-child{border-bottom:0}
 .label{color:var(--muted);font-size:13px;flex:0 0 78px}
 .value{font-size:14px;font-weight:650;text-align:right;line-height:1.55}
-.family{margin-top:10px;padding-top:3px}
-.family-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.family-card{background:rgba(247,249,244,.9);border:1px solid var(--line);border-radius:14px;padding:13px 11px;text-align:center}
-.family-card b{font-size:14px}
-.parent{margin-top:7px;font-size:13px;line-height:1.65}
-.parent span{display:inline-block;width:22px;color:var(--green);font-weight:800}
+.family-only{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+.family-card{
+  width:100%;
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(221,226,216,.95);
+  border-radius:20px;
+  padding:22px 20px 20px;
+  text-align:center;
+  box-shadow:0 8px 24px rgba(57,70,48,.075);
+  font-family:"Gowun Batang","Noto Serif KR",serif;
+  backdrop-filter:blur(2px);
+}
+.family-side{
+  margin-bottom:14px;
+  color:var(--green);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+}
+.parent-line{
+  display:flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:9px;
+  min-height:30px;
+  font-size:16px;
+  line-height:1.75;
+  color:#383b35;
+}
+.parent-line + .parent-line{
+  margin-top:3px;
+}
+.parent-role{
+  min-width:42px;
+  color:#8b9087;
+  font-size:12px;
+  font-weight:400;
+  letter-spacing:.04em;
+}
+.parent-name{
+  min-width:54px;
+  font-size:17px;
+  font-weight:700;
+  letter-spacing:.08em;
+}
 .gallery{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .gcard{position:relative;border:0;padding:0;border-radius:17px;overflow:hidden;background:rgba(244,247,239,.94);box-shadow:var(--shadow);aspect-ratio:5/7;cursor:pointer;border:1px solid rgba(212,220,205,.95)}
 .gcard img{width:100%;height:100%;object-fit:cover;display:block}
@@ -326,7 +369,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 <script src="gallery-1.js"></script>
 <script src="gallery-2.js"></script>
 <script src="gallery-3.js"></script>
-<!-- build: 2026-09-27-comments-public-restored -->
+<!-- build: 2026-09-27-parent-cards -->
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -362,24 +405,16 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   </section>
 
   <section>
-    <p class="title">Wedding Info</p>
-    <div class="box">
-      <div class="row"><span class="label">신랑 · 신부</span><span class="value">이종원 · 이민경</span></div>
-      <div class="row"><span class="label">예식일</span><span class="value">2027년 3월 21일 일요일</span></div>
-      <div class="row"><span class="label">시간</span><span class="value">오전 11시</span></div>
-      <div class="row"><span class="label">장소</span><span class="value">아벤티움 웨딩홀</span></div>
-      <div class="row"><span class="label">주소</span><span class="value">서울특별시 중구 청파로 464<br>브라운스톤서울 3층<br><button class="copy-mini" type="button" onclick="copyText('서울특별시 중구 청파로 464 브라운스톤서울 3층','주소가 복사되었습니다.')">주소 복사</button></span></div>
-      <div class="family">
-        <div class="family-grid">
-          <div class="family-card">
-            <b>신랑 이종원</b>
-            <div class="parent"><span>父</span>이진곤<br><span>母</span>김민서</div>
-          </div>
-          <div class="family-card">
-            <b>신부 이민경</b>
-            <div class="parent"><span>父</span>이범수<br><span>母</span>조문영</div>
-          </div>
-        </div>
+    <div class="family-only">
+      <div class="family-card">
+        <div class="family-side">신랑측 부모님</div>
+        <div class="parent-line"><span class="parent-role">아버지</span><strong class="parent-name">이진곤</strong></div>
+        <div class="parent-line"><span class="parent-role">어머니</span><strong class="parent-name">김민서</strong></div>
+      </div>
+      <div class="family-card">
+        <div class="family-side">신부측 부모님</div>
+        <div class="parent-line"><span class="parent-role">아버지</span><strong class="parent-name">이범수</strong></div>
+        <div class="parent-line"><span class="parent-role">어머니</span><strong class="parent-name">조문영</strong></div>
       </div>
     </div>
   </section>
