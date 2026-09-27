@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 768" preserveAspectRatio="none">
+<defs>
+  <linearGradient id="satin" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ffffff"/>
+    <stop offset=".28" stop-color="#eceeea"/>
+    <stop offset=".5" stop-color="#ffffff"/>
+    <stop offset=".72" stop-color="#d9ddd7"/>
+    <stop offset="1" stop-color="#ffffff"/>
+  </linearGradient>
+  <linearGradient id="satin2" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ffffff"/>
+    <stop offset=".38" stop-color="#dfe2dd"/>
+    <stop offset=".58" stop-color="#ffffff"/>
+    <stop offset="1" stop-color="#d4d8d2"/>
+  </linearGradient>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#7e847c" flood-opacity=".28"/>
+  </filter>
+</defs>
+
+<g fill="none" stroke="url(#satin)" stroke-width="58" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)">
+  <path d="M58 130 C180 62 312 142 448 102 C545 73 614 72 682 102"/>
+  <path d="M854 102 C930 72 1000 72 1092 102 C1228 145 1352 68 1478 132"/>
+  <path d="M58 130 C86 220 24 292 62 384 C98 473 18 550 60 638"/>
+  <path d="M1478 132 C1448 220 1510 292 1474 384 C1438 474 1516 550 1476 638"/>
+  <path d="M60 638 C200 694 326 580 462 642 C596 704 704 592 768 650 C834 592 944 704 1078 642 C1216 580 1338 692 1476 638"/>
+</g>
+
+<g fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="10" stroke-linecap="round">
+  <path d="M58 120 C180 52 312 132 448 92 C545 63 614 62 682 92"/>
+  <path d="M854 92 C930 62 1000 62 1092 92 C1228 135 1352 58 1478 122"/>
+  <path d="M48 130 C76 220 14 292 52 384 C88 473 8 550 50 638"/>
+  <path d="M1488 132 C1458 220 1520 292 1484 384 C1448 474 1526 550 1486 638"/>
+  <path d="M60 628 C200 684 326 570 462 632 C596 694 704 582 768 640 C834 582 944 694 1078 632 C1216 570 1338 682 1476 628"/>
+</g>
+
+<g filter="url(#shadow)">
+  <path d="M768 106 C710 34 585 18 512 78 C551 151 650 158 754 120 Z" fill="url(#satin2)" stroke="#d6dad4" stroke-width="3"/>
+  <path d="M768 106 C826 34 951 18 1024 78 C985 151 886 158 782 120 Z" fill="url(#satin2)" stroke="#d6dad4" stroke-width="3"/>
+  <path d="M734 111 C690 151 646 176 588 210 L630 126 Z" fill="url(#satin)" stroke="#d6dad4" stroke-width="3"/>
+  <path d="M802 111 C846 151 890 176 948 210 L906 126 Z" fill="url(#satin)" stroke="#d6dad4" stroke-width="3"/>
+  <rect x="738" y="78" width="60" height="64" rx="15" fill="url(#satin2)" stroke="#d0d4cf" stroke-width="3"/>
+  <path d="M748 87 C762 80 779 80 790 88" fill="none" stroke="#ffffff" stroke-opacity=".75" stroke-width="5" stroke-linecap="round"/>
+</g>
+</svg>
