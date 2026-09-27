@@ -700,42 +700,27 @@ const albums=[[],[
 let currentAlbum=0;
 let currentIndex=0;
 const modal=document.getElementById("galleryModal");
-const modalImageStack=document.getElementById("modalSlides");
 const modalSlides=Array.from(document.querySelectorAll(".modal-slide"));
 const prevBtn=document.getElementById("modalPrev");
 const nextBtn=document.getElementById("modalNext");
 const closeBtn=document.getElementById("modalClose");
 const counter=document.getElementById("modalCounter");
 
-function ensureGallerySlides(){
-  if(modalImageStack.children.length)return;
-  const photos=albums[1]||[];
-  photos.forEach((src,index)=>{
-    const img=document.createElement("img");
-    img.className="modal-img gallery-slide";
-    img.alt="웨딩 갤러리 "+(index+1)+"번 사진";
-    img.src=src;
-    img.loading=index===0?"eager":"lazy";
-    img.decoding="async";
-    img.dataset.index=String(index);
-    modalImageStack.appendChild(img);
-  });
-}
-
 function renderModal(){
   const photos=albums[currentAlbum]||[];
   const empty=photos.length===0;
   modal.classList.toggle("empty-state",empty);
+
+  modalSlides.forEach((img,index)=>{
+    img.classList.toggle("active",!empty && index===currentIndex);
+  });
+
   if(empty){
+    counter.textContent="";
     prevBtn.classList.add("hidden");
     nextBtn.classList.add("hidden");
     return;
   }
-
-  ensureGallerySlides();
-  modalImageStack.querySelectorAll(".gallery-slide").forEach((img,index)=>{
-    img.classList.toggle("active",index===currentIndex);
-  });
 
   counter.textContent=(currentIndex+1)+" / "+photos.length;
   prevBtn.classList.toggle("hidden",currentIndex===0);
