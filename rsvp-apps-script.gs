@@ -82,7 +82,7 @@ function saveComment_(data) {
   if (!sh) return json_({ok:false,error:"missing_comment_sheet"});
 
   const row = Math.max(4, sh.getLastRow() + 1);
-  sh.getRange(row, 1, 1, 5).setValues([[new Date(), name, message, "숨김", ""]]);
+  sh.getRange(row, 1, 1, 5).setValues([[new Date(), name, message, "공개", ""]]);
   return json_({ok:true});
 }
 
