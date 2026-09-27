@@ -228,6 +228,28 @@ section{padding:0 18px 27px}
   line-height:1.1;
   cursor:pointer;
 }
+.rsvp-intro{margin:0 0 14px;text-align:center;font-family:"Noto Serif KR",serif;font-size:14px;line-height:1.9;color:#4f554c;word-break:keep-all}
+.rsvp-form,.comment-form{display:grid;gap:11px}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice-input{position:absolute;opacity:0;pointer-events:none}
+.choice-label{display:flex;align-items:center;justify-content:center;min-height:42px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.78);font-size:13px;font-weight:700;color:#676c64;cursor:pointer}
+.choice-input:checked+.choice-label{border-color:rgba(114,133,106,.75);background:rgba(114,133,106,.12);color:var(--green)}
+.form-field{display:grid;gap:6px}
+.form-field label{font-size:12px;font-weight:800;color:#666c62}
+.form-control{width:100%;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.88);padding:11px 12px;color:var(--ink);font:inherit;font-size:14px;outline:none}
+.form-control:focus{border-color:rgba(114,133,106,.75);box-shadow:0 0 0 3px rgba(114,133,106,.08)}
+textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
+.form-submit{width:100%;border:0;border-radius:12px;background:var(--green);color:#fff;padding:11px 12px;font-weight:800;font-size:13px;cursor:pointer}
+.form-submit:disabled{opacity:.55;cursor:default}
+.form-note{font-size:10px;line-height:1.5;color:#8a8e86;text-align:center;word-break:keep-all}
+.form-status{min-height:18px;font-size:12px;text-align:center;font-weight:700;color:var(--green)}
+.guestbook-list{display:grid;gap:9px;margin-top:13px}
+.guestbook-item{padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.78)}
+.guestbook-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.guestbook-name{font-size:12px;font-weight:800;color:var(--green)}
+.guestbook-date{font-size:10px;color:#9a9d96}
+.guestbook-message{font-size:13px;line-height:1.65;color:#50544d;white-space:pre-wrap;word-break:break-word}
+.hidden{display:none!important}
 .foot{text-align:center;color:var(--muted);font-size:11px;padding:1px 18px 8px}
 
 /* Gallery modal: all album cards use the same behavior */
@@ -386,6 +408,81 @@ section{padding:0 18px 27px}
     </form>
   </section>
 
+  <section id="rsvpSection">
+    <p class="title">참석 여부 전달</p>
+    <div class="box">
+      <p class="rsvp-intro">원활한 예식 준비를 위해<br>참석 여부를 알려주시면 감사하겠습니다.</p>
+      <form id="rsvpForm" class="rsvp-form" novalidate>
+        <div class="form-field">
+          <label>어느 쪽 하객이신가요?</label>
+          <div class="choice-grid">
+            <div>
+              <input class="choice-input" type="radio" name="side" id="sideGroom" value="신랑측" required>
+              <label class="choice-label" for="sideGroom">신랑측</label>
+            </div>
+            <div>
+              <input class="choice-input" type="radio" name="side" id="sideBride" value="신부측" required>
+              <label class="choice-label" for="sideBride">신부측</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="rsvpName">성함</label>
+          <input id="rsvpName" class="form-control" name="name" type="text" maxlength="30" autocomplete="name" required>
+        </div>
+        <div class="form-field">
+          <label for="rsvpPhone">연락처</label>
+          <input id="rsvpPhone" class="form-control" name="phone" type="tel" inputmode="numeric" maxlength="13" placeholder="010-0000-0000" autocomplete="tel" required>
+        </div>
+        <div class="form-field">
+          <label>참석 여부</label>
+          <div class="choice-grid">
+            <div>
+              <input class="choice-input" type="radio" name="attendance" id="attendanceYes" value="참석" required>
+              <label class="choice-label" for="attendanceYes">참석</label>
+            </div>
+            <div>
+              <input class="choice-input" type="radio" name="attendance" id="attendanceNo" value="불참" required>
+              <label class="choice-label" for="attendanceNo">불참</label>
+            </div>
+          </div>
+        </div>
+        <div id="guestCountField" class="form-field hidden">
+          <label for="guestCount">참석 인원</label>
+          <select id="guestCount" class="form-control" name="guestCount">
+            <option value="1">1명</option>
+            <option value="2">2명</option>
+            <option value="3">3명</option>
+            <option value="4">4명 이상</option>
+          </select>
+        </div>
+        <button id="rsvpSubmit" class="form-submit" type="submit">참석 여부 전달하기</button>
+        <div id="rsvpStatus" class="form-status" aria-live="polite"></div>
+        <div class="form-note">동일한 성함과 연락처로 다시 제출하면 기존 응답이 수정됩니다.</div>
+      </form>
+    </div>
+  </section>
+
+  <section id="guestbookSection">
+    <p class="title">축하 한마디</p>
+    <div class="box">
+      <form id="commentForm" class="comment-form" novalidate>
+        <div class="form-field">
+          <label for="commentName">성함</label>
+          <input id="commentName" class="form-control" name="name" type="text" maxlength="30" required>
+        </div>
+        <div class="form-field">
+          <label for="commentMessage">축하 메시지</label>
+          <textarea id="commentMessage" class="form-control" name="message" maxlength="200" placeholder="두 사람에게 따뜻한 한마디를 남겨주세요." required></textarea>
+        </div>
+        <button id="commentSubmit" class="form-submit" type="submit">축하 메시지 남기기</button>
+        <div id="commentStatus" class="form-status" aria-live="polite"></div>
+        <div class="form-note">메시지는 확인 후 청첩장에 공개될 수 있습니다.</div>
+      </form>
+      <div id="guestbookList" class="guestbook-list"></div>
+    </div>
+  </section>
+
   <section>
     <p class="title">마음 전하실 곳</p>
 
@@ -540,6 +637,84 @@ modal.addEventListener("touchend",e=>{
   if(Math.abs(dx)<45)return;
   move(dx>0?-1:1);
 },{passive:true});
+
+const RSVP_API_URL = "";
+
+function formatPhone(value){
+  const digits=value.replace(/\D/g,"").slice(0,11);
+  if(digits.length<4)return digits;
+  if(digits.length<8)return digits.replace(/(\d{3})(\d+)/,"$1-$2");
+  return digits.replace(/(\d{3})(\d{3,4})(\d{4})/,"$1-$2-$3");
+}
+
+document.getElementById("rsvpPhone").addEventListener("input",e=>{
+  e.target.value=formatPhone(e.target.value);
+});
+
+document.querySelectorAll('input[name="attendance"]').forEach(radio=>{
+  radio.addEventListener("change",()=>{
+    const attending=document.querySelector('input[name="attendance"]:checked')?.value==="참석";
+    document.getElementById("guestCountField").classList.toggle("hidden",!attending);
+  });
+});
+
+async function postWeddingData(payload){
+  if(!RSVP_API_URL)throw new Error("RSVP API not configured");
+  const res=await fetch(RSVP_API_URL,{
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify(payload),
+    redirect:"follow"
+  });
+  if(!res.ok)throw new Error("submit failed");
+  return await res.json();
+}
+
+document.getElementById("rsvpForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const form=e.currentTarget;
+  const status=document.getElementById("rsvpStatus");
+  const submit=document.getElementById("rsvpSubmit");
+  if(!form.reportValidity())return;
+  const side=form.querySelector('input[name="side"]:checked')?.value;
+  const attendance=form.querySelector('input[name="attendance"]:checked')?.value;
+  if(!side||!attendance){status.textContent="선택 항목을 확인해 주세요.";return;}
+  const payload={
+    action:"rsvp",
+    side,
+    name:document.getElementById("rsvpName").value.trim(),
+    phone:document.getElementById("rsvpPhone").value.trim(),
+    attendance,
+    guestCount:attendance==="참석"?Number(document.getElementById("guestCount").value):0
+  };
+  submit.disabled=true;status.textContent="전달 중입니다…";
+  try{
+    const result=await postWeddingData(payload);
+    status.textContent=result.updated?"기존 응답이 수정되었습니다.":"참석 여부가 전달되었습니다 ♥";
+  }catch(err){
+    status.textContent="현재 연결 준비 중입니다. 잠시 후 다시 시도해 주세요.";
+  }finally{submit.disabled=false;}
+});
+
+document.getElementById("commentForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const form=e.currentTarget;
+  if(!form.reportValidity())return;
+  const submit=document.getElementById("commentSubmit");
+  const status=document.getElementById("commentStatus");
+  submit.disabled=true;status.textContent="전달 중입니다…";
+  try{
+    await postWeddingData({
+      action:"comment",
+      name:document.getElementById("commentName").value.trim(),
+      message:document.getElementById("commentMessage").value.trim()
+    });
+    form.reset();
+    status.textContent="축하 메시지가 전달되었습니다 ♥";
+  }catch(err){
+    status.textContent="현재 연결 준비 중입니다. 잠시 후 다시 시도해 주세요.";
+  }finally{submit.disabled=false;}
+});
 
 async function copyText(t,msg="계좌번호가 복사되었습니다."){
   try{await navigator.clipboard.writeText(t);alert(msg)}
