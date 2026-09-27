@@ -372,7 +372,8 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
     <p class="title">참석 여부 전달</p>
     <div class="box">
       <p class="rsvp-intro">원활한 예식 준비를 위해<br>참석 여부를 알려주시면 감사하겠습니다.</p>
-      <form id="rsvpForm" class="rsvp-form" novalidate>
+      <form id="rsvpForm" class="rsvp-form" action="https://script.google.com/macros/s/AKfycbwspfrSZAF-kdLH9KooS6Hih1p9yc8l2OCvKzMTetoAF7hzPGkkCQETeAGTZGN2eSMC/exec" method="post" target="rsvpFrame">
+        <input type="hidden" name="action" value="rsvp">
         <div class="form-field">
           <label>어느 쪽 하객이신가요?</label>
           <div class="choice-grid">
@@ -426,7 +427,8 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   <section id="guestbookSection">
     <p class="title">축하 한마디</p>
     <div class="box">
-      <form id="commentForm" class="comment-form" novalidate>
+      <form id="commentForm" class="comment-form" action="https://script.google.com/macros/s/AKfycbwspfrSZAF-kdLH9KooS6Hih1p9yc8l2OCvKzMTetoAF7hzPGkkCQETeAGTZGN2eSMC/exec" method="post" target="commentFrame">
+        <input type="hidden" name="action" value="comment">
         <div class="form-field">
           <label for="commentName">성함</label>
           <input id="commentName" class="form-control" name="name" type="text" maxlength="30" required>
@@ -490,6 +492,9 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 
   <div class="foot">이종원 · 이민경 · 2027.03.21 · 아벤티움 웨딩홀</div>
 </main>
+
+<iframe name="rsvpFrame" id="rsvpFrame" title="RSVP 전송" style="display:none"></iframe>
+<iframe name="commentFrame" id="commentFrame" title="댓글 전송" style="display:none"></iframe>
 
 <div id="galleryModal" class="modal" aria-hidden="true">
   <button id="modalClose" class="close" type="button" aria-label="갤러리 닫기">×</button>
@@ -586,104 +591,91 @@ function formatPhone(value){
   return digits.replace(/(\d{3})(\d{3,4})(\d{4})/,"$1-$2-$3");
 }
 
-document.getElementById("rsvpPhone").addEventListener("input",e=>{
-  e.target.value=formatPhone(e.target.value);
-});
+const rsvpPhoneInput=document.getElementById("rsvpPhone");
+if(rsvpPhoneInput){
+  rsvpPhoneInput.addEventListener("input",e=>{
+    e.target.value=formatPhone(e.target.value);
+  });
+}
 
 document.querySelectorAll('input[name="attendance"]').forEach(radio=>{
   radio.addEventListener("change",()=>{
     const attending=document.querySelector('input[name="attendance"]:checked')?.value==="참석";
-    document.getElementById("guestCountField").classList.toggle("hidden",!attending);
+    const field=document.getElementById("guestCountField");
+    if(field)field.classList.toggle("hidden",!attending);
   });
 });
 
-async function postWeddingData(payload){
-  const res=await fetch(RSVP_API_URL,{
-    method:"POST",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body:JSON.stringify(payload),
-    redirect:"follow"
+let rsvpSending=false;
+let commentSending=false;
+
+const rsvpForm=document.getElementById("rsvpForm");
+if(rsvpForm){
+  rsvpForm.addEventListener("submit",e=>{
+    if(!rsvpForm.reportValidity()){
+      e.preventDefault();
+      return;
+    }
+    const side=rsvpForm.querySelector('input[name="side"]:checked')?.value;
+    const attendance=rsvpForm.querySelector('input[name="attendance"]:checked')?.value;
+    const phone=(document.getElementById("rsvpPhone")?.value||"").replace(/\D/g,"");
+    const status=document.getElementById("rsvpStatus");
+    if(!side||!attendance||phone.length<10){
+      e.preventDefault();
+      if(status)status.textContent="입력 항목을 확인해 주세요.";
+      return;
+    }
+    rsvpSending=true;
+    const btn=document.getElementById("rsvpSubmit");
+    if(btn)btn.disabled=true;
+    if(status)status.textContent="전달 중입니다…";
   });
-  if(!res.ok)throw new Error("submit_failed");
-  const result=await res.json();
-  if(!result?.ok)throw new Error(result?.error||"submit_failed");
-  return result;
 }
 
-document.getElementById("rsvpForm").addEventListener("submit",async e=>{
-  e.preventDefault();
-  const form=e.currentTarget;
-  const status=document.getElementById("rsvpStatus");
-  const submit=document.getElementById("rsvpSubmit");
-  if(!form.reportValidity())return;
+const commentForm=document.getElementById("commentForm");
+if(commentForm){
+  commentForm.addEventListener("submit",e=>{
+    if(!commentForm.reportValidity()){
+      e.preventDefault();
+      return;
+    }
+    commentSending=true;
+    const btn=document.getElementById("commentSubmit");
+    const status=document.getElementById("commentStatus");
+    if(btn)btn.disabled=true;
+    if(status)status.textContent="전달 중입니다…";
+  });
+}
 
-  const side=form.querySelector('input[name="side"]:checked')?.value;
-  const attendance=form.querySelector('input[name="attendance"]:checked')?.value;
-  if(!side||!attendance){
-    status.textContent="선택 항목을 확인해 주세요.";
-    return;
-  }
+const rsvpFrame=document.getElementById("rsvpFrame");
+if(rsvpFrame){
+  rsvpFrame.addEventListener("load",()=>{
+    if(!rsvpSending)return;
+    rsvpSending=false;
+    const btn=document.getElementById("rsvpSubmit");
+    const status=document.getElementById("rsvpStatus");
+    if(btn)btn.disabled=false;
+    if(status)status.textContent="참석 여부가 전달되었습니다. ♥";
+  });
+}
 
-  const phone=document.getElementById("rsvpPhone").value.replace(/\D/g,"");
-  if(phone.length<10){
-    status.textContent="연락처를 확인해 주세요.";
-    return;
-  }
-
-  const payload={
-    action:"rsvp",
-    side,
-    name:document.getElementById("rsvpName").value.trim(),
-    phone,
-    attendance,
-    guestCount:attendance==="참석"?Number(document.getElementById("guestCount").value):0
-  };
-
-  submit.disabled=true;
-  status.textContent="전달 중입니다…";
-  try{
-    const result=await postWeddingData(payload);
-    status.textContent=result.updated
-      ?"기존 응답이 수정되었습니다. ♥"
-      :"참석 여부가 전달되었습니다. ♥";
-  }catch(err){
-    console.error(err);
-    status.textContent="전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
-  }finally{
-    submit.disabled=false;
-  }
-});
-
-document.getElementById("commentForm").addEventListener("submit",async e=>{
-  e.preventDefault();
-  const form=e.currentTarget;
-  if(!form.reportValidity())return;
-
-  const submit=document.getElementById("commentSubmit");
-  const status=document.getElementById("commentStatus");
-  submit.disabled=true;
-  status.textContent="전달 중입니다…";
-
-  try{
-    await postWeddingData({
-      action:"comment",
-      name:document.getElementById("commentName").value.trim(),
-      message:document.getElementById("commentMessage").value.trim()
-    });
-    form.reset();
-    status.textContent="축하 메시지가 전달되었습니다. 확인 후 공개됩니다. ♥";
-  }catch(err){
-    console.error(err);
-    status.textContent="등록 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
-  }finally{
-    submit.disabled=false;
-  }
-});
+const commentFrame=document.getElementById("commentFrame");
+if(commentFrame){
+  commentFrame.addEventListener("load",()=>{
+    if(!commentSending)return;
+    commentSending=false;
+    const btn=document.getElementById("commentSubmit");
+    const status=document.getElementById("commentStatus");
+    if(btn)btn.disabled=false;
+    if(status)status.textContent="축하 메시지가 전달되었습니다. 확인 후 공개됩니다. ♥";
+    if(commentForm)commentForm.reset();
+  });
+}
 
 function renderGuestbook(comments){
   const list=document.getElementById("guestbookList");
+  if(!list)return;
   list.textContent="";
-
   if(!comments.length){
     const empty=document.createElement("div");
     empty.className="comment-empty";
@@ -691,26 +683,20 @@ function renderGuestbook(comments){
     list.appendChild(empty);
     return;
   }
-
   comments.slice(0,30).forEach(item=>{
     const card=document.createElement("div");
     card.className="guestbook-item";
-
     const meta=document.createElement("div");
     meta.className="guestbook-meta";
-
     const name=document.createElement("span");
     name.className="guestbook-name";
     name.textContent=item.name||"하객";
-
     const date=document.createElement("span");
     date.className="guestbook-date";
     date.textContent=item.date||"";
-
     const message=document.createElement("div");
     message.className="guestbook-message";
     message.textContent=item.message||"";
-
     meta.append(name,date);
     card.append(meta,message);
     list.appendChild(card);
