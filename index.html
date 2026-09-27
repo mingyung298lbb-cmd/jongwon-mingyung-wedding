@@ -239,7 +239,7 @@ section{
   letter-spacing:.08em;
 }
 .gallery{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.gcard{position:relative;border:0;padding:0;border-radius:17px;overflow:hidden;background:rgba(244,247,239,.94);box-shadow:var(--shadow);aspect-ratio:5/7;cursor:pointer;border:1px solid rgba(212,220,205,.95)}
+.gcard{position:relative;border:0;padding:0;border-radius:17px;overflow:hidden;background:rgba(244,247,239,.94);box-shadow:var(--shadow);aspect-ratio:5/7;cursor:pointer;border:1px solid rgba(212,220,205,.95);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .gcard img{width:100%;height:100%;object-fit:cover;display:block}
 .gcard.empty{display:flex;align-items:center;justify-content:center;color:#8b9186;font-size:12px;letter-spacing:.06em}
 .gcard .badge{position:absolute;left:10px;bottom:10px;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,.50);color:#fff;font-size:11px}
@@ -673,44 +673,15 @@ window.addEventListener("scroll",()=>{
   if(window.scrollX!==0) window.scrollTo(0,window.scrollY);
 },{passive:true});
 
-const albums=[[],[],[],[]];
-let galleryLoadPromise=null;
-
-function loadScriptOnce(src){
-  return new Promise((resolve,reject)=>{
-    const existing=document.querySelector('script[data-lazy-src="'+src+'"]');
-    if(existing){
-      if(existing.dataset.loaded==="1") return resolve();
-      existing.addEventListener("load",resolve,{once:true});
-      existing.addEventListener("error",reject,{once:true});
-      return;
-    }
-    const s=document.createElement("script");
-    s.src=src;
-    s.async=false;
-    s.dataset.lazySrc=src;
-    s.addEventListener("load",()=>{s.dataset.loaded="1";resolve();},{once:true});
-    s.addEventListener("error",reject,{once:true});
-    document.head.appendChild(s);
-  });
-}
-
-function loadGalleryData(){
-  if(galleryLoadPromise)return galleryLoadPromise;
-  window.galleryPhotos=[];
-  galleryLoadPromise=loadScriptOnce("gallery-1.js")
-    .then(()=>loadScriptOnce("gallery-2.js"))
-    .then(()=>loadScriptOnce("gallery-3.js"))
-    .then(()=>{
-      albums[1]=window.galleryPhotos||[];
-      return albums[1];
-    })
-    .catch(err=>{
-      galleryLoadPromise=null;
-      throw err;
-    });
-  return galleryLoadPromise;
-}
+const albums=[[],[
+  "hero-main.jpg?v=20260927-1",
+  "gallery/photo-2.jpg?v=20260927-1",
+  "gallery/photo-3.jpg?v=20260927-1",
+  "gallery/photo-4.jpg?v=20260927-1",
+  "gallery/photo-5.jpg?v=20260927-1",
+  "gallery/photo-6.jpg?v=20260927-1",
+  "gallery/photo-7.jpg?v=20260927-1"
+],[],[]];
 
 let currentAlbum=0;
 let currentIndex=0;
@@ -736,11 +707,7 @@ function renderModal(){
   nextBtn.classList.toggle("hidden",currentIndex===photos.length-1);
 }
 
-async function openAlbum(albumIndex){
-  if(albumIndex===1){
-    try{await loadGalleryData();}
-    catch(err){console.error(err);}
-  }
+function openAlbum(albumIndex){
   currentAlbum=albumIndex;
   currentIndex=0;
   renderModal();
@@ -766,17 +733,6 @@ function move(step){
 document.querySelectorAll("[data-album]").forEach(btn=>{
   btn.addEventListener("click",()=>openAlbum(Number(btn.dataset.album)));
 });
-
-const gallerySection=document.querySelector(".gallery");
-if(gallerySection && "IntersectionObserver" in window){
-  const galleryObserver=new IntersectionObserver(entries=>{
-    if(entries.some(entry=>entry.isIntersecting)){
-      loadGalleryData().catch(console.error);
-      galleryObserver.disconnect();
-    }
-  },{rootMargin:"180px 0px"});
-  galleryObserver.observe(gallerySection);
-}
 
 closeBtn.addEventListener("click",closeGallery);
 prevBtn.addEventListener("click",()=>move(-1));
