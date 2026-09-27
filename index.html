@@ -330,14 +330,22 @@ section{
   letter-spacing:.08em;
 }
 .account{margin-bottom:10px}
-.account b{
+.account-title{
   display:block;
   margin-bottom:8px;
+  font-family:var(--detail-font);
+  font-size:14px;
+  font-weight:400;
+  letter-spacing:.01em;
+  color:#555b53;
+  line-height:1.6;
+}
+.account-name{
   font-family:"Gowun Batang","Noto Serif KR",serif;
   font-size:16px;
-  font-weight:400;
-  letter-spacing:.04em;
+  font-weight:700;
   color:#3f443d;
+  letter-spacing:.04em;
 }
 .account p{
   margin:0 0 11px;
@@ -606,19 +614,19 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
       <div class="account-group-title">신랑측</div>
 
       <div class="box account">
-        <b>신랑 이종원</b>
+        <div class="account-title">신랑 <span class="account-name">이종원</span></div>
         <p>카카오뱅크 3333-30-1777804</p>
         <button class="copy" type="button" onclick="copyText('3333301777804')">계좌번호 복사</button>
       </div>
 
       <div class="box account">
-        <b>신랑 아버지 이진곤</b>
+        <div class="account-title">신랑 아버지 <span class="account-name">이진곤</span></div>
         <p>농협 302-1814-6092-61</p>
         <button class="copy" type="button" onclick="copyText('3021814609261')">계좌번호 복사</button>
       </div>
 
       <div class="box account">
-        <b>신랑 어머니 김민서</b>
+        <div class="account-title">신랑 어머니 <span class="account-name">김민서</span></div>
         <p>카카오뱅크 3333-18-5516275</p>
         <button class="copy" type="button" onclick="copyText('3333185516275')">계좌번호 복사</button>
       </div>
@@ -628,19 +636,19 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
       <div class="account-group-title">신부측</div>
 
       <div class="box account">
-        <b>신부 이민경</b>
+        <div class="account-title">신부 <span class="account-name">이민경</span></div>
         <p>신한은행 110-437-514138</p>
         <button class="copy" type="button" onclick="copyText('110437514138')">계좌번호 복사</button>
       </div>
 
       <div class="box account">
-        <b>신부 아버지 이범수</b>
+        <div class="account-title">신부 아버지 <span class="account-name">이범수</span></div>
         <p>기업은행 008-064337-01-022</p>
         <button class="copy" type="button" onclick="copyText('00806433701022')">계좌번호 복사</button>
       </div>
 
       <div class="box account">
-        <b>신부 어머니 조문영</b>
+        <div class="account-title">신부 어머니 <span class="account-name">조문영</span></div>
         <p>카카오뱅크 3333-05-9504488</p>
         <p class="owner">(예금주: 이민경)</p>
         <button class="copy" type="button" onclick="copyText('3333059504488')">계좌번호 복사</button>
