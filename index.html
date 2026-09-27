@@ -424,7 +424,10 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.91);z-index:9999;padding:58px 43px 42px}
 .modal.on{display:flex}
 .modal-slides{display:flex;align-items:center;justify-content:center;max-width:100%;max-height:84vh}
+.modal-image-stack{max-width:100%;max-height:84vh;display:flex;align-items:center;justify-content:center}
 .modal-img{max-width:100%;max-height:84vh;object-fit:contain;border-radius:5px;user-select:none;-webkit-user-drag:none}
+.modal-img.gallery-slide{display:none}
+.modal-img.gallery-slide.active{display:block}
 .modal-slide{display:none}
 .modal-slide.active{display:block}
 .close{position:fixed;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:10001;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.94);color:#222;font-size:30px;line-height:1;cursor:pointer;box-shadow:0 4px 18px #0005}
@@ -703,6 +706,21 @@ const nextBtn=document.getElementById("modalNext");
 const closeBtn=document.getElementById("modalClose");
 const counter=document.getElementById("modalCounter");
 
+function ensureGallerySlides(){
+  if(modalImageStack.children.length)return;
+  const photos=albums[1]||[];
+  photos.forEach((src,index)=>{
+    const img=document.createElement("img");
+    img.className="modal-img gallery-slide";
+    img.alt="웨딩 갤러리 "+(index+1)+"번 사진";
+    img.src=src;
+    img.loading=index===0?"eager":"lazy";
+    img.decoding="async";
+    img.dataset.index=String(index);
+    modalImageStack.appendChild(img);
+  });
+}
+
 function renderModal(){
   const photos=albums[currentAlbum]||[];
   const empty=photos.length===0;
@@ -713,11 +731,9 @@ function renderModal(){
     return;
   }
 
-  modalSlides.forEach((slide,index)=>{
-    const active=index===currentIndex;
-    slide.classList.toggle("active",active);
-    slide.style.display=active?"block":"none";
-    slide.setAttribute("aria-hidden",active?"false":"true");
+  ensureGallerySlides();
+  modalImageStack.querySelectorAll(".gallery-slide").forEach((img,index)=>{
+    img.classList.toggle("active",index===currentIndex);
   });
 
   counter.textContent=(currentIndex+1)+" / "+photos.length;
