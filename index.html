@@ -497,13 +497,13 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   <section>
     <p class="title">Gallery</p>
     <div class="gallery">
-      <button class="gcard empty" type="button" data-album="0" aria-label="갤러리 1">준비 예정</button>
-      <button class="gcard" type="button" data-album="1" aria-label="갤러리 2">
+      <button class="gcard empty" type="button" data-album="0" aria-label="갤러리 1" onclick="openAlbum(0);return false;">준비 예정</button>
+      <button class="gcard" type="button" data-album="1" aria-label="갤러리 2" onclick="openAlbum(1);return false;">
         <img id="galleryCover" src="/gallery-photo-1.jpg?v=distinct-cover-20260927-4" alt="갤러리 2 대표 사진" loading="lazy" decoding="async">
         <span class="badge">7 photos</span>
       </button>
-      <button class="gcard empty" type="button" data-album="2" aria-label="갤러리 3">준비 예정</button>
-      <button class="gcard empty" type="button" data-album="3" aria-label="갤러리 4">준비 예정</button>
+      <button class="gcard empty" type="button" data-album="2" aria-label="갤러리 3" onclick="openAlbum(2);return false;">준비 예정</button>
+      <button class="gcard empty" type="button" data-album="3" aria-label="갤러리 4" onclick="openAlbum(3);return false;">준비 예정</button>
     </div>
   </section>
 
@@ -683,97 +683,105 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 </div>
 
 <script>
-window.addEventListener("scroll",()=>{
-  if(window.scrollX!==0) window.scrollTo(0,window.scrollY);
-},{passive:true});
+(function(){
+  var albums=[[],[
+    "/gallery-photo-1.jpg?v=galleryfix-20260927-1",
+    "/gallery-photo-2.jpg?v=galleryfix-20260927-2",
+    "/gallery-photo-3.jpg?v=galleryfix-20260927-3",
+    "/gallery-photo-4.jpg?v=galleryfix-20260927-4",
+    "/gallery-photo-5.jpg?v=galleryfix-20260927-5",
+    "/gallery-photo-6.jpg?v=galleryfix-20260927-6",
+    "/gallery-photo-7.jpg?v=galleryfix-20260927-7"
+  ],[],[]];
 
-const albums=[[],[
-  "/gallery-photo-1.jpg?v=distinct-1-20260927-4",
-  "/gallery-photo-2.jpg?v=distinct-2-20260927-4",
-  "/gallery-photo-3.jpg?v=distinct-3-20260927-4",
-  "/gallery-photo-4.jpg?v=distinct-4-20260927-4",
-  "/gallery-photo-5.jpg?v=distinct-5-20260927-4",
-  "/gallery-photo-6.jpg?v=distinct-6-20260927-4",
-  "/gallery-photo-7.jpg?v=distinct-7-20260927-4"
-],[],[]];
+  var currentAlbum=0;
+  var currentIndex=0;
+  var modal=document.getElementById("galleryModal");
+  var slides=document.querySelectorAll(".modal-slide");
+  var prevBtn=document.getElementById("modalPrev");
+  var nextBtn=document.getElementById("modalNext");
+  var closeBtn=document.getElementById("modalClose");
+  var counter=document.getElementById("modalCounter");
 
-let currentAlbum=0;
-let currentIndex=0;
-const modal=document.getElementById("galleryModal");
-const modalSlides=Array.from(document.querySelectorAll(".modal-slide"));
-const prevBtn=document.getElementById("modalPrev");
-const nextBtn=document.getElementById("modalNext");
-const closeBtn=document.getElementById("modalClose");
-const counter=document.getElementById("modalCounter");
+  function renderModal(){
+    var photos=albums[currentAlbum]||[];
+    var empty=photos.length===0;
+    var i;
 
-function renderModal(){
-  const photos=albums[currentAlbum]||[];
-  const empty=photos.length===0;
-  modal.classList.toggle("empty-state",empty);
+    if(empty){ modal.classList.add("empty-state"); }
+    else{ modal.classList.remove("empty-state"); }
 
-  modalSlides.forEach((img,index)=>{
-    img.classList.toggle("active",!empty && index===currentIndex);
-  });
+    for(i=0;i<slides.length;i++){
+      if(!empty && i===currentIndex){ slides[i].classList.add("active"); }
+      else{ slides[i].classList.remove("active"); }
+    }
 
-  if(empty){
-    counter.textContent="";
-    prevBtn.classList.add("hidden");
-    nextBtn.classList.add("hidden");
-    return;
+    if(empty){
+      counter.innerHTML="";
+      prevBtn.classList.add("hidden");
+      nextBtn.classList.add("hidden");
+      return;
+    }
+
+    counter.innerHTML=(currentIndex+1)+" / "+photos.length;
+    if(currentIndex===0){ prevBtn.classList.add("hidden"); }
+    else{ prevBtn.classList.remove("hidden"); }
+    if(currentIndex===photos.length-1){ nextBtn.classList.add("hidden"); }
+    else{ nextBtn.classList.remove("hidden"); }
   }
 
-  counter.textContent=(currentIndex+1)+" / "+photos.length;
-  prevBtn.classList.toggle("hidden",currentIndex===0);
-  nextBtn.classList.toggle("hidden",currentIndex===photos.length-1);
-}
+  window.openAlbum=function(albumIndex){
+    currentAlbum=Number(albumIndex)||0;
+    currentIndex=0;
+    renderModal();
+    modal.classList.add("on");
+    modal.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+  };
 
-function openAlbum(albumIndex){
-  currentAlbum=albumIndex;
-  currentIndex=0;
-  renderModal();
-  modal.classList.add("on");
-  modal.setAttribute("aria-hidden","false");
-  document.body.style.overflow="hidden";
-}
+  function closeGallery(){
+    modal.classList.remove("on");
+    modal.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+  }
 
-function closeGallery(){
-  modal.classList.remove("on");
-  modal.setAttribute("aria-hidden","true");
-  document.body.style.overflow="";
-}
+  function move(step){
+    var photos=albums[currentAlbum]||[];
+    var next=currentIndex+step;
+    if(next<0 || next>=photos.length){ return; }
+    currentIndex=next;
+    renderModal();
+  }
 
-function move(step){
-  const photos=albums[currentAlbum]||[];
-  const next=currentIndex+step;
-  if(next<0||next>=photos.length)return;
-  currentIndex=next;
-  renderModal();
-}
+  closeBtn.onclick=closeGallery;
+  prevBtn.onclick=function(){ move(-1); };
+  nextBtn.onclick=function(){ move(1); };
 
-document.querySelectorAll("[data-album]").forEach(btn=>{
-  btn.addEventListener("click",()=>openAlbum(Number(btn.dataset.album)));
-});
+  modal.onclick=function(e){
+    e=e||window.event;
+    if(e.target===modal){ closeGallery(); }
+  };
 
-closeBtn.addEventListener("click",closeGallery);
-prevBtn.addEventListener("click",()=>move(-1));
-nextBtn.addEventListener("click",()=>move(1));
-modal.addEventListener("click",e=>{if(e.target===modal)closeGallery()});
+  document.addEventListener("keydown",function(e){
+    if(!modal.classList.contains("on")){ return; }
+    if(e.key==="Escape"){ closeGallery(); }
+    if(e.key==="ArrowLeft"){ move(-1); }
+    if(e.key==="ArrowRight"){ move(1); }
+  });
 
-document.addEventListener("keydown",e=>{
-  if(!modal.classList.contains("on"))return;
-  if(e.key==="Escape")closeGallery();
-  if(e.key==="ArrowLeft")move(-1);
-  if(e.key==="ArrowRight")move(1);
-});
-
-let touchStartX=0;
-modal.addEventListener("touchstart",e=>{touchStartX=e.changedTouches[0].clientX},{passive:true});
-modal.addEventListener("touchend",e=>{
-  const dx=e.changedTouches[0].clientX-touchStartX;
-  if(Math.abs(dx)<45)return;
-  move(dx>0?-1:1);
-},{passive:true});
-
+  var touchStartX=0;
+  modal.addEventListener("touchstart",function(e){
+    if(e.changedTouches && e.changedTouches.length){ touchStartX=e.changedTouches[0].clientX; }
+  },false);
+  modal.addEventListener("touchend",function(e){
+    if(!e.changedTouches || !e.changedTouches.length){ return; }
+    var dx=e.changedTouches[0].clientX-touchStartX;
+    if(Math.abs(dx)<45){ return; }
+    move(dx>0?-1:1);
+  },false);
+})();
+</script>
+<script>
 const RSVP_API_URL = "https://script.google.com/macros/s/AKfycbybioDaB01inDyZ3F2CaGw0DCSY5FK6Ooo_0SMUIMh6gyb-7mkW_EKZXfqHZgbPjPuj/exec";
 
 function formatPhone(value){
