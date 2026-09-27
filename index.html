@@ -631,7 +631,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   .modal{padding-left:34px;padding-right:34px}
 }
 </style>
-<!-- build: 2026-09-28-hero-photo-rounded -->
+<!-- build: 2026-09-28-gallery-on-demand-loading -->
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -870,13 +870,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   <button id="modalClose" class="close" type="button" aria-label="갤러리 닫기">×</button>
   <button id="modalPrev" class="nav prev hidden" type="button" aria-label="이전 사진">‹</button>
   <div id="modalSlides" class="modal-slides">
-    <img class="modal-img modal-slide active" src="/gallery-photo-1.jpg?v=distinct-1-20260927-4" alt="웨딩 갤러리 1" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="/gallery-photo-2.jpg?v=distinct-2-20260927-4" alt="웨딩 갤러리 2" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="/gallery-photo-3.jpg?v=distinct-3-20260927-4" alt="웨딩 갤러리 3" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="/gallery-photo-4.jpg?v=distinct-4-20260927-4" alt="웨딩 갤러리 4" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="/gallery-photo-5.jpg?v=distinct-5-20260927-4" alt="웨딩 갤러리 5" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="/gallery-photo-6.jpg?v=distinct-6-20260927-4" alt="웨딩 갤러리 6" decoding="async" fetchpriority="low">
-    <img class="modal-img modal-slide" src="/gallery-photo-7.jpg?v=distinct-7-20260927-4" alt="웨딩 갤러리 7" decoding="async" fetchpriority="low">
+    <img id="modalImage" class="modal-img" alt="" decoding="async">
   </div>
   <div id="emptyModal" class="empty-modal">사진 준비 예정</div>
   <button id="modalNext" class="nav next hidden" type="button" aria-label="다음 사진">›</button>
@@ -885,8 +879,10 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 
 <script>
 (function(){
+  // 앨범 사진은 페이지 진입 시 받지 않고, 카드를 눌렀을 때 현재 사진만 로드합니다.
+  // 현재 사진이 열린 뒤 다음 사진 1장만 미리 받아 슬라이드 전환을 부드럽게 합니다.
   var albums=[[],[
-    "/gallery-photo-1.jpg?v=galleryfix-20260927-1",
+    "/gallery-photo-1.jpg?v=distinct-cover-20260927-4",
     "/gallery-photo-2.jpg?v=galleryfix-20260927-2",
     "/gallery-photo-3.jpg?v=galleryfix-20260927-3",
     "/gallery-photo-4.jpg?v=galleryfix-20260927-4",
@@ -898,30 +894,45 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   var currentAlbum=0;
   var currentIndex=0;
   var modal=document.getElementById("galleryModal");
-  var slides=document.querySelectorAll(".modal-slide");
+  var modalImage=document.getElementById("modalImage");
   var prevBtn=document.getElementById("modalPrev");
   var nextBtn=document.getElementById("modalNext");
   var closeBtn=document.getElementById("modalClose");
   var counter=document.getElementById("modalCounter");
+  var preloaded={};
+
+  function preloadNext(){
+    var photos=albums[currentAlbum]||[];
+    var url=photos[currentIndex+1];
+    if(!url || preloaded[url]){ return; }
+    var img=new Image();
+    preloaded[url]=true;
+    img.decoding="async";
+    img.src=url;
+  }
 
   function renderModal(){
     var photos=albums[currentAlbum]||[];
     var empty=photos.length===0;
-    var i;
-
-    if(empty){ modal.classList.add("empty-state"); }
-    else{ modal.classList.remove("empty-state"); }
-
-    for(i=0;i<slides.length;i++){
-      if(!empty && i===currentIndex){ slides[i].classList.add("active"); }
-      else{ slides[i].classList.remove("active"); }
-    }
 
     if(empty){
+      modal.classList.add("empty-state");
+      modalImage.removeAttribute("src");
+      modalImage.alt="";
       counter.innerHTML="";
       prevBtn.classList.add("hidden");
       nextBtn.classList.add("hidden");
       return;
+    }
+
+    modal.classList.remove("empty-state");
+
+    var url=photos[currentIndex];
+    modalImage.alt="웨딩 갤러리 "+(currentIndex+1);
+    if(modalImage.getAttribute("src")!==url){
+      modalImage.src=url;
+    }else{
+      preloadNext();
     }
 
     counter.innerHTML=(currentIndex+1)+" / "+photos.length;
@@ -930,6 +941,10 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
     if(currentIndex===photos.length-1){ nextBtn.classList.add("hidden"); }
     else{ nextBtn.classList.remove("hidden"); }
   }
+
+  modalImage.onload=function(){
+    preloadNext();
+  };
 
   window.openAlbum=function(albumIndex){
     currentAlbum=Number(albumIndex)||0;
