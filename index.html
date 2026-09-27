@@ -638,7 +638,7 @@ modal.addEventListener("touchend",e=>{
   move(dx>0?-1:1);
 },{passive:true});
 
-const RSVP_API_URL = "";
+const RSVP_API_URL = "https://script.google.com/macros/s/AKfycbwspfrSZAF-kdLH9KooS6Hih1p9yc8l2OCvKzMTetoAF7hzPGkkCQETeAGTZGN2eSMC/exec";
 
 function formatPhone(value){
   const digits=value.replace(/\D/g,"").slice(0,11);
@@ -659,15 +659,16 @@ document.querySelectorAll('input[name="attendance"]').forEach(radio=>{
 });
 
 async function postWeddingData(payload){
-  if(!RSVP_API_URL)throw new Error("RSVP API not configured");
   const res=await fetch(RSVP_API_URL,{
     method:"POST",
     headers:{"Content-Type":"text/plain;charset=utf-8"},
     body:JSON.stringify(payload),
     redirect:"follow"
   });
-  if(!res.ok)throw new Error("submit failed");
-  return await res.json();
+  if(!res.ok)throw new Error("submit_failed");
+  const result=await res.json();
+  if(!result?.ok)throw new Error(result?.error||"submit_failed");
+  return result;
 }
 
 document.getElementById("rsvpForm").addEventListener("submit",async e=>{
@@ -676,33 +677,54 @@ document.getElementById("rsvpForm").addEventListener("submit",async e=>{
   const status=document.getElementById("rsvpStatus");
   const submit=document.getElementById("rsvpSubmit");
   if(!form.reportValidity())return;
+
   const side=form.querySelector('input[name="side"]:checked')?.value;
   const attendance=form.querySelector('input[name="attendance"]:checked')?.value;
-  if(!side||!attendance){status.textContent="선택 항목을 확인해 주세요.";return;}
+  if(!side||!attendance){
+    status.textContent="선택 항목을 확인해 주세요.";
+    return;
+  }
+
+  const phone=document.getElementById("rsvpPhone").value.replace(/\D/g,"");
+  if(phone.length<10){
+    status.textContent="연락처를 확인해 주세요.";
+    return;
+  }
+
   const payload={
     action:"rsvp",
     side,
     name:document.getElementById("rsvpName").value.trim(),
-    phone:document.getElementById("rsvpPhone").value.trim(),
+    phone,
     attendance,
     guestCount:attendance==="참석"?Number(document.getElementById("guestCount").value):0
   };
-  submit.disabled=true;status.textContent="전달 중입니다…";
+
+  submit.disabled=true;
+  status.textContent="전달 중입니다…";
   try{
     const result=await postWeddingData(payload);
-    status.textContent=result.updated?"기존 응답이 수정되었습니다.":"참석 여부가 전달되었습니다 ♥";
+    status.textContent=result.updated
+      ?"기존 응답이 수정되었습니다. ♥"
+      :"참석 여부가 전달되었습니다. ♥";
   }catch(err){
-    status.textContent="현재 연결 준비 중입니다. 잠시 후 다시 시도해 주세요.";
-  }finally{submit.disabled=false;}
+    console.error(err);
+    status.textContent="전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+  }finally{
+    submit.disabled=false;
+  }
 });
 
 document.getElementById("commentForm").addEventListener("submit",async e=>{
   e.preventDefault();
   const form=e.currentTarget;
   if(!form.reportValidity())return;
+
   const submit=document.getElementById("commentSubmit");
   const status=document.getElementById("commentStatus");
-  submit.disabled=true;status.textContent="전달 중입니다…";
+  submit.disabled=true;
+  status.textContent="전달 중입니다…";
+
   try{
     await postWeddingData({
       action:"comment",
@@ -710,154 +732,72 @@ document.getElementById("commentForm").addEventListener("submit",async e=>{
       message:document.getElementById("commentMessage").value.trim()
     });
     form.reset();
-    status.textContent="축하 메시지가 전달되었습니다 ♥";
+    status.textContent="축하 메시지가 전달되었습니다. 확인 후 공개됩니다. ♥";
   }catch(err){
-    status.textContent="현재 연결 준비 중입니다. 잠시 후 다시 시도해 주세요.";
-  }finally{submit.disabled=false;}
+    console.error(err);
+    status.textContent="등록 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+  }finally{
+    submit.disabled=false;
+  }
 });
+
+function renderGuestbook(comments){
+  const list=document.getElementById("guestbookList");
+  list.textContent="";
+
+  if(!comments.length){
+    const empty=document.createElement("div");
+    empty.className="comment-empty";
+    empty.textContent="아직 공개된 축하 메시지가 없습니다.";
+    list.appendChild(empty);
+    return;
+  }
+
+  comments.slice(0,30).forEach(item=>{
+    const card=document.createElement("div");
+    card.className="guestbook-item";
+
+    const meta=document.createElement("div");
+    meta.className="guestbook-meta";
+
+    const name=document.createElement("span");
+    name.className="guestbook-name";
+    name.textContent=item.name||"하객";
+
+    const date=document.createElement("span");
+    date.className="guestbook-date";
+    date.textContent=item.date||"";
+
+    const message=document.createElement("div");
+    message.className="guestbook-message";
+    message.textContent=item.message||"";
+
+    meta.append(name,date);
+    card.append(meta,message);
+    list.appendChild(card);
+  });
+}
+
+async function loadPublicComments(){
+  try{
+    const res=await fetch(RSVP_API_URL+"?action=comments&_="+Date.now(),{cache:"no-store"});
+    if(!res.ok)throw new Error("comments_failed");
+    const data=await res.json();
+    renderGuestbook(Array.isArray(data?.comments)?data.comments:[]);
+  }catch(err){
+    console.error(err);
+    renderGuestbook([]);
+  }
+}
+
+loadPublicComments();
 
 async function copyText(t,msg="계좌번호가 복사되었습니다."){
   try{await navigator.clipboard.writeText(t);alert(msg)}
   catch(e){prompt(msg.replace("복사되었습니다.","복사해 주세요."),t)}
 }
 
-/* Google Apps Script 웹앱 URL을 연결하면 RSVP/댓글 기능이 활성화됩니다. */
-const WEDDING_API_URL = "";
 
-function normalizePhoneInput(input){
-  const digits=input.value.replace(/\D/g,"").slice(0,11);
-  if(digits.length<=3) input.value=digits;
-  else if(digits.length<=7) input.value=digits.slice(0,3)+"-"+digits.slice(3);
-  else input.value=digits.slice(0,3)+"-"+digits.slice(3,7)+"-"+digits.slice(7);
-}
-const rsvpPhone=document.getElementById("rsvpPhone");
-rsvpPhone.addEventListener("input",()=>normalizePhoneInput(rsvpPhone));
-
-const guestField=document.getElementById("guestField");
-document.querySelectorAll('input[name="attendance"]').forEach(el=>{
-  el.addEventListener("change",()=>{
-    const attending=document.querySelector('input[name="attendance"]:checked')?.value==="참석";
-    guestField.style.display=attending?"grid":"none";
-    document.getElementById("guestCount").disabled=!attending;
-  });
-});
-
-function setFormStatus(id,message,isError=false){
-  const el=document.getElementById(id);
-  el.textContent=message;
-  el.style.color=isError?"#b05f5f":"var(--muted)";
-}
-
-async function postWeddingForm(payload){
-  if(!WEDDING_API_URL) throw new Error("API_NOT_CONNECTED");
-  const body=new URLSearchParams(payload);
-  await fetch(WEDDING_API_URL,{
-    method:"POST",
-    mode:"no-cors",
-    body
-  });
-}
-
-document.getElementById("rsvpForm").addEventListener("submit",async e=>{
-  e.preventDefault();
-  const form=e.currentTarget;
-  const submit=document.getElementById("rsvpSubmit");
-  const fd=new FormData(form);
-  const phone=String(fd.get("phone")||"").replace(/\D/g,"");
-  if(phone.length<10){
-    setFormStatus("rsvpStatus","연락처를 확인해 주세요.",true);
-    return;
-  }
-  const attendance=String(fd.get("attendance")||"");
-  const payload={
-    action:"rsvp",
-    side:String(fd.get("side")||""),
-    name:String(fd.get("name")||"").trim(),
-    phone,
-    attendance,
-    guests:attendance==="참석"?String(fd.get("guests")||"1"):"0"
-  };
-  submit.disabled=true;
-  setFormStatus("rsvpStatus","전달 중입니다.");
-  try{
-    await postWeddingForm(payload);
-    setFormStatus("rsvpStatus","참석 여부가 전달되었습니다. ♥");
-  }catch(err){
-    if(err.message==="API_NOT_CONNECTED"){
-      setFormStatus("rsvpStatus","현재 저장 시트 연결을 준비 중입니다.",true);
-    }else{
-      setFormStatus("rsvpStatus","전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",true);
-    }
-  }finally{
-    submit.disabled=false;
-  }
-});
-
-document.getElementById("commentForm").addEventListener("submit",async e=>{
-  e.preventDefault();
-  const form=e.currentTarget;
-  const submit=document.getElementById("commentSubmit");
-  const fd=new FormData(form);
-  const payload={
-    action:"comment",
-    name:String(fd.get("name")||"").trim(),
-    message:String(fd.get("message")||"").trim()
-  };
-  submit.disabled=true;
-  setFormStatus("commentStatus","등록 중입니다.");
-  try{
-    await postWeddingForm(payload);
-    form.reset();
-    setFormStatus("commentStatus","축하 메시지가 전달되었습니다. 확인 후 공개됩니다. ♥");
-  }catch(err){
-    if(err.message==="API_NOT_CONNECTED"){
-      setFormStatus("commentStatus","현재 댓글 저장 기능을 준비 중입니다.",true);
-    }else{
-      setFormStatus("commentStatus","등록 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",true);
-    }
-  }finally{
-    submit.disabled=false;
-  }
-});
-
-function weddingCommentsCallback(data){
-  const list=document.getElementById("commentList");
-  const comments=Array.isArray(data?.comments)?data.comments:[];
-  list.textContent="";
-  if(!comments.length){
-    const empty=document.createElement("div");
-    empty.className="comment-empty";
-    empty.textContent="아직 등록된 축하 메시지가 없습니다.";
-    list.appendChild(empty);
-    return;
-  }
-  comments.slice(0,30).forEach(item=>{
-    const card=document.createElement("div");
-    card.className="comment-item";
-    const meta=document.createElement("div");
-    meta.className="comment-meta";
-    const name=document.createElement("span");
-    name.className="comment-name";
-    name.textContent=item.name||"하객";
-    const date=document.createElement("span");
-    date.textContent=item.date||"";
-    meta.append(name,date);
-    const msg=document.createElement("div");
-    msg.className="comment-text";
-    msg.textContent=item.message||"";
-    card.append(meta,msg);
-    list.appendChild(card);
-  });
-}
-
-function loadWeddingComments(){
-  if(!WEDDING_API_URL) return;
-  const script=document.createElement("script");
-  script.src=WEDDING_API_URL+"?action=comments&prefix=weddingCommentsCallback&_="+Date.now();
-  script.async=true;
-  document.body.appendChild(script);
-}
-loadWeddingComments();
 </script>
 <script>
 const bgm = document.getElementById("bgm");
