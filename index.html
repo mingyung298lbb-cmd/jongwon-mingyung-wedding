@@ -393,6 +393,33 @@ section{
   font-weight:700;
   letter-spacing:.08em;
 }
+.rsvp-jump-wrap{
+  display:flex;
+  justify-content:flex-start;
+  margin:0 0 7px;
+}
+.rsvp-jump{
+  border:1px solid rgba(114,133,106,.42);
+  border-radius:999px;
+  background:rgba(255,255,252,.88);
+  color:#66745f;
+  padding:5px 9px 5px;
+  font-family:var(--detail-font);
+  font-size:10.5px;
+  font-weight:700;
+  line-height:1.2;
+  letter-spacing:.01em;
+  box-shadow:0 3px 10px rgba(57,70,48,.06);
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+.rsvp-jump:active{
+  transform:translateY(1px);
+}
+#rsvpSection{
+  scroll-margin-top:18px;
+}
 .gallery{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .gcard{position:relative;border:0;padding:0;border-radius:17px;overflow:hidden;background:rgba(244,247,239,.94);box-shadow:var(--shadow);aspect-ratio:5/7;cursor:pointer;border:1px solid rgba(212,220,205,.95);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .gcard img{width:100%;height:100%;object-fit:cover;display:block}
@@ -598,7 +625,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   .modal{padding-left:34px;padding-right:34px}
 }
 </style>
-<!-- build: 2026-09-28-heart-shift-up -->
+<!-- build: 2026-09-28-gallery-rsvp-jump -->
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -660,6 +687,9 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   </section>
 
   <section>
+    <div class="rsvp-jump-wrap">
+      <button class="rsvp-jump" type="button" onclick="document.getElementById('rsvpSection').scrollIntoView({behavior:'smooth',block:'start'})">참석여부 설문하기</button>
+    </div>
     <p class="title">Gallery</p>
     <div class="gallery">
       <button class="gcard empty" type="button" data-album="0" aria-label="갤러리 1" onclick="openAlbum(0);return false;">준비 예정</button>
