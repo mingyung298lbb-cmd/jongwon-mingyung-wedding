@@ -5,6 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>이종원 ♥ 이민경 모바일 청첩장</title>
 <meta name="description" content="2027년 3월 21일 오전 11시 · 아벤티움 웨딩홀">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta property="og:type" content="website">
+<meta property="og:title" content="이종원 ♥ 이민경 모바일 청첩장">
+<meta property="og:description" content="2027년 3월 21일 오전 11시 · 아벤티움 웨딩홀">
+<meta property="og:url" content="https://jongwon-mingyung-wedding.onrender.com/">
+<meta property="og:image" content="https://jongwon-mingyung-wedding.onrender.com/share-preview.jpg?v=20260927-1">
+<meta property="og:image:secure_url" content="https://jongwon-mingyung-wedding.onrender.com/share-preview.jpg?v=20260927-1">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="이종원 이민경 웨딩 사진">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="이종원 ♥ 이민경 모바일 청첩장">
+<meta name="twitter:description" content="2027년 3월 21일 오전 11시 · 아벤티움 웨딩홀">
+<meta name="twitter:image" content="https://jongwon-mingyung-wedding.onrender.com/share-preview.jpg?v=20260927-1">
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +38,9 @@ html{
   margin:0;
   padding:0;
   overflow-x:hidden;
+  overflow-x:clip;
   overscroll-behavior-x:none;
+  touch-action:pan-y pinch-zoom;
 }
 
 body{
@@ -37,7 +54,9 @@ body{
   background-color:#ffffff;
   position:relative;
   overflow-x:hidden;
+  overflow-x:clip;
   overscroll-behavior-x:none;
+  touch-action:pan-y pinch-zoom;
   isolation:isolate;
 }
 
@@ -107,6 +126,15 @@ button{font:inherit}
 img,video,iframe,svg,canvas{
   max-width:100%;
 }
+
+main, main *{
+  min-width:0;
+}
+
+.hero-card,.box,.gallery,.family-grid,.route-list,.account-group,.rsvp-form{
+  max-width:100%;
+}
+
 
 main{
   position:relative;
@@ -291,6 +319,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 <script src="gallery-1.js"></script>
 <script src="gallery-2.js"></script>
 <script src="gallery-3.js"></script>
+<!-- build: 2026-09-27-rsvp-no-comments-calendar-v2-share-v1 -->
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -384,7 +413,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   </section>
 
   <section>
-    <img class="calendar-img" src="date3-21.png" alt="2027년 3월 웨딩 달력" loading="lazy">
+    <img class="calendar-img" src="date3-21.png?v=20260927-2" alt="2027년 3월 웨딩 달력" loading="lazy">
   </section>
 
   <section id="rsvpSection">
@@ -503,6 +532,10 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 </div>
 
 <script>
+window.addEventListener("scroll",()=>{
+  if(window.scrollX!==0) window.scrollTo(0,window.scrollY);
+},{passive:true});
+
 const albums=[[],window.galleryPhotos||[],[],[]];
 
 document.getElementById("heroImage").src=window.galleryPhotos[0];
