@@ -50,7 +50,7 @@ body{
   margin:0;
   padding:0;
   color:var(--ink);
-  font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  font-family:var(--detail-font);
   background-color:#ffffff;
   position:relative;
   overflow-x:hidden;
@@ -177,18 +177,18 @@ section{
 .value{font-size:14px;font-weight:650;text-align:right;line-height:1.55}
 .family-panel{
   width:100%;
-  background:rgba(114,133,106,.16);
-  border:1px solid rgba(114,133,106,.20);
-  border-radius:24px;
-  padding:14px;
-  box-shadow:0 10px 26px rgba(57,70,48,.06);
-  backdrop-filter:blur(3px);
-  -webkit-backdrop-filter:blur(3px);
+  background:rgba(114,133,106,.30);
+  border:1px solid rgba(94,116,86,.28);
+  border-radius:26px;
+  padding:18px;
+  box-shadow:0 12px 30px rgba(57,70,48,.10);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
 }
 .family-only{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
+  gap:12px;
 }
 .family-card{
   width:100%;
@@ -205,6 +205,7 @@ section{
 .family-side{
   margin-bottom:14px;
   color:var(--green);
+  font-family:var(--detail-font);
   font-size:12px;
   font-weight:700;
   letter-spacing:.12em;
@@ -245,7 +246,26 @@ section{
 .route-list{display:grid;gap:8px;margin-top:12px}
 .route{padding:10px 11px;border-radius:12px;background:rgba(255,255,255,.91);border:1px solid var(--line);font-size:12px;line-height:1.75;font-family:var(--detail-font)}
 .route b{color:#427a53}
-.calendar-img{display:block;width:100%;height:auto;border-radius:20px;background:#fff;box-shadow:var(--shadow)}
+.calendar-section{
+  width:100%;
+  overflow:visible;
+  padding-left:12px;
+  padding-right:12px;
+}
+.calendar-img{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center center;
+  border-radius:0;
+  overflow:visible;
+  clip-path:none;
+  background:transparent;
+  box-shadow:none;
+}
 .rsvp-box{display:grid;gap:12px}
 .form-note{text-align:center;color:var(--muted);font-size:12px;line-height:1.65;margin:0 0 2px}
 .choice-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -381,7 +401,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 <script src="gallery-1.js"></script>
 <script src="gallery-2.js"></script>
 <script src="gallery-3.js"></script>
-<!-- build: 2026-09-27-parent-panel-fonts -->
+<!-- build: 2026-09-27-strong-parent-panel-calendar-font-fix -->
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -468,8 +488,8 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
     </div>
   </section>
 
-  <section>
-    <img class="calendar-img" src="date3-21.png?v=20260927-2" alt="2027년 3월 웨딩 달력" loading="lazy">
+  <section class="calendar-section">
+    <img class="calendar-img" src="date3-21.png?v=20260927-3" alt="2027년 3월 웨딩 달력" loading="lazy">
   </section>
 
   <section id="rsvpSection">
