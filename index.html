@@ -157,11 +157,103 @@ main{
   margin-right:auto;
   padding:22px 18px 26px;
 }
-.hero-card{background:var(--paper);border-radius:26px;padding:14px 14px 25px;box-shadow:var(--shadow);backdrop-filter:blur(2px)}
-.heroimg{width:100%;aspect-ratio:5/7;object-fit:cover;border-radius:19px;display:block;background:#edf0e8}
-.names{text-align:center;font-family:"Noto Serif KR",serif;font-size:29px;font-weight:500;margin-top:21px;letter-spacing:.03em}
-.date{text-align:center;margin-top:10px;font-size:15px;font-family:var(--detail-font)}
-.place{text-align:center;margin-top:5px;color:var(--muted);font-size:14px;font-family:var(--detail-font)}
+.hero-card{
+  background:rgba(255,255,252,.94);
+  border-radius:26px;
+  padding:24px 18px 28px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(2px);
+}
+.save-main{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 68px;
+  gap:12px;
+  align-items:stretch;
+}
+.save-photo-wrap{min-width:0}
+.save-photo{
+  width:100%;
+  aspect-ratio:4/6.05;
+  object-fit:cover;
+  display:block;
+  border-radius:0;
+  background:#edf0e8;
+}
+.save-numbers{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  padding:9px 0;
+  color:#3d403b;
+  font-family:"Noto Serif KR",serif;
+  font-weight:600;
+  line-height:.9;
+}
+.save-numbers span{
+  display:block;
+  width:100%;
+  text-align:center;
+  font-size:clamp(44px,10.5vw,68px);
+  letter-spacing:-.055em;
+  transform:scaleX(.86);
+}
+.save-info{
+  margin-top:24px;
+  text-align:center;
+  color:#3f423d;
+}
+.save-info-line{
+  width:max-content;
+  max-width:100%;
+  margin:0 auto;
+  padding:7px 0 6px;
+  border-top:2px solid #2f373d;
+  border-bottom:2px solid #2f373d;
+  font-family:"Noto Serif KR",serif;
+  font-size:clamp(13px,3.9vw,18px);
+  font-weight:600;
+  line-height:1.45;
+}
+.save-info-names{
+  margin-top:17px;
+  font-family:"Noto Serif KR",serif;
+  font-size:clamp(27px,8vw,42px);
+  font-weight:700;
+  line-height:1.15;
+  letter-spacing:-.02em;
+}
+.save-heart{
+  display:inline-block;
+  margin:0 .18em;
+  font-size:.68em;
+}
+.save-info-venue{
+  width:max-content;
+  max-width:100%;
+  margin:17px auto 0;
+  padding-top:13px;
+  border-top:4px solid #2f373d;
+  font-family:"Noto Serif KR",serif;
+  font-size:clamp(15px,4.5vw,24px);
+  font-weight:700;
+  line-height:1.4;
+}
+@media(max-width:420px){
+  .hero-card{padding:20px 14px 24px}
+  .save-main{
+    grid-template-columns:minmax(0,1fr) 60px;
+    gap:9px;
+  }
+  .save-numbers{padding:7px 0}
+  .save-numbers span{
+    font-size:clamp(40px,10vw,60px);
+    transform:scaleX(.84);
+  }
+  .save-info{margin-top:18px}
+  .save-info-names{margin-top:15px}
+  .save-info-venue{margin-top:13px;padding-top:12px}
+}
 section{
   width:100%;
   max-width:100%;
@@ -509,12 +601,24 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 ></audio>
 
 <main>
-  <div class="hero">
-    <div class="hero-card">
-      <img id="heroImage" class="heroimg" src="hero-main.jpg?v=20260927-1" alt="이종원 이민경 웨딩 사진" loading="eager" fetchpriority="high" decoding="sync">
-      <div class="names">이종원 ♥ 이민경</div>
-      <div class="date">2027. 03. 21. 일요일 · 오전 11시</div>
-      <div class="place">아벤티움 웨딩홀</div>
+  <div class="hero hero-save">
+    <div class="hero-card hero-save-card">
+      <div class="save-main">
+        <div class="save-photo-wrap">
+          <img id="heroImage" class="save-photo" src="hero-main.jpg?v=20260928-2" alt="이종원 이민경 웨딩 사진" loading="eager" fetchpriority="high" decoding="sync">
+        </div>
+        <div class="save-numbers" aria-label="2027년 3월 21일">
+          <span>27</span>
+          <span>03</span>
+          <span>21</span>
+        </div>
+      </div>
+
+      <div class="save-info">
+        <div class="save-info-line">2027년 3월 21일 일요일 오전 11시</div>
+        <div class="save-info-names">이종원<span class="save-heart">♥</span>이민경</div>
+        <div class="save-info-venue">아벤티움 웨딩홀</div>
+      </div>
     </div>
   </div>
 
