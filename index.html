@@ -674,19 +674,19 @@ window.addEventListener("scroll",()=>{
 },{passive:true});
 
 const albums=[[],[
-  "hero-main.jpg?v=20260927-1",
-  "gallery/photo-2.jpg?v=20260927-1",
-  "gallery/photo-3.jpg?v=20260927-1",
-  "gallery/photo-4.jpg?v=20260927-1",
-  "gallery/photo-5.jpg?v=20260927-1",
-  "gallery/photo-6.jpg?v=20260927-1",
-  "gallery/photo-7.jpg?v=20260927-1"
+  "hero-main.jpg?v=gallery-1-20260927-2",
+  "gallery/photo-2.jpg?v=gallery-2-20260927-2",
+  "gallery/photo-3.jpg?v=gallery-3-20260927-2",
+  "gallery/photo-4.jpg?v=gallery-4-20260927-2",
+  "gallery/photo-5.jpg?v=gallery-5-20260927-2",
+  "gallery/photo-6.jpg?v=gallery-6-20260927-2",
+  "gallery/photo-7.jpg?v=gallery-7-20260927-2"
 ],[],[]];
 
 let currentAlbum=0;
 let currentIndex=0;
 const modal=document.getElementById("galleryModal");
-const modalImage=document.getElementById("modalImage");
+let modalImage=document.getElementById("modalImage");
 const prevBtn=document.getElementById("modalPrev");
 const nextBtn=document.getElementById("modalNext");
 const closeBtn=document.getElementById("modalClose");
@@ -701,7 +701,23 @@ function renderModal(){
     nextBtn.classList.add("hidden");
     return;
   }
-  modalImage.src=photos[currentIndex];
+
+  const oldImage=modalImage;
+  const freshImage=document.createElement("img");
+  freshImage.id="modalImage";
+  freshImage.className="modal-img";
+  freshImage.alt="웨딩 갤러리 확대 사진";
+  freshImage.decoding="async";
+  freshImage.src=photos[currentIndex];
+  oldImage.replaceWith(freshImage);
+  modalImage=freshImage;
+
+  const nextPhoto=photos[currentIndex+1];
+  if(nextPhoto){
+    const preload=new Image();
+    preload.src=nextPhoto;
+  }
+
   counter.textContent=(currentIndex+1)+" / "+photos.length;
   prevBtn.classList.toggle("hidden",currentIndex===0);
   nextBtn.classList.toggle("hidden",currentIndex===photos.length-1);
