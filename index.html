@@ -132,6 +132,66 @@ section{padding:0 18px 27px}
 .route{padding:10px 11px;border-radius:12px;background:rgba(255,255,255,.91);border:1px solid var(--line);font-size:12px;line-height:1.65}
 .route b{color:#427a53}
 .calendar-img{display:block;width:100%;height:auto;border-radius:20px;background:#fff;box-shadow:var(--shadow)}
+.rsvp-box,.comment-box{display:grid;gap:12px}
+.form-note{text-align:center;color:var(--muted);font-size:12px;line-height:1.65;margin:0 0 2px}
+.choice-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice-row.three{grid-template-columns:repeat(3,1fr)}
+.choice{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:8px 10px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(255,255,255,.82);
+  color:var(--ink);
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice:has(input:checked){
+  border-color:rgba(114,133,106,.72);
+  background:rgba(114,133,106,.12);
+  color:var(--green);
+  box-shadow:inset 0 0 0 1px rgba(114,133,106,.12);
+}
+.form-field{display:grid;gap:6px}
+.form-field label{font-size:12px;font-weight:800;color:var(--green)}
+.form-field input,.form-field select,.form-field textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(255,255,255,.88);
+  color:var(--ink);
+  padding:11px 12px;
+  font:inherit;
+  font-size:14px;
+  outline:none;
+}
+.form-field textarea{min-height:90px;resize:vertical;line-height:1.55}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:rgba(114,133,106,.72)}
+.form-submit{
+  width:100%;
+  border:0;
+  border-radius:12px;
+  background:var(--green);
+  color:#fff;
+  padding:11px 12px;
+  font-weight:800;
+  font-size:13px;
+  cursor:pointer;
+}
+.form-submit:disabled{opacity:.55;cursor:default}
+.form-status{min-height:18px;text-align:center;font-size:12px;color:var(--muted)}
+.comment-list{display:grid;gap:9px;margin-top:12px}
+.comment-item{padding:11px 12px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.78)}
+.comment-meta{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);margin-bottom:5px}
+.comment-name{font-weight:800;color:var(--green)}
+.comment-text{font-size:13px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.comment-empty{text-align:center;color:#91958d;font-size:12px;padding:8px 0 2px}
 .account-group{margin-bottom:18px}
 .account-group-title{font-size:14px;font-weight:800;color:var(--green);margin:0 0 9px 2px}
 .account{margin-bottom:10px}
@@ -287,6 +347,46 @@ section{padding:0 18px 27px}
   </section>
 
   <section>
+    <p class="title">참석 여부 전달</p>
+    <form id="rsvpForm" class="box rsvp-box" autocomplete="on">
+      <p class="form-note">원활한 예식 준비를 위해 참석 여부를 알려주세요.<br>응답 내용은 신랑·신부만 확인합니다.</p>
+
+      <div class="choice-row">
+        <label class="choice"><input type="radio" name="side" value="신랑측" required>신랑측</label>
+        <label class="choice"><input type="radio" name="side" value="신부측" required>신부측</label>
+      </div>
+
+      <div class="form-field">
+        <label for="rsvpName">성함</label>
+        <input id="rsvpName" name="name" type="text" maxlength="20" autocomplete="name" required placeholder="성함을 입력해 주세요">
+      </div>
+
+      <div class="form-field">
+        <label for="rsvpPhone">연락처</label>
+        <input id="rsvpPhone" name="phone" type="tel" inputmode="numeric" maxlength="13" autocomplete="tel" required placeholder="010-0000-0000">
+      </div>
+
+      <div class="choice-row">
+        <label class="choice"><input type="radio" name="attendance" value="참석" required>참석</label>
+        <label class="choice"><input type="radio" name="attendance" value="불참" required>불참</label>
+      </div>
+
+      <div id="guestField" class="form-field">
+        <label for="guestCount">참석 인원</label>
+        <select id="guestCount" name="guests">
+          <option value="1">1명</option>
+          <option value="2">2명</option>
+          <option value="3">3명</option>
+          <option value="4">4명 이상</option>
+        </select>
+      </div>
+
+      <button id="rsvpSubmit" class="form-submit" type="submit">참석 여부 전달하기</button>
+      <div id="rsvpStatus" class="form-status" aria-live="polite"></div>
+    </form>
+  </section>
+
+  <section>
     <p class="title">마음 전하실 곳</p>
 
     <div class="account-group">
@@ -327,6 +427,27 @@ section{padding:0 18px 27px}
         <p>카카오뱅크 3333-05-9504488</p>
         <p class="owner">(예금주: 이민경)</p>
         <button class="copy" type="button" onclick="copyText('3333059504488')">계좌번호 복사</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="title">축하 한마디</p>
+    <div class="box comment-box">
+      <form id="commentForm" class="comment-box">
+        <div class="form-field">
+          <label for="commentName">이름</label>
+          <input id="commentName" name="name" type="text" maxlength="20" required placeholder="이름을 입력해 주세요">
+        </div>
+        <div class="form-field">
+          <label for="commentMessage">축하 메시지</label>
+          <textarea id="commentMessage" name="message" maxlength="200" required placeholder="따뜻한 축하 한마디를 남겨주세요"></textarea>
+        </div>
+        <button id="commentSubmit" class="form-submit" type="submit">축하 한마디 남기기</button>
+        <div id="commentStatus" class="form-status" aria-live="polite"></div>
+      </form>
+      <div id="commentList" class="comment-list">
+        <div class="comment-empty">아직 등록된 축하 메시지가 없습니다.</div>
       </div>
     </div>
   </section>
@@ -424,6 +545,144 @@ async function copyText(t,msg="계좌번호가 복사되었습니다."){
   try{await navigator.clipboard.writeText(t);alert(msg)}
   catch(e){prompt(msg.replace("복사되었습니다.","복사해 주세요."),t)}
 }
+
+/* Google Apps Script 웹앱 URL을 연결하면 RSVP/댓글 기능이 활성화됩니다. */
+const WEDDING_API_URL = "";
+
+function normalizePhoneInput(input){
+  const digits=input.value.replace(/\D/g,"").slice(0,11);
+  if(digits.length<=3) input.value=digits;
+  else if(digits.length<=7) input.value=digits.slice(0,3)+"-"+digits.slice(3);
+  else input.value=digits.slice(0,3)+"-"+digits.slice(3,7)+"-"+digits.slice(7);
+}
+const rsvpPhone=document.getElementById("rsvpPhone");
+rsvpPhone.addEventListener("input",()=>normalizePhoneInput(rsvpPhone));
+
+const guestField=document.getElementById("guestField");
+document.querySelectorAll('input[name="attendance"]').forEach(el=>{
+  el.addEventListener("change",()=>{
+    const attending=document.querySelector('input[name="attendance"]:checked')?.value==="참석";
+    guestField.style.display=attending?"grid":"none";
+    document.getElementById("guestCount").disabled=!attending;
+  });
+});
+
+function setFormStatus(id,message,isError=false){
+  const el=document.getElementById(id);
+  el.textContent=message;
+  el.style.color=isError?"#b05f5f":"var(--muted)";
+}
+
+async function postWeddingForm(payload){
+  if(!WEDDING_API_URL) throw new Error("API_NOT_CONNECTED");
+  const body=new URLSearchParams(payload);
+  await fetch(WEDDING_API_URL,{
+    method:"POST",
+    mode:"no-cors",
+    body
+  });
+}
+
+document.getElementById("rsvpForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const form=e.currentTarget;
+  const submit=document.getElementById("rsvpSubmit");
+  const fd=new FormData(form);
+  const phone=String(fd.get("phone")||"").replace(/\D/g,"");
+  if(phone.length<10){
+    setFormStatus("rsvpStatus","연락처를 확인해 주세요.",true);
+    return;
+  }
+  const attendance=String(fd.get("attendance")||"");
+  const payload={
+    action:"rsvp",
+    side:String(fd.get("side")||""),
+    name:String(fd.get("name")||"").trim(),
+    phone,
+    attendance,
+    guests:attendance==="참석"?String(fd.get("guests")||"1"):"0"
+  };
+  submit.disabled=true;
+  setFormStatus("rsvpStatus","전달 중입니다.");
+  try{
+    await postWeddingForm(payload);
+    setFormStatus("rsvpStatus","참석 여부가 전달되었습니다. ♥");
+  }catch(err){
+    if(err.message==="API_NOT_CONNECTED"){
+      setFormStatus("rsvpStatus","현재 저장 시트 연결을 준비 중입니다.",true);
+    }else{
+      setFormStatus("rsvpStatus","전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",true);
+    }
+  }finally{
+    submit.disabled=false;
+  }
+});
+
+document.getElementById("commentForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const form=e.currentTarget;
+  const submit=document.getElementById("commentSubmit");
+  const fd=new FormData(form);
+  const payload={
+    action:"comment",
+    name:String(fd.get("name")||"").trim(),
+    message:String(fd.get("message")||"").trim()
+  };
+  submit.disabled=true;
+  setFormStatus("commentStatus","등록 중입니다.");
+  try{
+    await postWeddingForm(payload);
+    form.reset();
+    setFormStatus("commentStatus","축하 메시지가 전달되었습니다. 확인 후 공개됩니다. ♥");
+  }catch(err){
+    if(err.message==="API_NOT_CONNECTED"){
+      setFormStatus("commentStatus","현재 댓글 저장 기능을 준비 중입니다.",true);
+    }else{
+      setFormStatus("commentStatus","등록 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",true);
+    }
+  }finally{
+    submit.disabled=false;
+  }
+});
+
+function weddingCommentsCallback(data){
+  const list=document.getElementById("commentList");
+  const comments=Array.isArray(data?.comments)?data.comments:[];
+  list.textContent="";
+  if(!comments.length){
+    const empty=document.createElement("div");
+    empty.className="comment-empty";
+    empty.textContent="아직 등록된 축하 메시지가 없습니다.";
+    list.appendChild(empty);
+    return;
+  }
+  comments.slice(0,30).forEach(item=>{
+    const card=document.createElement("div");
+    card.className="comment-item";
+    const meta=document.createElement("div");
+    meta.className="comment-meta";
+    const name=document.createElement("span");
+    name.className="comment-name";
+    name.textContent=item.name||"하객";
+    const date=document.createElement("span");
+    date.textContent=item.date||"";
+    meta.append(name,date);
+    const msg=document.createElement("div");
+    msg.className="comment-text";
+    msg.textContent=item.message||"";
+    card.append(meta,msg);
+    list.appendChild(card);
+  });
+}
+
+function loadWeddingComments(){
+  if(!WEDDING_API_URL) return;
+  const script=document.createElement("script");
+  script.src=WEDDING_API_URL+"?action=comments&prefix=weddingCommentsCallback&_="+Date.now();
+  script.async=true;
+  document.body.appendChild(script);
+}
+loadWeddingComments();
 </script>
 <script>
 const bgm = document.getElementById("bgm");
