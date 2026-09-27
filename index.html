@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>이종원 ♥ 이민경 모바일 청첩장</title>
 <meta name="description" content="2027년 3월 21일 오전 11시 · 아벤티움 웨딩홀">
 <meta property="og:type" content="website">
@@ -33,8 +33,6 @@
 
 html{
   width:100%;
-  -webkit-text-size-adjust:100%;
-  text-size-adjust:100%;
   max-width:100%;
   min-height:100%;
   margin:0;
@@ -42,7 +40,7 @@ html{
   overflow-x:hidden;
   overflow-x:clip;
   overscroll-behavior-x:none;
-  touch-action:pan-y;
+  touch-action:pan-y pinch-zoom;
 }
 
 body{
@@ -58,7 +56,7 @@ body{
   overflow-x:hidden;
   overflow-x:clip;
   overscroll-behavior-x:none;
-  touch-action:pan-y;
+  touch-action:pan-y pinch-zoom;
   isolation:isolate;
 }
 
@@ -149,7 +147,7 @@ main{
   padding:0 0 34px;
   background:rgba(255,255,252,.16);
   overflow-x:hidden;
-  touch-action:pan-y;
+  touch-action:pan-y pinch-zoom;
 }
 .hero{
   width:100%;
@@ -281,7 +279,6 @@ section{
 }
 .invite::before{
   content:"";
-  box-sizing:border-box;
   position:absolute;
   top:26px;
   left:50%;
@@ -293,9 +290,9 @@ section{
   background-repeat:no-repeat;
   background-position:center;
   background-size:contain;
-  opacity:.95;
-  filter:drop-shadow(0 .25px 0 rgba(45,44,40,.10));
-  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20140%2078%22%3E%0A%3Cg%20fill%3D%22none%22%20stroke%3D%22%23353632%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%0A%20%20%3Cpath%20d%3D%22M68%2032%20C58%2024%2C%2045%2023%2C%2036%2026%20C29%2028%2C%2027%2036%2C%2031%2041%20C35%2047%2C%2048%2046%2C%2060%2039%20C64%2037%2C%2066%2034%2C%2068%2032%22%20stroke-width%3D%221.6%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M72%2032%20C82%2024%2C%2095%2023%2C%20104%2026%20C111%2028%2C%20113%2036%2C%20109%2041%20C105%2047%2C%2092%2046%2C%2080%2039%20C76%2037%2C%2074%2034%2C%2072%2032%22%20stroke-width%3D%221.6%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M68%2032%20C70%2029%2C%2073%2029%2C%2075%2032%20C76%2035%2C%2074%2038%2C%2071%2038%20C67%2038%2C%2065%2035%2C%2068%2032%20Z%22%20stroke-width%3D%221.5%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M70%2037%20C66%2045%2C%2059%2054%2C%2050%2064%22%20stroke-width%3D%221.65%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M72%2037%20C76%2045%2C%2083%2054%2C%2092%2064%22%20stroke-width%3D%221.65%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E");
+  opacity:.92;
+  filter:drop-shadow(0 .2px 0 rgba(45,44,40,.08));
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20140%2078%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23353632%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M68%2032C58%2024%2046%2021%2038%2023C31%2025%2029%2031%2032%2036C36%2042%2048%2041%2060%2036C64%2034%2066%2033%2068%2032%22%20stroke-width%3D%221.35%22%2F%3E%3Cpath%20d%3D%22M72%2032C82%2024%2094%2021%20102%2023C109%2025%20111%2031%20108%2036C104%2042%2092%2041%2080%2036C76%2034%2074%2033%2072%2032%22%20stroke-width%3D%221.35%22%2F%3E%3Cpath%20d%3D%22M68%2032C69%2029%2072%2029%2074%2031C76%2033%2075%2036%2072%2037C69%2038%2066%2036%2066%2034C66%2033%2067%2032%2068%2032Z%22%20stroke-width%3D%221.3%22%2F%3E%3Cpath%20d%3D%22M69%2037C66%2044%2062%2050%2057%2056C54%2060%2051%2063%2048%2066%22%20stroke-width%3D%221.35%22%2F%3E%3Cpath%20d%3D%22M73%2037C76%2044%2080%2050%2085%2056C88%2060%2091%2063%2094%2066%22%20stroke-width%3D%221.35%22%2F%3E%3Cpath%20d%3D%22M49%2065c-1%201-2%202-3%202%22%20stroke-width%3D%22.7%22%20opacity%3D%22.45%22%2F%3E%3Cpath%20d%3D%22M93%2065c1%201%202%202%203%202%22%20stroke-width%3D%22.7%22%20opacity%3D%22.45%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
 }
 .invite::after{
   content:"";
@@ -598,7 +595,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
   .modal{padding-left:34px;padding-right:34px}
 }
 </style>
-<!-- build: 2026-09-28-mobile-zoom-clamp -->
+<!-- build: 2026-09-28-clean-pencil-knot -->
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
