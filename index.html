@@ -423,13 +423,16 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 /* Gallery modal: all album cards use the same behavior */
 .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.91);z-index:9999;padding:58px 43px 42px}
 .modal.on{display:flex}
+.modal-slides{display:flex;align-items:center;justify-content:center;max-width:100%;max-height:84vh}
 .modal-img{max-width:100%;max-height:84vh;object-fit:contain;border-radius:5px;user-select:none;-webkit-user-drag:none}
+.modal-slide{display:none}
+.modal-slide.active{display:block}
 .close{position:fixed;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:10001;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.94);color:#222;font-size:30px;line-height:1;cursor:pointer;box-shadow:0 4px 18px #0005}
 .nav{position:fixed;top:50%;transform:translateY(-50%);z-index:10000;width:34px;height:46px;border:0;border-radius:8px;background:rgba(255,255,255,.90);color:#222;font-size:28px;line-height:1;cursor:pointer;box-shadow:0 4px 18px #0005}
 .prev{left:5px}.next{right:5px}.nav.hidden{display:none}
 .counter{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:rgba(255,255,255,.86);font-size:12px;letter-spacing:.12em}
 .empty-modal{display:none;color:#fff;text-align:center;font-size:14px;letter-spacing:.08em}
-.modal.empty-state .modal-img,.modal.empty-state .counter{display:none}
+.modal.empty-state .modal-slides,.modal.empty-state .counter{display:none}
 .modal.empty-state .empty-modal{display:block}
 .modal.empty-state .nav{display:none!important}
 @media(max-width:380px){
@@ -662,7 +665,15 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 <div id="galleryModal" class="modal" aria-hidden="true">
   <button id="modalClose" class="close" type="button" aria-label="갤러리 닫기">×</button>
   <button id="modalPrev" class="nav prev hidden" type="button" aria-label="이전 사진">‹</button>
-  <img id="modalImage" class="modal-img" alt="웨딩 갤러리 확대 사진">
+  <div id="modalSlides" class="modal-slides">
+    <img class="modal-img modal-slide active" src="hero-main.jpg?v=gallery-1-20260927-3" alt="웨딩 갤러리 1" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="gallery/photo-2.jpg?v=gallery-2-20260927-3" alt="웨딩 갤러리 2" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="gallery/photo-3.jpg?v=gallery-3-20260927-3" alt="웨딩 갤러리 3" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="gallery/photo-4.jpg?v=gallery-4-20260927-3" alt="웨딩 갤러리 4" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="gallery/photo-5.jpg?v=gallery-5-20260927-3" alt="웨딩 갤러리 5" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="gallery/photo-6.jpg?v=gallery-6-20260927-3" alt="웨딩 갤러리 6" decoding="async" fetchpriority="low">
+    <img class="modal-img modal-slide" src="gallery/photo-7.jpg?v=gallery-7-20260927-3" alt="웨딩 갤러리 7" decoding="async" fetchpriority="low">
+  </div>
   <div id="emptyModal" class="empty-modal">사진 준비 예정</div>
   <button id="modalNext" class="nav next hidden" type="button" aria-label="다음 사진">›</button>
   <div id="modalCounter" class="counter"></div>
@@ -674,19 +685,19 @@ window.addEventListener("scroll",()=>{
 },{passive:true});
 
 const albums=[[],[
-  "hero-main.jpg?v=gallery-1-20260927-2",
-  "gallery/photo-2.jpg?v=gallery-2-20260927-2",
-  "gallery/photo-3.jpg?v=gallery-3-20260927-2",
-  "gallery/photo-4.jpg?v=gallery-4-20260927-2",
-  "gallery/photo-5.jpg?v=gallery-5-20260927-2",
-  "gallery/photo-6.jpg?v=gallery-6-20260927-2",
-  "gallery/photo-7.jpg?v=gallery-7-20260927-2"
+  "hero-main.jpg?v=gallery-1-20260927-3",
+  "gallery/photo-2.jpg?v=gallery-2-20260927-3",
+  "gallery/photo-3.jpg?v=gallery-3-20260927-3",
+  "gallery/photo-4.jpg?v=gallery-4-20260927-3",
+  "gallery/photo-5.jpg?v=gallery-5-20260927-3",
+  "gallery/photo-6.jpg?v=gallery-6-20260927-3",
+  "gallery/photo-7.jpg?v=gallery-7-20260927-3"
 ],[],[]];
 
 let currentAlbum=0;
 let currentIndex=0;
 const modal=document.getElementById("galleryModal");
-let modalImage=document.getElementById("modalImage");
+const modalSlides=Array.from(document.querySelectorAll(".modal-slide"));
 const prevBtn=document.getElementById("modalPrev");
 const nextBtn=document.getElementById("modalNext");
 const closeBtn=document.getElementById("modalClose");
@@ -702,21 +713,9 @@ function renderModal(){
     return;
   }
 
-  const oldImage=modalImage;
-  const freshImage=document.createElement("img");
-  freshImage.id="modalImage";
-  freshImage.className="modal-img";
-  freshImage.alt="웨딩 갤러리 확대 사진";
-  freshImage.decoding="async";
-  freshImage.src=photos[currentIndex];
-  oldImage.replaceWith(freshImage);
-  modalImage=freshImage;
-
-  const nextPhoto=photos[currentIndex+1];
-  if(nextPhoto){
-    const preload=new Image();
-    preload.src=nextPhoto;
-  }
+  modalSlides.forEach((slide,index)=>{
+    slide.classList.toggle("active",index===currentIndex);
+  });
 
   counter.textContent=(currentIndex+1)+" / "+photos.length;
   prevBtn.classList.toggle("hidden",currentIndex===0);
