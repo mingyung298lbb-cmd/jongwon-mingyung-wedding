@@ -368,46 +368,6 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
     <img class="calendar-img" src="date3-21.png" alt="2027년 3월 웨딩 달력" loading="lazy">
   </section>
 
-  <section>
-    <p class="title">참석 여부 전달</p>
-    <form id="rsvpForm" class="box rsvp-box" autocomplete="on">
-      <p class="form-note">원활한 예식 준비를 위해 참석 여부를 알려주세요.<br>응답 내용은 신랑·신부만 확인합니다.</p>
-
-      <div class="choice-row">
-        <label class="choice"><input type="radio" name="side" value="신랑측" required>신랑측</label>
-        <label class="choice"><input type="radio" name="side" value="신부측" required>신부측</label>
-      </div>
-
-      <div class="form-field">
-        <label for="rsvpName">성함</label>
-        <input id="rsvpName" name="name" type="text" maxlength="20" autocomplete="name" required placeholder="성함을 입력해 주세요">
-      </div>
-
-      <div class="form-field">
-        <label for="rsvpPhone">연락처</label>
-        <input id="rsvpPhone" name="phone" type="tel" inputmode="numeric" maxlength="13" autocomplete="tel" required placeholder="010-0000-0000">
-      </div>
-
-      <div class="choice-row">
-        <label class="choice"><input type="radio" name="attendance" value="참석" required>참석</label>
-        <label class="choice"><input type="radio" name="attendance" value="불참" required>불참</label>
-      </div>
-
-      <div id="guestField" class="form-field">
-        <label for="guestCount">참석 인원</label>
-        <select id="guestCount" name="guests">
-          <option value="1">1명</option>
-          <option value="2">2명</option>
-          <option value="3">3명</option>
-          <option value="4">4명 이상</option>
-        </select>
-      </div>
-
-      <button id="rsvpSubmit" class="form-submit" type="submit">참석 여부 전달하기</button>
-      <div id="rsvpStatus" class="form-status" aria-live="polite"></div>
-    </form>
-  </section>
-
   <section id="rsvpSection">
     <p class="title">참석 여부 전달</p>
     <div class="box">
@@ -524,27 +484,6 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
         <p>카카오뱅크 3333-05-9504488</p>
         <p class="owner">(예금주: 이민경)</p>
         <button class="copy" type="button" onclick="copyText('3333059504488')">계좌번호 복사</button>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <p class="title">축하 한마디</p>
-    <div class="box comment-box">
-      <form id="commentForm" class="comment-box">
-        <div class="form-field">
-          <label for="commentName">이름</label>
-          <input id="commentName" name="name" type="text" maxlength="20" required placeholder="이름을 입력해 주세요">
-        </div>
-        <div class="form-field">
-          <label for="commentMessage">축하 메시지</label>
-          <textarea id="commentMessage" name="message" maxlength="200" required placeholder="따뜻한 축하 한마디를 남겨주세요"></textarea>
-        </div>
-        <button id="commentSubmit" class="form-submit" type="submit">축하 한마디 남기기</button>
-        <div id="commentStatus" class="form-status" aria-live="polite"></div>
-      </form>
-      <div id="commentList" class="comment-list">
-        <div class="comment-empty">아직 등록된 축하 메시지가 없습니다.</div>
       </div>
     </div>
   </section>
