@@ -282,7 +282,7 @@ section{
   cursor:pointer;
 }
 .rsvp-intro{margin:0 0 14px;text-align:center;font-family:"Noto Serif KR",serif;font-size:14px;line-height:1.9;color:#4f554c;word-break:keep-all}
-.rsvp-form{display:grid;gap:11px}
+.rsvp-form,.comment-form{display:grid;gap:11px}
 .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .choice-input{position:absolute;opacity:0;pointer-events:none}
 .choice-label{display:flex;align-items:center;justify-content:center;min-height:42px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.78);font-size:13px;font-weight:700;color:#676c64;cursor:pointer}
@@ -296,6 +296,13 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 .form-submit:disabled{opacity:.55;cursor:default}
 .form-note{font-size:10px;line-height:1.5;color:#8a8e86;text-align:center;word-break:keep-all}
 .form-status{min-height:18px;font-size:12px;text-align:center;font-weight:700;color:var(--green)}
+.guestbook-list{display:grid;gap:9px;margin-top:13px}
+.guestbook-item{padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.78)}
+.guestbook-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.guestbook-name{font-size:12px;font-weight:800;color:var(--green)}
+.guestbook-date{font-size:10px;color:#9a9d96}
+.guestbook-message{font-size:13px;line-height:1.65;color:#50544d;white-space:pre-wrap;word-break:break-word}
+.comment-empty{text-align:center;color:#91958d;font-size:12px;padding:8px 0 2px}
 .hidden{display:none!important}
 .foot{text-align:center;color:var(--muted);font-size:11px;padding:1px 18px 8px}
 
@@ -319,7 +326,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 <script src="gallery-1.js"></script>
 <script src="gallery-2.js"></script>
 <script src="gallery-3.js"></script>
-<!-- build: 2026-09-27-rsvp-no-comments-calendar-v2-share-v1 -->
+<!-- build: 2026-09-27-comments-public-restored -->
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -472,6 +479,27 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
     </div>
   </section>
 
+  <section id="guestbookSection">
+    <p class="title">축하 한마디</p>
+    <div class="box">
+      <form id="commentForm" class="comment-form" action="https://script.google.com/macros/s/AKfycbwspfrSZAF-kdLH9KooS6Hih1p9yc8l2OCvKzMTetoAF7hzPGkkCQETeAGTZGN2eSMC/exec" method="post" target="commentFrame">
+        <input type="hidden" name="action" value="comment">
+        <div class="form-field">
+          <label for="commentName">성함</label>
+          <input id="commentName" class="form-control" name="name" type="text" maxlength="30" required>
+        </div>
+        <div class="form-field">
+          <label for="commentMessage">축하 메시지</label>
+          <textarea id="commentMessage" class="form-control" name="message" maxlength="200" placeholder="두 사람에게 따뜻한 한마디를 남겨주세요." required></textarea>
+        </div>
+        <button id="commentSubmit" class="form-submit" type="submit">축하 메시지 남기기</button>
+        <div id="commentStatus" class="form-status" aria-live="polite"></div>
+        <div class="form-note">메시지는 등록 후 청첩장에 바로 공개됩니다.</div>
+      </form>
+      <div id="guestbookList" class="guestbook-list"></div>
+    </div>
+  </section>
+
   <section>
     <p class="title">마음 전하실 곳</p>
 
@@ -525,6 +553,7 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 </main>
 
 <iframe name="rsvpFrame" id="rsvpFrame" title="RSVP 전송" style="display:none"></iframe>
+<iframe name="commentFrame" id="commentFrame" title="댓글 전송" style="display:none"></iframe>
 
 <div id="galleryModal" class="modal" aria-hidden="true">
   <button id="modalClose" class="close" type="button" aria-label="갤러리 닫기">×</button>
@@ -641,6 +670,7 @@ document.querySelectorAll('input[name="attendance"]').forEach(radio=>{
 });
 
 let rsvpSending=false;
+let commentSending=false;
 
 const rsvpForm=document.getElementById("rsvpForm");
 if(rsvpForm){
@@ -665,6 +695,21 @@ if(rsvpForm){
   });
 }
 
+const commentForm=document.getElementById("commentForm");
+if(commentForm){
+  commentForm.addEventListener("submit",e=>{
+    if(!commentForm.reportValidity()){
+      e.preventDefault();
+      return;
+    }
+    commentSending=true;
+    const btn=document.getElementById("commentSubmit");
+    const status=document.getElementById("commentStatus");
+    if(btn)btn.disabled=true;
+    if(status)status.textContent="전달 중입니다…";
+  });
+}
+
 const rsvpFrame=document.getElementById("rsvpFrame");
 if(rsvpFrame){
   rsvpFrame.addEventListener("load",()=>{
@@ -677,6 +722,65 @@ if(rsvpFrame){
   });
 }
 
+
+const commentFrame=document.getElementById("commentFrame");
+if(commentFrame){
+  commentFrame.addEventListener("load",()=>{
+    if(!commentSending)return;
+    commentSending=false;
+    const btn=document.getElementById("commentSubmit");
+    const status=document.getElementById("commentStatus");
+    if(btn)btn.disabled=false;
+    if(status)status.textContent="축하 메시지가 등록되었습니다. ♥";
+    if(commentForm)commentForm.reset();
+    setTimeout(loadPublicComments,400);
+  });
+}
+
+function renderGuestbook(comments){
+  const list=document.getElementById("guestbookList");
+  if(!list)return;
+  list.textContent="";
+  if(!comments.length){
+    const empty=document.createElement("div");
+    empty.className="comment-empty";
+    empty.textContent="아직 공개된 축하 메시지가 없습니다.";
+    list.appendChild(empty);
+    return;
+  }
+  comments.slice(0,30).forEach(item=>{
+    const card=document.createElement("div");
+    card.className="guestbook-item";
+    const meta=document.createElement("div");
+    meta.className="guestbook-meta";
+    const name=document.createElement("span");
+    name.className="guestbook-name";
+    name.textContent=item.name||"하객";
+    const date=document.createElement("span");
+    date.className="guestbook-date";
+    date.textContent=item.date||"";
+    const message=document.createElement("div");
+    message.className="guestbook-message";
+    message.textContent=item.message||"";
+    meta.append(name,date);
+    card.append(meta,message);
+    list.appendChild(card);
+  });
+}
+
+async function loadPublicComments(){
+  try{
+    const res=await fetch(RSVP_API_URL+"?action=comments&_="+Date.now(),{cache:"no-store"});
+    if(!res.ok)throw new Error("comments_failed");
+    const data=await res.json();
+    renderGuestbook(Array.isArray(data?.comments)?data.comments:[]);
+  }catch(err){
+    console.error(err);
+    renderGuestbook([]);
+  }
+}
+
+loadPublicComments();
 
 async function copyText(t,msg="계좌번호가 복사되었습니다."){
   try{await navigator.clipboard.writeText(t);alert(msg)}
