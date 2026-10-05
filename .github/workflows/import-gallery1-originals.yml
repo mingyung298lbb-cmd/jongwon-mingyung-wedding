@@ -1,4 +1,4 @@
-name: Import gallery 1 originals
+name: Replace gallery 1 cover original
 on:
   push:
     branches: [main]
@@ -7,31 +7,22 @@ on:
 permissions:
   contents: write
 jobs:
-  import:
-    if: github.event.head_commit.message == 'Stage original gallery 1 import'
+  replace:
+    if: github.event.head_commit.message == 'Stage gallery 1 cover replacement'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download exact original JPEG files
+      - name: Download exact original JPEG
         shell: bash
         run: |
           set -euo pipefail
-          curl -fL --retry 3 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-4158-8209-9ea9-8bdcaecc343d/raw?se=2026-10-05T00%3A02%3A47Z&sp=r&sv=2026-02-06&sr=b&scid=912c1ae7-d5a2-5113-88b4-fde89df39b2f&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T17%3A58%3A56Z&ske=2026-10-05T17%3A58%3A56Z&sks=b&skv=2026-02-06&sig=UpECSGXbeQVaBaVPSgdpL7/SvvQ8CgaU1ItMr4F4j9I%3D' -o gallery1-photo-1.jpg
-          curl -fL --retry 3 'https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-5be8-8206-906f-546bec17b038/raw?se=2026-10-05T00%3A02%3A49Z&sp=r&sv=2026-02-06&sr=b&scid=06aa58fc-a659-580e-bb89-c82aab79a63a&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T23%3A35%3A12Z&ske=2026-10-05T23%3A35%3A12Z&sks=b&skv=2026-02-06&sig=mm4dJLKxL88c4lubUTfiXB5YHRJJPFeKa8hii%2B/A0sU%3D' -o gallery1-photo-2.jpg
-          curl -fL --retry 3 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-7d34-8209-ae0e-3de223c55f50/raw?se=2026-10-05T00%3A02%3A51Z&sp=r&sv=2026-02-06&sr=b&scid=7b12b05c-cc1c-5e5e-bb9f-86a2d2d351fd&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T21%3A21%3A12Z&ske=2026-10-05T21%3A21%3A12Z&sks=b&skv=2026-02-06&sig=OzmdWWv8X9vfkoINFpT/qkIjjZhizn7JFmJ7pi79Xxc%3D' -o gallery1-photo-3.jpg
-          curl -fL --retry 3 'https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-1ae8-8206-9f53-78720d6ed041/raw?se=2026-10-05T00%3A02%3A53Z&sp=r&sv=2026-02-06&sr=b&scid=28b40390-64a6-56cc-9c4f-a8e07f96f7d3&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T21%3A06%3A12Z&ske=2026-10-05T21%3A06%3A12Z&sks=b&skv=2026-02-06&sig=d674XoXuaKvppvrjPnyWeCRooJMtiGPODjIlPWA8mUQ%3D' -o gallery1-photo-4.jpg
-          cat > /tmp/checksums.txt <<'EOF'
-          10e8af0dba2682224d07f3333a8d5e16903010e02d1c1dc5992c2363d5f3a027  gallery1-photo-1.jpg
-          a5e6327a312d799a8fc2834577b735257b133a5192631fc41409de5c8228fa1b  gallery1-photo-2.jpg
-          444d9339e6670225eb8e770f5925b99fb728fb949c1d291f670bc359f6454bf5  gallery1-photo-3.jpg
-          c018e68ef303a9c756f4a0d07506cadbe69c2f8df998e53f267369188eb1da62  gallery1-photo-4.jpg
-          EOF
-          sha256sum -c /tmp/checksums.txt
-      - name: Commit originals
+          curl -fL --retry 3 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-6a28-8209-9819-7594a98fba1d/raw?se=2026-10-05T00%3A06%3A24Z&sp=r&sv=2026-02-06&sr=b&scid=ec7c3847-6381-54b4-919a-2593f0ec59b3&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T17%3A52%3A45Z&ske=2026-10-05T17%3A52%3A45Z&sks=b&skv=2026-02-06&sig=XJurrXCVVydHOGqSmWPhmLzaSUQuFbI5fqAzOT28hEo%3D' -o gallery1-photo-1.jpg
+          echo 'a7c6d2dabfe1c3f2b84923dee68f4f37d0a17f7b7022063a954eb0768be13b7a  gallery1-photo-1.jpg' | sha256sum -c -
+      - name: Commit replacement
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add gallery1-photo-1.jpg gallery1-photo-2.jpg gallery1-photo-3.jpg gallery1-photo-4.jpg
-          git commit -m "Add original gallery 1 photos"
+          git add gallery1-photo-1.jpg
+          git commit -m "Replace gallery 1 first photo with original"
           git push
