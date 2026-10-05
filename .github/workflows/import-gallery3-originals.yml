@@ -1,0 +1,45 @@
+name: Import gallery 3 originals
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-gallery3-originals.yml'
+permissions:
+  contents: write
+jobs:
+  import:
+    if: github.event.head_commit.message == 'Stage gallery 3 original imports'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download exact original files
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-19f8-8209-862a-66d7fe36eebb/raw?se=2026-10-05T00%3A41%3A04Z&sp=r&sv=2026-02-06&sr=b&scid=2ae63d08-39e7-5494-ad21-1b50ffc293b9&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T17%3A59%3A52Z&ske=2026-10-05T17%3A59%3A52Z&sks=b&skv=2026-02-06&sig=3T6BrbBSlZ3dHfYcGwKHv%2Bi7nL/6o8/I79NLbJJ4ziw%3D' -o gallery3new-photo-1.jpg
+          curl -fL --retry 3 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-344c-8209-b1bd-bcaaf6c375aa/raw?se=2026-10-05T00%3A41%3A06Z&sp=r&sv=2026-02-06&sr=b&scid=969ae0b5-d3ed-5330-acad-655765aded8c&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T17%3A58%3A56Z&ske=2026-10-05T17%3A58%3A56Z&sks=b&skv=2026-02-06&sig=ZMcMFJPcZQle6xqMG9sCekL2v6D2cGFLbzlR%2Bu27pqI%3D' -o gallery3new-photo-2.jpg
+          curl -fL --retry 3 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-e824-8209-8656-903eaed1dcd2/raw?se=2026-10-05T00%3A41%3A08Z&sp=r&sv=2026-02-06&sr=b&scid=ffc6b804-6700-5267-9390-2f436a005138&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-05T00%3A33%3A25Z&ske=2026-10-06T00%3A33%3A25Z&sks=b&skv=2026-02-06&sig=%2BgSLxgPV5pDwCKcWL%2BWiwvG4obDPjlFvZy9bIySACoE%3D' -o gallery3new-photo-3.jpg
+          curl -fL --retry 3 'https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-491c-8206-8388-26479decd094/raw?se=2026-10-05T00%3A41%3A10Z&sp=r&sv=2026-02-06&sr=b&scid=9a1da616-8c13-5b79-b373-76e1fc498810&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T23%3A34%3A37Z&ske=2026-10-05T23%3A34%3A37Z&sks=b&skv=2026-02-06&sig=TXg6qkniZimIoUi4KKzvRQ/W3rscRQ3ka3aaVbJQJeQ%3D' -o gallery3new-photo-4.jpg
+          curl -fL --retry 3 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-a3f4-8209-9f96-413e41b16d70/raw?se=2026-10-05T00%3A41%3A12Z&sp=r&sv=2026-02-06&sr=b&scid=e417101a-bdab-5fe9-9f2f-c803c1bdb711&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T21%3A33%3A12Z&ske=2026-10-05T21%3A33%3A12Z&sks=b&skv=2026-02-06&sig=3Bq4pga2U/3IxdmzkVe0kMqFb1uC%2BAZ3aTlLtMOpKtA%3D' -o gallery3new-photo-5.jpg
+          curl -fL --retry 3 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-d658-8209-ad43-96f42a203dd3/raw?se=2026-10-05T00%3A41%3A14Z&sp=r&sv=2026-02-06&sr=b&scid=31426010-f56a-5ad8-838c-ec6e4b397c96&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T19%3A33%3A37Z&ske=2026-10-05T19%3A33%3A37Z&sks=b&skv=2026-02-06&sig=xdXA%2Bf/OQXFolj9Xe92URftxH0VlGUKS4UyGB4YSd2s%3D' -o gallery3new-photo-6.jpg
+          curl -fL --retry 3 'https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-2ce0-8206-a634-83ec657969c6/raw?se=2026-10-05T00%3A41%3A16Z&sp=r&sv=2026-02-06&sr=b&scid=dc745369-12c8-5dd1-8ab3-061a1cd089a3&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T17%3A55%3A06Z&ske=2026-10-05T17%3A55%3A06Z&sks=b&skv=2026-02-06&sig=kC25tYGAjrnG4mhNK2Rl3gzEeCpu0dgmVWMXeYnh7nQ%3D' -o gallery3new-photo-7.jpg
+          curl -fL --retry 3 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-2730-8209-b075-ec412fa37772/raw?se=2026-10-05T00%3A41%3A18Z&sp=r&sv=2026-02-06&sr=b&scid=3f048d2b-480b-5d36-a62b-f29e46a1132e&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-05T00%3A33%3A51Z&ske=2026-10-06T00%3A33%3A51Z&sks=b&skv=2026-02-06&sig=VxvMhzgpr5s9oxLz3aIrAAZxZVg58pxtOGn7qG0%2Bgvg%3D' -o gallery3new-photo-8.jpg
+          cat > /tmp/checksums.txt <<'EOF'
+          8262fa9b415ddc79006859fb59ca15616713783cc11ad2ac5bf55c6c1a1b64c2  gallery3new-photo-1.jpg
+          9f05f54674760f52f1c3d6861746c85ba7d47399b4c9430d9aabd5788afb2432  gallery3new-photo-2.jpg
+          34f35fd271231cc727ee5d792c6b4fefa863bbda295a60ed9bd12b4385aec5ef  gallery3new-photo-3.jpg
+          263b878ebf9a695e602923d93e5e41da7d7f1674432e0a0c779a9b95d06f7011  gallery3new-photo-4.jpg
+          6dc8299ab057c85d4f00a620f98c20685f990cb44d2c3a81b31563515596c903  gallery3new-photo-5.jpg
+          59aa289a0835b37c388a102491b58fcf845b48ed533c2129b2b7990b636f3f36  gallery3new-photo-6.jpg
+          78d077679a7268e3dbf7b02a26546de4a2967a664455b306ffbcc0c0f3a43042  gallery3new-photo-7.jpg
+          a066ca575c29b9a7567ead3f1766c1e420aae523d31c2ca06bd8a86b77e8aadc  gallery3new-photo-8.jpg
+          EOF
+          sha256sum -c /tmp/checksums.txt
+      - name: Commit original gallery 3 assets
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add gallery3new-photo-1.jpg gallery3new-photo-2.jpg gallery3new-photo-3.jpg gallery3new-photo-4.jpg gallery3new-photo-5.jpg gallery3new-photo-6.jpg gallery3new-photo-7.jpg gallery3new-photo-8.jpg
+          git commit -m "Add eight original photos to gallery 3"
+          git push
