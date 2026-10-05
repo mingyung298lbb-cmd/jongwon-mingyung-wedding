@@ -8,31 +8,1526 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="이종원 ♥ 이민경 모바일 청첩장">
 <meta property="og:description" content="2027년 3월 21일 오전 11시 · 아벤티움 웨딩홀">
-<meta property="og:image" content="https://jongwon-mingyung-wedding.onrender.com/share-preview.jpg">
-<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}#appFrame{display:block;width:100%;height:100%;border:0;background:#fff}</style>
+<meta property="og:url" content="https://jongwon-mingyung-wedding.onrender.com/">
+<meta property="og:image" content="https://jongwon-mingyung-wedding.onrender.com/share-preview.jpg?v=20260927-1">
+<meta property="og:image:secure_url" content="https://jongwon-mingyung-wedding.onrender.com/share-preview.jpg?v=20260927-1">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="이종원 이민경 웨딩 사진">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="이종원 ♥ 이민경 모바일 청첩장">
+<meta name="twitter:description" content="2027년 3월 21일 오전 11시 · 아벤티움 웨딩홀">
+<meta name="twitter:image" content="https://jongwon-mingyung-wedding.onrender.com/share-preview.jpg?v=20260927-1">
+<link rel="preload" as="image" href="hero-main.jpg?v=20261005-1" fetchpriority="high">
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"></noscript>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+<style>
+:root{
+  --ink:#33362f;--muted:#777970;--green:#72856a;--line:#e1e5db;
+  --paper:rgba(255,255,252,.91);--shadow:0 10px 30px rgba(57,70,48,.09);--detail-font:"Gowun Dodum","Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif
+}
+*, *::before, *::after{box-sizing:border-box}
+
+html{
+  width:100%;
+  max-width:100%;
+  min-height:100%;
+  margin:0;
+  padding:0;
+  overflow-x:hidden;
+  overflow-x:clip;
+  overscroll-behavior-x:none;
+  touch-action:pan-y pinch-zoom;
+}
+
+body{
+  width:100%;
+  max-width:100%;
+  min-height:100%;
+  margin:0;
+  padding:0;
+  color:var(--ink);
+  font-family:var(--detail-font);
+  background-color:#ffffff;
+  position:relative;
+  overflow-x:hidden;
+  overflow-x:clip;
+  overscroll-behavior-x:none;
+  touch-action:pan-y pinch-zoom;
+  isolation:isolate;
+}
+
+body::before{
+content: "";
+position: fixed;
+inset: 0;
+pointer-events: none;
+z-index: 0;
+
+background-image: url("wedding-pattern.png?v=3");
+background-repeat: repeat;
+background-size: 640px auto;
+background-position: center top;
+
+opacity: 0.96;
+}
+
+body::after{
+content: none;
+}
+
+.bgm-toggle{
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 10002;
+
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255,255,255,.92);
+  color: #333;
+  box-shadow: 0 4px 14px rgba(0,0,0,.12);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  line-height: 1;
+}
+
+.bgm-toggle .bgm-note{
+  display: inline-block;
+}
+
+.bgm-toggle .bgm-off{
+  display: none;
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #c43b3b;
+  line-height: 1;
+}
+
+.bgm-toggle.muted .bgm-off{
+  display: inline-block;
+}
+
+button{font:inherit}
+img,video,iframe,svg,canvas{
+  max-width:100%;
+}
+
+main, main *{
+  min-width:0;
+}
+
+.hero-card,.box,.gallery,.family-grid,.route-list,.account-group,.rsvp-form{
+  max-width:100%;
+}
+
+
+main{
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:540px;
+  min-height:100vh;
+  margin-left:auto;
+  margin-right:auto;
+  padding:0 0 34px;
+  background:rgba(255,255,252,.16);
+  overflow-x:hidden;
+  touch-action:pan-y pinch-zoom;
+}
+.hero{
+  width:100%;
+  max-width:100%;
+  margin-left:auto;
+  margin-right:auto;
+  padding:22px 18px 26px;
+}
+.hero-card{
+  position:relative;
+  background-color:#fbfaf6;
+  background-image:
+    radial-gradient(circle at 18% 22%,rgba(70,62,50,.045) 0 .65px,transparent .8px),
+    radial-gradient(circle at 74% 38%,rgba(70,62,50,.032) 0 .6px,transparent .8px),
+    radial-gradient(circle at 42% 82%,rgba(70,62,50,.028) 0 .55px,transparent .75px),
+    linear-gradient(102deg,rgba(255,255,255,.42),rgba(244,241,233,.20) 47%,rgba(255,255,255,.36));
+  background-size:19px 19px,27px 27px,23px 23px,100% 100%;
+  border:1px solid rgba(215,211,200,.72);
+  border-radius:26px;
+  padding:24px 18px 28px;
+  box-shadow:0 10px 30px rgba(57,70,48,.08);
+}
+.save-main{
+  display:block;
+  width:100%;
+}
+.save-photo-wrap{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto;
+  min-width:0;
+  overflow:hidden;
+  border-radius:0;
+}
+.save-photo{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  margin:0 auto;
+  object-fit:contain;
+  object-position:center center;
+  border-radius:0;
+  background:#edf0e8;
+}
+.save-info{
+  margin-top:24px;
+  text-align:center;
+  color:#3f423d;
+}
+.save-info-line{
+  width:max-content;
+  max-width:100%;
+  margin:0 auto;
+  padding:7px 0 6px;
+  border-top:2px solid #2f373d;
+  border-bottom:2px solid #2f373d;
+  font-family:"Noto Serif KR",serif;
+  font-size:clamp(13px,3.9vw,18px);
+  font-weight:600;
+  line-height:1.45;
+}
+.save-info-names{
+  margin-top:17px;
+  font-family:"Noto Serif KR",serif;
+  font-size:clamp(27px,8vw,42px);
+  font-weight:700;
+  line-height:1.15;
+  letter-spacing:-.02em;
+}
+.save-heart{
+  display:inline-block;
+  margin:0 .18em;
+  font-size:.68em;
+  line-height:1;
+  vertical-align:baseline;
+  transform:translateY(-.08em);
+}
+.save-info-venue{
+  width:max-content;
+  max-width:100%;
+  margin:17px auto 0;
+  padding-top:13px;
+  border-top:3.6px solid #2f373d;
+  font-family:"Noto Serif KR",serif;
+  font-size:clamp(15px,4.5vw,24px);
+  font-weight:400;
+  line-height:1.4;
+}
+@media(max-width:420px){
+  .hero-card{padding:20px 14px 24px}
+  .save-info{margin-top:18px}
+  .save-info-names{margin-top:15px}
+  .save-info-venue{margin-top:13px;padding-top:12px}
+}
+section{
+  width:100%;
+  max-width:100%;
+  margin-left:auto;
+  margin-right:auto;
+  padding:0 18px 27px;
+}
+.title{font-size:12px;font-weight:800;letter-spacing:.13em;color:var(--green);margin:0 0 11px;text-transform:uppercase}
+.box{width:100%;max-width:100%;margin-left:auto;margin-right:auto;border:1px solid rgba(207,216,199,.9);background:var(--paper);border-radius:20px;padding:17px 16px;box-shadow:var(--shadow);backdrop-filter:blur(2px)}
+.invite{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  min-height:238px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:78px 34px 46px;
+  font-family:"Noto Serif KR",serif;
+  font-size:15px;
+  font-weight:400;
+  line-height:1.95;
+  text-align:center;
+  word-break:keep-all;
+  color:#41433e;
+  background-color:#fbfaf6;
+  background-image:
+    radial-gradient(circle at 16% 20%,rgba(74,66,54,.045) 0 .65px,transparent .8px),
+    radial-gradient(circle at 79% 34%,rgba(74,66,54,.032) 0 .6px,transparent .8px),
+    radial-gradient(circle at 38% 78%,rgba(74,66,54,.027) 0 .55px,transparent .75px),
+    linear-gradient(105deg,rgba(255,255,255,.44),rgba(242,239,231,.18) 48%,rgba(255,255,255,.34));
+  background-size:18px 18px,26px 26px,22px 22px,100% 100%;
+  border:1px solid rgba(215,211,200,.76);
+  border-radius:24px;
+  box-shadow:0 10px 26px rgba(65,72,61,.075);
+}
+.invite::before{
+  content:"";
+  position:absolute;
+  top:24px;
+  left:50%;
+  width:49px;
+  height:35px;
+  transform:translateX(-50%);
+  z-index:2;
+  pointer-events:none;
+  background-image:url("ribbon-knot.svg?v=20260928-3");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  opacity:.95;
+  filter:drop-shadow(0 .18px 0 rgba(45,44,40,.07));
+}
+.invite::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  border-radius:inherit;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.78),inset 0 -1px 0 rgba(198,193,181,.16);
+}
+.invite-copy{
+  position:relative;
+  z-index:1;
+  display:block;
+  width:100%;
+  color:#41433e;
+}
+@media(max-width:420px){
+  .invite{
+    min-height:226px;
+    padding:72px 24px 42px;
+    font-size:14px;
+    line-height:1.86;
+    border-radius:22px;
+  }
+  .invite::before{
+    top:23px;
+    width:47px;
+    height:33px;
+  }
+}
+.row{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-family:var(--detail-font)}
+.row:last-child{border-bottom:0}
+.label{color:var(--muted);font-size:13px;flex:0 0 78px}
+.value{font-size:14px;font-weight:650;text-align:right;line-height:1.55}
+.family-panel{
+  width:100%;
+  background:rgba(201,221,183,.52);
+  border:1px solid rgba(166,196,143,.42);
+  border-radius:26px;
+  padding:18px;
+  box-shadow:0 10px 26px rgba(86,112,67,.08);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+.family-only{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.family-card{
+  width:100%;
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(221,226,216,.95);
+  border-radius:20px;
+  padding:20px 12px 18px;
+  text-align:center;
+  box-shadow:0 8px 24px rgba(57,70,48,.075);
+  font-family:"Gowun Batang","Noto Serif KR",serif;
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+.family-side{
+  margin-bottom:14px;
+  color:var(--green);
+  font-family:var(--detail-font);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+}
+.parent-line{
+  display:flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:9px;
+  min-height:30px;
+  font-size:14px;
+  line-height:1.75;
+  color:#383b35;
+}
+.parent-line + .parent-line{
+  margin-top:3px;
+}
+.parent-role{
+  min-width:36px;
+  color:#8b9087;
+  font-family:var(--detail-font);
+  font-size:12px;
+  font-weight:400;
+  letter-spacing:.02em;
+}
+.parent-name{
+  min-width:54px;
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:.08em;
+}
+.family-section{
+  position:relative;
+  padding-top:0;
+  padding-bottom:16px;
+}
+.rsvp-jump-wrap{
+  display:flex;
+  justify-content:flex-end;
+  margin:10px 4px 0 0;
+}
+.rsvp-jump{
+  border:1px solid rgba(114,133,106,.42);
+  border-radius:999px;
+  background:rgba(255,255,252,.88);
+  color:#66745f;
+  padding:5px 9px 5px;
+  font-family:var(--detail-font);
+  font-size:10.5px;
+  font-weight:700;
+  line-height:1.2;
+  letter-spacing:.01em;
+  box-shadow:0 3px 10px rgba(57,70,48,.06);
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+.rsvp-jump:active{
+  transform:translateY(1px);
+}
+#rsvpSection{
+  scroll-margin-top:18px;
+}
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gcard{position:relative;border:0;padding:0;border-radius:17px;overflow:hidden;background:rgba(244,247,239,.94);box-shadow:var(--shadow);aspect-ratio:5/7;cursor:pointer;border:1px solid rgba(212,220,205,.95);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.gcard img{width:100%;height:100%;object-fit:cover;display:block}
+.gcard.empty{display:flex;align-items:center;justify-content:center;color:#8b9186;font-size:12px;letter-spacing:.06em}
+.gcard .badge{position:absolute;left:10px;bottom:10px;padding:6px 8px;border-radius:999px;background:rgba(0,0,0,.50);color:#fff;font-size:11px}
+.map-img{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);margin-top:12px;background:#fff}
+.route-list{display:grid;gap:8px;margin-top:12px}
+.route{padding:10px 11px;border-radius:12px;background:rgba(255,255,255,.91);border:1px solid var(--line);font-size:12px;line-height:1.75;font-family:var(--detail-font)}
+.route b{color:#427a53}
+.calendar-section{
+  width:100%;
+  overflow:visible;
+  padding-left:12px;
+  padding-right:12px;
+}
+.calendar-img{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center center;
+  border-radius:24px!important;
+  overflow:hidden;
+  clip-path:inset(0 round 24px);
+  background:transparent;
+  box-shadow:0 8px 24px rgba(57,70,48,.06);
+}
+.rsvp-box{display:grid;gap:12px}
+.form-note{text-align:center;color:var(--muted);font-size:12px;line-height:1.65;margin:0 0 2px}
+.choice-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice-row.three{grid-template-columns:repeat(3,1fr)}
+.choice{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:8px 10px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(255,255,255,.82);
+  color:var(--ink);
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice:has(input:checked){
+  border-color:rgba(114,133,106,.72);
+  background:rgba(114,133,106,.12);
+  color:var(--green);
+  box-shadow:inset 0 0 0 1px rgba(114,133,106,.12);
+}
+.form-field{display:grid;gap:6px}
+.form-field label{font-size:12px;font-weight:800;color:var(--green)}
+.form-field input,.form-field select,.form-field textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(255,255,255,.88);
+  color:var(--ink);
+  padding:11px 12px;
+  font:inherit;
+  font-size:14px;
+  outline:none;
+}
+.form-field textarea{min-height:90px;resize:vertical;line-height:1.55}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:rgba(114,133,106,.72)}
+.form-submit{
+  width:100%;
+  border:0;
+  border-radius:12px;
+  background:var(--green);
+  color:#fff;
+  padding:11px 12px;
+  font-weight:800;
+  font-size:13px;
+  cursor:pointer;
+}
+.form-submit:disabled{opacity:.55;cursor:default}
+.form-status{min-height:18px;text-align:center;font-size:12px;color:var(--muted)}
+.account-group{margin-bottom:18px}
+.account-group-title{
+  margin:0 0 10px 2px;
+  color:var(--green);
+  font-family:var(--detail-font);
+  font-size:13px;
+  font-weight:400;
+  letter-spacing:.08em;
+}
+.account{margin-bottom:10px}
+.account-title{
+  display:block;
+  margin-bottom:8px;
+  font-family:var(--detail-font);
+  font-size:14px;
+  font-weight:400;
+  letter-spacing:.01em;
+  color:#555b53;
+  line-height:1.6;
+}
+.account-name{
+  font-family:"Gowun Batang","Noto Serif KR",serif;
+  font-size:16px;
+  font-weight:700;
+  color:#3f443d;
+  letter-spacing:.04em;
+}
+.account p{
+  margin:0 0 11px;
+  font-family:var(--detail-font);
+  font-size:13.5px;
+  font-weight:400;
+  line-height:1.7;
+  letter-spacing:.015em;
+  color:#555b53;
+}
+.account .owner{
+  margin:0 0 10px;
+  color:#7b8078;
+  font-family:var(--detail-font);
+  font-size:12px;
+  font-weight:400;
+  line-height:1.6;
+}
+.account.pending{color:#91958d;text-align:center;padding:18px 16px}
+.copy{
+  width: 74%;
+  max-width: 170px;
+  display: block;
+  margin: 0 auto;
+  border: 0;
+  border-radius: 11px;
+  background: var(--green);
+  color: #fff;
+  padding: 8px 10px;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.copy-mini{
+  display:inline-block;
+  width:auto;
+  margin-top:5px;
+  padding:3px 7px;
+  border:1px solid rgba(114,133,106,.38);
+  border-radius:7px;
+  background:rgba(255,255,255,.78);
+  color:var(--green);
+  font-size:10px;
+  font-weight:700;
+  line-height:1.1;
+  cursor:pointer;
+}
+.rsvp-intro{margin:0 0 14px;text-align:center;font-family:"Noto Serif KR",serif;font-size:14px;line-height:1.9;color:#4f554c;word-break:keep-all}
+.rsvp-form,.comment-form{display:grid;gap:11px}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice-input{position:absolute;opacity:0;pointer-events:none}
+.choice-label{display:flex;align-items:center;justify-content:center;min-height:42px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.78);font-size:13px;font-weight:700;color:#676c64;cursor:pointer}
+.choice-input:checked+.choice-label{border-color:rgba(114,133,106,.75);background:rgba(114,133,106,.12);color:var(--green)}
+.form-field{display:grid;gap:6px}
+.form-field label{font-size:12px;font-weight:800;color:#666c62}
+.form-control{width:100%;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.88);padding:11px 12px;color:var(--ink);font:inherit;font-size:14px;outline:none}
+.form-control:focus{border-color:rgba(114,133,106,.75);box-shadow:0 0 0 3px rgba(114,133,106,.08)}
+textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
+.form-submit{width:100%;border:0;border-radius:12px;background:var(--green);color:#fff;padding:11px 12px;font-weight:800;font-size:13px;cursor:pointer}
+.form-submit:disabled{opacity:.55;cursor:default}
+.form-note{font-size:10px;line-height:1.5;color:#8a8e86;text-align:center;word-break:keep-all}
+.form-status{min-height:18px;font-size:12px;text-align:center;font-weight:700;color:var(--green)}
+.guestbook-list{display:grid;gap:9px;margin-top:13px}
+.guestbook-item{padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.78)}
+.guestbook-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.guestbook-name{font-size:12px;font-weight:800;color:var(--green)}
+.guestbook-date{font-size:10px;color:#9a9d96}
+.guestbook-message{font-size:13px;line-height:1.65;color:#50544d;white-space:pre-wrap;word-break:break-word}
+.comment-empty{text-align:center;color:#91958d;font-size:12px;padding:8px 0 2px}
+.hidden{display:none!important}
+.foot{text-align:center;color:var(--muted);font-size:11px;padding:1px 18px 8px}
+
+/* Gallery modal: all album cards use the same behavior */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.91);z-index:9999;padding:58px 43px 42px}
+.modal.on{display:flex}
+.modal-slides{display:flex;align-items:center;justify-content:center;max-width:100%;max-height:84vh}
+.modal-image-stack{max-width:100%;max-height:84vh;display:flex;align-items:center;justify-content:center}
+.modal-img{max-width:100%;max-height:84vh;object-fit:contain;border-radius:5px;user-select:none;-webkit-user-drag:none}
+.modal-img.gallery-slide{display:none}
+.modal-img.gallery-slide.active{display:block}
+.modal-slide{display:none}
+.modal-slide.active{display:block}
+.close{position:fixed;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:10001;width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.94);color:#222;font-size:30px;line-height:1;cursor:pointer;box-shadow:0 4px 18px #0005}
+.nav{position:fixed;top:50%;transform:translateY(-50%);z-index:10000;width:34px;height:46px;border:0;border-radius:8px;background:rgba(255,255,255,.90);color:#222;font-size:28px;line-height:1;cursor:pointer;box-shadow:0 4px 18px #0005}
+.prev{left:5px}.next{right:5px}.nav.hidden{display:none}
+.counter{position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:rgba(255,255,255,.86);font-size:12px;letter-spacing:.12em}
+.empty-modal{display:none;color:#fff;text-align:center;font-size:14px;letter-spacing:.08em}
+.modal.empty-state .modal-slides,.modal.empty-state .counter{display:none}
+.modal.empty-state .empty-modal{display:block}
+.modal.empty-state .nav{display:none!important}
+@media(max-width:380px){
+  section,.hero{padding-left:11px;padding-right:11px}
+  .modal{padding-left:34px;padding-right:34px}
+}
+</style>
+<!-- build: 2026-09-28-gallery-on-demand-loading -->
+<style>
+/* === GREY_BROWN_THEME_20261005 === */
+:root{
+  --ink:#3f3a36;
+  --muted:#817973;
+  --green:#806f63;
+  --line:#d8d1ca;
+  --paper:rgba(248,246,242,.95);
+  --shadow:0 10px 30px rgba(68,60,54,.10);
+}
+
+html,body{background:#e9e6e2;}
+body{
+  color:var(--ink);
+  background-color:#e9e6e2;
+}
+body::before{
+  opacity:.34;
+  filter:grayscale(1) sepia(.22) saturate(.5) brightness(.98) contrast(.95);
+}
+main{
+  background:rgba(235,231,226,.38);
+}
+
+.bgm-toggle{
+  background:rgba(246,243,239,.94);
+  color:#5f554e;
+  border:1px solid rgba(126,112,101,.18);
+  box-shadow:0 4px 14px rgba(67,58,51,.12);
+}
+.bgm-toggle .bgm-off{color:#8a6257;}
+
+.hero-card,
+.invite{
+  background-color:#f4f1ed;
+  background-image:
+    radial-gradient(circle at 18% 22%,rgba(84,72,63,.045) 0 .65px,transparent .8px),
+    radial-gradient(circle at 74% 38%,rgba(84,72,63,.032) 0 .6px,transparent .8px),
+    radial-gradient(circle at 42% 82%,rgba(84,72,63,.028) 0 .55px,transparent .75px),
+    linear-gradient(102deg,rgba(255,255,255,.42),rgba(224,218,211,.22) 47%,rgba(255,255,255,.32));
+  border-color:rgba(195,186,178,.78);
+  box-shadow:0 10px 30px rgba(68,60,54,.09);
+}
+.save-photo{background:#ddd9d4;}
+.save-info,
+.invite,
+.invite-copy{color:#45403c;}
+.save-info-line{border-color:#74665d;}
+.save-info-venue{border-color:#74665d;}
+.save-heart{color:#8a6f61;}
+.invite::before{
+  filter:grayscale(1) sepia(.18) saturate(.55) brightness(.86);
+  opacity:.88;
+}
+.invite::after{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.78),inset 0 -1px 0 rgba(147,133,121,.13);
+}
+
+.title,
+.family-side,
+.account-group-title,
+.form-status,
+.guestbook-name{
+  color:#7b685c;
+}
+.box{
+  border-color:rgba(205,197,189,.94);
+  background:rgba(248,246,242,.95);
+  box-shadow:0 10px 30px rgba(68,60,54,.09);
+}
+.row{border-color:#d8d1ca;}
+.label{color:#847c75;}
+.value{color:#403b37;}
+
+.family-panel{
+  background:rgba(207,199,190,.72);
+  border-color:rgba(173,160,149,.42);
+  box-shadow:0 10px 26px rgba(79,67,58,.09);
+}
+.family-card{
+  background:rgba(249,247,244,.97);
+  border-color:rgba(211,204,197,.96);
+  box-shadow:0 8px 24px rgba(68,60,54,.08);
+}
+.parent-line{color:#45403b;}
+.parent-role{color:#918981;}
+.parent-name{color:#3f3935;}
+
+.rsvp-jump{
+  border-color:rgba(128,111,99,.42);
+  background:rgba(247,244,240,.9);
+  color:#756358;
+  box-shadow:0 3px 10px rgba(68,60,54,.07);
+}
+
+.gcard{
+  background:rgba(232,227,222,.96);
+  border-color:rgba(207,199,191,.96);
+  box-shadow:0 9px 24px rgba(68,60,54,.09);
+}
+.gcard.empty{color:#8e857e;}
+.gcard .badge{background:rgba(58,51,47,.58);}
+.map-img{
+  border-color:#d6cec7;
+  background:#f7f5f2;
+}
+.route{
+  background:rgba(248,246,243,.94);
+  border-color:#d8d1ca;
+  color:#514b46;
+}
+.route b{color:#725f53;}
+.calendar-img{
+  box-shadow:0 8px 24px rgba(68,60,54,.08);
+}
+
+.choice,
+.choice-label,
+.form-control,
+.form-field input,
+.form-field select,
+.form-field textarea{
+  background:rgba(249,247,244,.92);
+  border-color:#d7cfc8;
+  color:#433d39;
+}
+.choice:has(input:checked),
+.choice-input:checked+.choice-label{
+  border-color:rgba(128,111,99,.75);
+  background:rgba(128,111,99,.14);
+  color:#6f5e53;
+  box-shadow:inset 0 0 0 1px rgba(128,111,99,.10);
+}
+.form-field label{color:#70665f;}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus,
+.form-control:focus{
+  border-color:rgba(128,111,99,.78);
+  box-shadow:0 0 0 3px rgba(128,111,99,.09);
+}
+
+.form-submit,
+.copy{
+  background:#78665b;
+  color:#fff;
+  box-shadow:0 4px 12px rgba(72,60,52,.10);
+}
+.form-submit:active,
+.copy:active{background:#69584f;}
+.copy-mini{
+  border-color:rgba(128,111,99,.38);
+  background:rgba(249,247,244,.86);
+  color:#756358;
+}
+.rsvp-intro{color:#554e49;}
+.form-note{color:#918981;}
+
+.account-title,
+.account p{color:#5a524d;}
+.account-name{color:#463f3a;}
+.account .owner{color:#827a73;}
+.account.pending{color:#918981;}
+
+.guestbook-item{
+  border-color:#d8d1ca;
+  background:rgba(249,247,244,.86);
+}
+.guestbook-date{color:#9a928b;}
+.guestbook-message{color:#514b46;}
+.comment-empty{color:#918981;}
+.foot{color:#857d77;}
+
+.close{
+  background:rgba(244,240,236,.95);
+  color:#4e4641;
+}
+.nav{
+  background:rgba(111,94,83,.72);
+  color:#fff;
+}
+.counter{color:#eee7e2;}
+
+::selection{
+  background:rgba(128,111,99,.22);
+  color:#342f2c;
+}
+/* === /GREY_BROWN_THEME_20261005 === */
+</style>
+<style>
+/* === SQUARE_BROWN_FRAMES_20261005 === */
+.gcard{
+  border-radius:0 !important;
+  border:1px solid #7b685c !important;
+  background:#f8f6f2;
+  box-shadow:0 4px 14px rgba(91,74,63,.10);
+}
+.gcard img{
+  border-radius:0 !important;
+}
+.hero-card.hero-save-card{
+  border-radius:0 !important;
+  border:2px solid transparent !important;
+  background:
+    linear-gradient(#fbfaf6,#fbfaf6) padding-box,
+    linear-gradient(
+      135deg,
+      rgba(123,104,92,.78),
+      rgba(123,104,92,.28),
+      rgba(123,104,92,.08),
+      rgba(123,104,92,.42)
+    ) border-box;
+  box-shadow:0 5px 18px rgba(91,74,63,.12);
+}
+.hero-card.hero-save-card .save-photo-wrap,
+.hero-card.hero-save-card .save-photo{
+  border-radius:0 !important;
+}
+</style>
+<style>
+/* === SQUARE_REMAINING_BLOCKS_20261005 === */
+.box,
+.invite,
+.family-panel,
+.family-card,
+.map-img,
+.route,
+.calendar-img,
+.guestbook-item{
+  border-radius:0 !important;
+}
+.calendar-img{
+  clip-path:none !important;
+}
+</style>
+
+<style id="hero-direct-20261005">
+.hero{padding:22px 18px 26px!important}
+.hero-card.hero-save-card{
+  position:relative!important;
+  width:100%!important;
+  aspect-ratio:1006/1536!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  overflow:hidden!important;
+  background:url("https://raw.githubusercontent.com/mingyung298lbb-cmd/jongwon-mingyung-wedding/4f10bec766326551966b7cf02541c4b0cfe75f03/hero-main.jpg") center top/cover no-repeat!important;
+  box-shadow:0 10px 28px rgba(68,55,46,.13)!important;
+}
+.hero-card.hero-save-card .save-main{display:none!important}
+.hero-card.hero-save-card .save-info{
+  position:absolute!important;left:7%!important;right:7%!important;bottom:6.8%!important;
+  margin:0!important;text-align:center!important;color:#443b35!important;z-index:2!important
+}
+.hero-card.hero-save-card .save-info-line{
+  width:auto!important;max-width:none!important;margin:0 auto!important;padding:0!important;border:0!important;
+  font-family:"Noto Serif KR",serif!important;font-size:clamp(12px,3.5vw,17px)!important;
+  font-weight:500!important;line-height:1.55!important
+}
+.hero-card.hero-save-card .save-info-names{
+  margin-top:10px!important;font-family:"Noto Serif KR",serif!important;
+  font-size:clamp(25px,7.2vw,39px)!important;font-weight:600!important;line-height:1.2!important
+}
+.hero-card.hero-save-card .save-heart{
+  color:#c62828!important;margin:0 .20em!important;font-size:.72em!important;transform:translateY(-.05em)!important
+}
+.hero-card.hero-save-card .save-info-venue{
+  width:auto!important;max-width:none!important;margin:8px auto 0!important;padding:0!important;border:0!important;
+  font-family:"Noto Serif KR",serif!important;font-size:clamp(14px,4vw,20px)!important;
+  font-weight:400!important;line-height:1.5!important
+}
+</style>
 </head>
 <body>
-<iframe id="appFrame" title="모바일 청첩장"></iframe>
+<button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
+  <span class="bgm-note">♫</span>
+  <span class="bgm-off">×</span>
+</button>
+
+<audio
+  id="bgm"
+  preload="none"
+  loop
+  playsinline
+></audio>
+
+<main>
+  <div class="hero hero-save">
+    <div class="hero-card hero-save-card">
+      <div class="save-main">
+        <div class="save-photo-wrap">
+          <!-- 메인 사진은 hero-main.jpg 파일만 교체하면 됩니다. 어떤 비율의 사진도 중앙정렬을 유지합니다. -->
+          <img id="heroImage" class="save-photo" src="hero-main.jpg?v=20261005-1" alt="이종원 이민경 웨딩 사진" loading="eager" fetchpriority="high" decoding="sync">
+        </div>
+      </div>
+
+      <div class="save-info">
+        <div class="save-info-line">2027년 3월 21일 일요일 오전 11시</div>
+        <div class="save-info-names">이종원<span class="save-heart">♥</span>이민경</div>
+        <div class="save-info-venue">아벤티움 웨딩홀</div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="box invite">
+      <span class="invite-copy">
+        저희 두 사람이 서로의 곁을 지키며,<br>
+        한 길을 걸어가려 합니다.<br>
+        소중한 날 함께해 주시고 축복해 주시면<br>
+        감사하겠습니다.
+      </span>
+    </div>
+  </section>
+
+  <div class="rsvp-jump-wrap">
+    <button class="rsvp-jump" type="button" onclick="document.getElementById('rsvpSection').scrollIntoView({behavior:'smooth',block:'start'})">참석여부 설문하기</button>
+  </div>
+
+
+
+  <section>
+    <p class="title">Gallery</p>
+    <div class="gallery">
+      <button class="gcard" type="button" data-album="0" aria-label="갤러리 1" onclick="openAlbum(0);return false;">
+        <img src="/gallery3-photo-1.jpg?v=20261005-3" alt="갤러리 1 대표 사진" loading="lazy" decoding="async" fetchpriority="low">
+        <span class="badge">8 photos</span>
+      </button>
+      <button class="gcard" type="button" data-album="1" aria-label="갤러리 2" onclick="openAlbum(1);return false;">
+        <img src="/gallery1-photo-1.jpg?v=20261005-8" alt="갤러리 2 대표 사진" loading="lazy" decoding="async" fetchpriority="low">
+        <span class="badge">8 photos</span>
+      </button>
+      <button class="gcard" type="button" data-album="2" aria-label="갤러리 3" onclick="openAlbum(2);return false;">
+        <img src="/gallery3new-photo-1.jpg?v=20261005-1" alt="갤러리 3 대표 사진" loading="lazy" decoding="async" fetchpriority="low">
+        <span class="badge">8 photos</span>
+      </button>
+      <button class="gcard" type="button" data-album="3" aria-label="갤러리 4" onclick="openAlbum(3);return false;">
+        <img id="galleryCover" src="/gallery-photo-1.jpg?v=distinct-cover-20260927-4" alt="갤러리 4 대표 사진" loading="lazy" decoding="async">
+        <span class="badge">8 photos</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="family-section">
+    <div class="family-panel">
+      <div class="family-only">
+        <div class="family-card">
+          <div class="family-side">신랑측 부모님</div>
+          <div class="parent-line"><span class="parent-role">아버지</span><strong class="parent-name">이진곤</strong></div>
+          <div class="parent-line"><span class="parent-role">어머니</span><strong class="parent-name">김민서</strong></div>
+        </div>
+        <div class="family-card">
+          <div class="family-side">신부측 부모님</div>
+          <div class="parent-line"><span class="parent-role">아버지</span><strong class="parent-name">이범수</strong></div>
+          <div class="parent-line"><span class="parent-role">어머니</span><strong class="parent-name">조문영</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="title">Location</p>
+    <div class="box">
+      <div class="row"><span class="label">예식장</span><span class="value">아벤티움 웨딩홀</span></div>
+      <div class="row"><span class="label">주소</span><span class="value">서울특별시 중구 청파로 464<br>브라운스톤서울 3층<br><button class="copy-mini" type="button" onclick="copyText('서울특별시 중구 청파로 464 브라운스톤서울 3층','주소가 복사되었습니다.')">주소 복사</button></span></div>
+      <svg class="map-img" viewBox="0 0 800 540" role="img" aria-label="아벤티움 웨딩홀 약도">
+<rect width="800" height="540" fill="#eef0ee"/>
+<g fill="#747a7a"><rect x="184" y="28" width="57" height="470"/><rect x="432" y="28" width="57" height="470"/><rect x="618" y="28" width="57" height="470"/><rect x="82" y="132" width="630" height="47"/><rect x="241" y="340" width="434" height="47"/></g>
+<g fill="#fff" font-size="17" font-family="sans-serif" text-anchor="middle"><text x="212" y="82">서소문고가</text><text x="460" y="82">염천교</text><text x="646" y="82">만리재로</text><text x="124" y="163">◀ 서대문</text><text x="660" y="163">한강대교 ▶</text><text x="622" y="371">원효대교 ▶</text></g>
+<g fill="#464a48" font-size="18" font-family="sans-serif"><text x="278" y="103">중앙일보</text><text x="278" y="225">서소문공원</text><text x="554" y="105">서울스퀘어</text><text x="570" y="226">서울역</text><text x="540" y="301">롯데마트 · 서울역 서부광장</text><text x="270" y="424">한국경제신문사</text></g>
+<rect x="276" y="263" width="175" height="95" rx="7" fill="#fff" stroke="#cf8299" stroke-width="3"/><text x="363" y="303" fill="#cf4e7b" font-size="25" font-family="sans-serif" text-anchor="middle">P</text><text x="363" y="338" fill="#363936" font-size="28" font-weight="700" font-family="sans-serif" text-anchor="middle">아벤티움</text>
+<circle cx="242" cy="474" r="22" fill="#fff" stroke="#2f9a59" stroke-width="4"/><text x="242" y="482" fill="#2f9a59" font-size="24" font-weight="700" font-family="sans-serif" text-anchor="middle">2</text><text x="278" y="482" fill="#278c50" font-size="23" font-weight="700" font-family="sans-serif">충정로역 4번출구</text>
+</svg>
+      <div class="route-list">
+        <div class="route"><b>2·5호선 충정로역 4번 출구</b><br>도보 약 5분 · 출구 방향 70m 직진 후 횡단보도 건너편 브라운스톤서울 3층</div>
+        <div class="route"><b>1·4호선 서울역 15번 출구</b><br>도보 약 14분 · 서울역 서부광장 방향, 한국경제신문사 맞은편 브라운스톤서울 3층</div>
+        <div class="route"><b>서울역에서 버스 이용</b><br>서울역버스환승센터 6번 승강장 → 간선 603번 탑승 → 한국경제신문사·서소문역사공원(02109) 하차(1정거장) → 맞은편 브라운스톤서울 3층</div>
+        <div class="route"><b>본관 주차장</b> 브라운스톤서울 · 서울특별시 중구 청파로 464<br><b>별관 주차장</b> 서소문공원 주차장 · 중구 칠패로 5</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rsvpSection">
+    <p class="title">참석 여부 전달</p>
+    <div class="box">
+      <p class="rsvp-intro">원활한 예식 준비를 위해<br>참석 여부를 알려주시면 감사하겠습니다.</p>
+      <form id="rsvpForm" class="rsvp-form" action="https://script.google.com/macros/s/AKfycbybioDaB01inDyZ3F2CaGw0DCSY5FK6Ooo_0SMUIMh6gyb-7mkW_EKZXfqHZgbPjPuj/exec" method="post" target="rsvpFrame">
+        <input type="hidden" name="action" value="rsvp">
+        <div class="form-field">
+          <label>어느 쪽 하객이신가요?</label>
+          <div class="choice-grid">
+            <div>
+              <input class="choice-input" type="radio" name="side" id="sideGroom" value="신랑측" required>
+              <label class="choice-label" for="sideGroom">신랑측</label>
+            </div>
+            <div>
+              <input class="choice-input" type="radio" name="side" id="sideBride" value="신부측" required>
+              <label class="choice-label" for="sideBride">신부측</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="rsvpName">성함</label>
+          <input id="rsvpName" class="form-control" name="name" type="text" maxlength="30" autocomplete="name" required>
+        </div>
+        <div class="form-field">
+          <label for="rsvpPhone">연락처</label>
+          <input id="rsvpPhone" class="form-control" name="phone" type="tel" inputmode="numeric" maxlength="13" placeholder="010-0000-0000" autocomplete="tel" required>
+        </div>
+        <div class="form-field">
+          <label>참석 여부</label>
+          <div class="choice-grid">
+            <div>
+              <input class="choice-input" type="radio" name="attendance" id="attendanceYes" value="참석" required>
+              <label class="choice-label" for="attendanceYes">참석</label>
+            </div>
+            <div>
+              <input class="choice-input" type="radio" name="attendance" id="attendanceNo" value="불참" required>
+              <label class="choice-label" for="attendanceNo">불참</label>
+            </div>
+          </div>
+        </div>
+        <div id="guestCountField" class="form-field hidden">
+          <label for="guestCount">참석 인원</label>
+          <select id="guestCount" class="form-control" name="guestCount">
+            <option value="1">1명</option>
+            <option value="2">2명</option>
+            <option value="3">3명</option>
+            <option value="4">4명 이상</option>
+          </select>
+        </div>
+        <button id="rsvpSubmit" class="form-submit" type="submit">참석 여부 전달하기</button>
+        <div id="rsvpStatus" class="form-status" aria-live="polite"></div>
+        <div class="form-note">동일한 성함과 연락처로 다시 제출하면 기존 응답이 수정됩니다.</div>
+      </form>
+    </div>
+  </section>
+
+  <section id="guestbookSection">
+    <p class="title">축하 한마디</p>
+    <div class="box">
+      <form id="commentForm" class="comment-form" action="https://script.google.com/macros/s/AKfycbybioDaB01inDyZ3F2CaGw0DCSY5FK6Ooo_0SMUIMh6gyb-7mkW_EKZXfqHZgbPjPuj/exec" method="post" target="commentFrame">
+        <input type="hidden" name="action" value="comment">
+        <div class="form-field">
+          <label for="commentName">성함</label>
+          <input id="commentName" class="form-control" name="name" type="text" maxlength="30" required>
+        </div>
+        <div class="form-field">
+          <label for="commentMessage">축하 메시지</label>
+          <textarea id="commentMessage" class="form-control" name="message" maxlength="200" placeholder="두 사람에게 따뜻한 한마디를 남겨주세요." required></textarea>
+        </div>
+        <button id="commentSubmit" class="form-submit" type="submit">축하 메시지 남기기</button>
+        <div id="commentStatus" class="form-status" aria-live="polite"></div>
+        <div class="form-note">메시지는 등록 후 청첩장에 바로 공개됩니다.</div>
+      </form>
+      <div id="guestbookList" class="guestbook-list"></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="title">마음 전하실 곳</p>
+
+    <div class="account-group">
+      <div class="account-group-title">신랑측</div>
+
+      <div class="box account">
+        <div class="account-title">신랑 <span class="account-name">이종원</span></div>
+        <p>카카오뱅크 3333-30-1777804</p>
+        <button class="copy" type="button" onclick="copyText('3333301777804')">계좌번호 복사</button>
+      </div>
+
+      <div class="box account">
+        <div class="account-title">신랑 아버지 <span class="account-name">이진곤</span></div>
+        <p>농협 302-1814-6092-61</p>
+        <button class="copy" type="button" onclick="copyText('3021814609261')">계좌번호 복사</button>
+      </div>
+
+      <div class="box account">
+        <div class="account-title">신랑 어머니 <span class="account-name">김민서</span></div>
+        <p>카카오뱅크 3333-18-5516275</p>
+        <button class="copy" type="button" onclick="copyText('3333185516275')">계좌번호 복사</button>
+      </div>
+    </div>
+
+    <div class="account-group">
+      <div class="account-group-title">신부측</div>
+
+      <div class="box account">
+        <div class="account-title">신부 <span class="account-name">이민경</span></div>
+        <p>신한은행 110-437-514138</p>
+        <button class="copy" type="button" onclick="copyText('110437514138')">계좌번호 복사</button>
+      </div>
+
+      <div class="box account">
+        <div class="account-title">신부 아버지 <span class="account-name">이범수</span></div>
+        <p>기업은행 008-064337-01-022</p>
+        <button class="copy" type="button" onclick="copyText('00806433701022')">계좌번호 복사</button>
+      </div>
+
+      <div class="box account">
+        <div class="account-title">신부 어머니 <span class="account-name">조문영</span></div>
+        <p>기업은행 454-036281-02-011</p>
+        <button class="copy" type="button" onclick="copyText('45403628102011')">계좌번호 복사</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">이종원 · 이민경 · 2027.03.21 · 아벤티움 웨딩홀</div>
+</main>
+
+<iframe name="rsvpFrame" id="rsvpFrame" title="RSVP 전송" style="display:none"></iframe>
+<iframe name="commentFrame" id="commentFrame" title="댓글 전송" style="display:none"></iframe>
+
+<div id="galleryModal" class="modal" aria-hidden="true">
+  <button id="modalClose" class="close" type="button" aria-label="갤러리 닫기">×</button>
+  <button id="modalPrev" class="nav prev hidden" type="button" aria-label="이전 사진">‹</button>
+  <div id="modalSlides" class="modal-slides">
+    <img id="modalImage" class="modal-img" alt="" decoding="async">
+  </div>
+  <div id="emptyModal" class="empty-modal">사진 준비 예정</div>
+  <button id="modalNext" class="nav next hidden" type="button" aria-label="다음 사진">›</button>
+  <div id="modalCounter" class="counter"></div>
+</div>
+
 <script>
-(async function(){
-  const old='https://raw.githubusercontent.com/mingyung298lbb-cmd/jongwon-mingyung-wedding/a01a6505b8abc21b00634654ec7a1681e46295a4/index.html';
-  const hero='https://raw.githubusercontent.com/mingyung298lbb-cmd/jongwon-mingyung-wedding/4f10bec766326551966b7cf02541c4b0cfe75f03/hero-main.jpg';
-  const r=await fetch(old,{cache:'no-store'});
-  let html=await r.text();
-  const css='<style>'+
-  '.hero{padding:22px 18px 26px!important}'+
-  '.hero-card.hero-save-card{position:relative!important;width:100%!important;aspect-ratio:540/824!important;padding:0!important;border:0!important;border-radius:0!important;overflow:hidden!important;background:url("'+hero+'") center top/cover no-repeat!important;box-shadow:0 10px 28px rgba(68,55,46,.13)!important}'+
-  '.hero-card.hero-save-card .save-main{display:none!important}'+
-  '.hero-card.hero-save-card .save-info{position:absolute!important;left:7%!important;right:7%!important;bottom:6.8%!important;margin:0!important;text-align:center!important;color:#443b35!important;z-index:2!important}'+
-  '.hero-card.hero-save-card .save-info-line{width:auto!important;max-width:none!important;margin:0 auto!important;padding:0!important;border:0!important;font-family:"Noto Serif KR",serif!important;font-size:clamp(12px,3.5vw,17px)!important;font-weight:500!important;line-height:1.55!important}'+
-  '.hero-card.hero-save-card .save-info-names{margin-top:10px!important;font-family:"Noto Serif KR",serif!important;font-size:clamp(25px,7.2vw,39px)!important;font-weight:600!important;line-height:1.2!important}'+
-  '.hero-card.hero-save-card .save-heart{color:#c62828!important;margin:0 .20em!important;font-size:.72em!important;transform:translateY(-.05em)!important}'+
-  '.hero-card.hero-save-card .save-info-venue{width:auto!important;max-width:none!important;margin:8px auto 0!important;padding:0!important;border:0!important;font-family:"Noto Serif KR",serif!important;font-size:clamp(14px,4vw,20px)!important;font-weight:400!important;line-height:1.5!important}'+
-  '</style>';
-  html=html.replace('<head>','<head><base href="https://jongwon-mingyung-wedding.onrender.com/">');
-  html=html.replace('</head>',css+'</head>');
-  document.getElementById('appFrame').srcdoc=html;
-})().catch(function(e){console.error(e);document.body.textContent='청첩장을 불러오지 못했습니다.'});
+(function(){
+  // 앨범 사진은 페이지 진입 시 받지 않고, 카드를 눌렀을 때 현재 사진만 로드합니다.
+  // 현재 사진이 열린 뒤 다음 사진 1장만 미리 받아 슬라이드 전환을 부드럽게 합니다.
+  var albums=[[
+    "/gallery3-photo-1.jpg?v=20261005-3",
+    "/gallery3-photo-2.jpg?v=20261005-3",
+    "/gallery3-photo-3.jpg?v=20261005-3",
+    "/gallery3-photo-4.jpg?v=20261005-3",
+    "/gallery3-photo-5.jpg?v=20261005-3",
+    "/gallery2-photo-9.jpg?v=20261005-2",
+    "/gallery2-photo-10.jpg?v=20261005-2",
+    "/gallery2-photo-11.jpg?v=20261005-2"
+  ],[
+    "/gallery1-photo-1.jpg?v=20261005-8",
+    "/gallery1-photo-2.jpg?v=20261005-8",
+    "/gallery1-photo-3.jpg?v=20261005-8",
+    "/gallery1-photo-4.jpg?v=20261005-8",
+    "/gallery1-photo-5.jpg?v=20261005-8",
+    "/gallery1-photo-6.jpg?v=20261005-8",
+    "/gallery1-photo-7.jpg?v=20261005-8",
+    "data:image/jpeg;base64,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"
+  ],[
+    "/gallery3new-photo-1.jpg?v=20261005-1",
+    "/gallery3new-photo-2.jpg?v=20261005-1",
+    "/gallery3new-photo-3.jpg?v=20261005-1",
+    "/gallery3new-photo-4.jpg?v=20261005-1",
+    "/gallery3new-photo-5.jpg?v=20261005-1",
+    "/gallery3new-photo-6.jpg?v=20261005-1",
+    "/gallery3new-photo-7.jpg?v=20261005-1",
+    "/gallery3new-photo-8.jpg?v=20261005-1"
+  ],[
+    "/gallery-photo-1.jpg?v=distinct-cover-20260927-4",
+    "/gallery-photo-2.jpg?v=galleryfix-20260927-2",
+    "/gallery-photo-3.jpg?v=galleryfix-20260927-3",
+    "/gallery-photo-4.jpg?v=galleryfix-20260927-4",
+    "/gallery-photo-5.jpg?v=galleryfix-20260927-5",
+    "/gallery-photo-6.jpg?v=galleryfix-20260927-6",
+    "/gallery-photo-7.jpg?v=galleryfix-20260927-7",
+    "/gallery-photo-8.jpg?v=20261001-1"
+  ]];
+
+  var currentAlbum=0;
+  var currentIndex=0;
+  var modal=document.getElementById("galleryModal");
+  var modalImage=document.getElementById("modalImage");
+  var prevBtn=document.getElementById("modalPrev");
+  var nextBtn=document.getElementById("modalNext");
+  var closeBtn=document.getElementById("modalClose");
+  var counter=document.getElementById("modalCounter");
+  var preloaded={};
+
+  function preloadNext(){
+    var photos=albums[currentAlbum]||[];
+    var url=photos[currentIndex+1];
+    if(!url || preloaded[url]){ return; }
+    var img=new Image();
+    preloaded[url]=true;
+    img.decoding="async";
+    img.src=url;
+  }
+
+  function renderModal(){
+    var photos=albums[currentAlbum]||[];
+    var empty=photos.length===0;
+
+    if(empty){
+      modal.classList.add("empty-state");
+      modalImage.removeAttribute("src");
+      modalImage.alt="";
+      counter.innerHTML="";
+      prevBtn.classList.add("hidden");
+      nextBtn.classList.add("hidden");
+      return;
+    }
+
+    modal.classList.remove("empty-state");
+
+    var url=photos[currentIndex];
+    modalImage.alt="웨딩 갤러리 "+(currentIndex+1);
+    if(modalImage.getAttribute("src")!==url){
+      modalImage.src=url;
+    }else{
+      preloadNext();
+    }
+
+    counter.innerHTML=(currentIndex+1)+" / "+photos.length;
+    if(currentIndex===0){ prevBtn.classList.add("hidden"); }
+    else{ prevBtn.classList.remove("hidden"); }
+    if(currentIndex===photos.length-1){ nextBtn.classList.add("hidden"); }
+    else{ nextBtn.classList.remove("hidden"); }
+  }
+
+  modalImage.onload=function(){
+    preloadNext();
+  };
+
+  window.openAlbum=function(albumIndex){
+    currentAlbum=Number(albumIndex)||0;
+    currentIndex=0;
+    renderModal();
+    modal.classList.add("on");
+    modal.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+  };
+
+  function closeGallery(){
+    modal.classList.remove("on");
+    modal.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+  }
+
+  function move(step){
+    var photos=albums[currentAlbum]||[];
+    var next=currentIndex+step;
+    if(next<0 || next>=photos.length){ return; }
+    currentIndex=next;
+    renderModal();
+  }
+
+  closeBtn.onclick=closeGallery;
+  prevBtn.onclick=function(){ move(-1); };
+  nextBtn.onclick=function(){ move(1); };
+
+  modal.onclick=function(e){
+    e=e||window.event;
+    if(e.target===modal){ closeGallery(); }
+  };
+
+  document.addEventListener("keydown",function(e){
+    if(!modal.classList.contains("on")){ return; }
+    if(e.key==="Escape"){ closeGallery(); }
+    if(e.key==="ArrowLeft"){ move(-1); }
+    if(e.key==="ArrowRight"){ move(1); }
+  });
+
+  var touchStartX=0;
+  modal.addEventListener("touchstart",function(e){
+    if(e.changedTouches && e.changedTouches.length){ touchStartX=e.changedTouches[0].clientX; }
+  },false);
+  modal.addEventListener("touchend",function(e){
+    if(!e.changedTouches || !e.changedTouches.length){ return; }
+    var dx=e.changedTouches[0].clientX-touchStartX;
+    if(Math.abs(dx)<45){ return; }
+    move(dx>0?-1:1);
+  },false);
+})();
+</script>
+<script>
+const RSVP_API_URL = "https://script.google.com/macros/s/AKfycbybioDaB01inDyZ3F2CaGw0DCSY5FK6Ooo_0SMUIMh6gyb-7mkW_EKZXfqHZgbPjPuj/exec";
+
+function formatPhone(value){
+  const digits=value.replace(/\D/g,"").slice(0,11);
+  if(digits.length<4)return digits;
+  if(digits.length<8)return digits.replace(/(\d{3})(\d+)/,"$1-$2");
+  return digits.replace(/(\d{3})(\d{3,4})(\d{4})/,"$1-$2-$3");
+}
+
+const rsvpPhoneInput=document.getElementById("rsvpPhone");
+if(rsvpPhoneInput){
+  rsvpPhoneInput.addEventListener("input",e=>{
+    e.target.value=formatPhone(e.target.value);
+  });
+}
+
+document.querySelectorAll('input[name="attendance"]').forEach(radio=>{
+  radio.addEventListener("change",()=>{
+    const attending=document.querySelector('input[name="attendance"]:checked')?.value==="참석";
+    const field=document.getElementById("guestCountField");
+    if(field)field.classList.toggle("hidden",!attending);
+  });
+});
+
+let rsvpSending=false;
+let commentSending=false;
+
+const rsvpForm=document.getElementById("rsvpForm");
+if(rsvpForm){
+  rsvpForm.addEventListener("submit",e=>{
+    if(!rsvpForm.reportValidity()){
+      e.preventDefault();
+      return;
+    }
+    const side=rsvpForm.querySelector('input[name="side"]:checked')?.value;
+    const attendance=rsvpForm.querySelector('input[name="attendance"]:checked')?.value;
+    const phone=(document.getElementById("rsvpPhone")?.value||"").replace(/\D/g,"");
+    const status=document.getElementById("rsvpStatus");
+    if(!side||!attendance||phone.length<10){
+      e.preventDefault();
+      if(status)status.textContent="입력 항목을 확인해 주세요.";
+      return;
+    }
+    rsvpSending=true;
+    const btn=document.getElementById("rsvpSubmit");
+    if(btn)btn.disabled=true;
+    if(status)status.textContent="전달 중입니다…";
+  });
+}
+
+const commentForm=document.getElementById("commentForm");
+if(commentForm){
+  commentForm.addEventListener("submit",e=>{
+    if(!commentForm.reportValidity()){
+      e.preventDefault();
+      return;
+    }
+    commentSending=true;
+    const btn=document.getElementById("commentSubmit");
+    const status=document.getElementById("commentStatus");
+    if(btn)btn.disabled=true;
+    if(status)status.textContent="전달 중입니다…";
+  });
+}
+
+const rsvpFrame=document.getElementById("rsvpFrame");
+if(rsvpFrame){
+  rsvpFrame.addEventListener("load",()=>{
+    if(!rsvpSending)return;
+    rsvpSending=false;
+    const btn=document.getElementById("rsvpSubmit");
+    const status=document.getElementById("rsvpStatus");
+    if(btn)btn.disabled=false;
+    if(status)status.textContent="참석 여부가 전달되었습니다. ♥";
+  });
+}
+
+
+const commentFrame=document.getElementById("commentFrame");
+if(commentFrame){
+  commentFrame.addEventListener("load",()=>{
+    if(!commentSending)return;
+    commentSending=false;
+    const btn=document.getElementById("commentSubmit");
+    const status=document.getElementById("commentStatus");
+    if(btn)btn.disabled=false;
+    if(status)status.textContent="축하 메시지가 등록되었습니다. ♥";
+    if(commentForm)commentForm.reset();
+    setTimeout(loadPublicComments,400);
+  });
+}
+
+function renderGuestbook(comments){
+  const list=document.getElementById("guestbookList");
+  if(!list)return;
+  list.textContent="";
+  if(!comments.length){
+    const empty=document.createElement("div");
+    empty.className="comment-empty";
+    empty.textContent="아직 공개된 축하 메시지가 없습니다.";
+    list.appendChild(empty);
+    return;
+  }
+  comments.slice(0,30).forEach(item=>{
+    const card=document.createElement("div");
+    card.className="guestbook-item";
+    const meta=document.createElement("div");
+    meta.className="guestbook-meta";
+    const name=document.createElement("span");
+    name.className="guestbook-name";
+    name.textContent=item.name||"하객";
+    const date=document.createElement("span");
+    date.className="guestbook-date";
+    date.textContent=item.date||"";
+    const message=document.createElement("div");
+    message.className="guestbook-message";
+    message.textContent=item.message||"";
+    meta.append(name,date);
+    card.append(meta,message);
+    list.appendChild(card);
+  });
+}
+
+async function loadPublicComments(){
+  try{
+    const res=await fetch(RSVP_API_URL+"?action=comments&_="+Date.now(),{cache:"no-store"});
+    if(!res.ok)throw new Error("comments_failed");
+    const data=await res.json();
+    renderGuestbook(Array.isArray(data?.comments)?data.comments:[]);
+  }catch(err){
+    console.error(err);
+    renderGuestbook([]);
+  }
+}
+
+const guestbookSection=document.getElementById("guestbookSection");
+if(guestbookSection && "IntersectionObserver" in window){
+  const commentObserver=new IntersectionObserver(entries=>{
+    if(entries.some(entry=>entry.isIntersecting)){
+      loadPublicComments();
+      commentObserver.disconnect();
+    }
+  },{rootMargin:"250px 0px"});
+  commentObserver.observe(guestbookSection);
+}else{
+  window.addEventListener("load",loadPublicComments,{once:true});
+}
+
+async function copyText(t,msg="계좌번호가 복사되었습니다."){
+  try{await navigator.clipboard.writeText(t);alert(msg)}
+  catch(e){prompt(msg.replace("복사되었습니다.","복사해 주세요."),t)}
+}
+
+
+</script>
+<script>
+const bgm = document.getElementById("bgm");
+const bgmToggle = document.getElementById("bgmToggle");
+
+let isMuted = false;
+let hasStarted = false;
+
+bgm.volume = 0.45;
+bgm.loop = true;
+
+/* 파일 전체는 미리 받지 않고 메타데이터만 준비.
+   첫 사용자 상호작용에서 즉시 스트리밍 재생 시작 */
+async function startBgm() {
+  if (hasStarted) return true;
+
+  try {
+    if (!bgm.getAttribute("src")) {
+      bgm.src = "coffeehouse_game_jazz_original_4min.m4a";
+      bgm.load();
+    }
+    bgm.currentTime = 0.03;
+    await bgm.play();
+    hasStarted = true;
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+/* 페이지 아무 곳이나 처음 터치/클릭하면 재생.
+   BGM 버튼 자체는 아래 전용 핸들러가 처리함. */
+async function unlockBgm(e) {
+  if (e.target && e.target.closest && e.target.closest("#bgmToggle")) return;
+
+  const started = await startBgm();
+  if (started) {
+    window.removeEventListener("touchstart", unlockBgm);
+    window.removeEventListener("click", unlockBgm);
+  }
+}
+
+window.addEventListener("touchstart", unlockBgm, { passive: true });
+window.addEventListener("click", unlockBgm);
+
+/* 음소거 버튼:
+   아직 재생 전이면 첫 클릭은 '재생 시작', 이후부터 음소거 토글 */
+bgmToggle.addEventListener("click", async function (e) {
+  e.stopPropagation();
+
+  if (!hasStarted) {
+    const started = await startBgm();
+    if (started) {
+      isMuted = false;
+      bgm.muted = false;
+      bgmToggle.classList.remove("muted");
+      bgmToggle.setAttribute("aria-label", "배경음악 음소거");
+    }
+    return;
+  }
+
+  isMuted = !isMuted;
+  bgm.muted = isMuted;
+  bgmToggle.classList.toggle("muted", isMuted);
+  bgmToggle.setAttribute(
+    "aria-label",
+    isMuted ? "배경음악 켜기" : "배경음악 음소거"
+  );
+});
 </script>
 </body>
 </html>
