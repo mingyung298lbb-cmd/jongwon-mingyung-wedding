@@ -1,4 +1,4 @@
-name: Replace gallery 1 cover original
+name: Replace hero main original
 on:
   push:
     branches: [main]
@@ -8,7 +8,7 @@ permissions:
   contents: write
 jobs:
   replace:
-    if: github.event.head_commit.message == 'Stage gallery 1 cover replacement'
+    if: github.event.head_commit.message == 'Stage hero main replacement'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,13 +16,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          curl -fL --retry 3 'https://sdmntprjapaneast.oaiusercontent.com/files/00000000-6a28-8209-9819-7594a98fba1d/raw?se=2026-10-05T00%3A06%3A24Z&sp=r&sv=2026-02-06&sr=b&scid=ec7c3847-6381-54b4-919a-2593f0ec59b3&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T17%3A52%3A45Z&ske=2026-10-05T17%3A52%3A45Z&sks=b&skv=2026-02-06&sig=XJurrXCVVydHOGqSmWPhmLzaSUQuFbI5fqAzOT28hEo%3D' -o gallery1-photo-1.jpg
-          echo 'a7c6d2dabfe1c3f2b84923dee68f4f37d0a17f7b7022063a954eb0768be13b7a  gallery1-photo-1.jpg' | sha256sum -c -
-      - name: Commit replacement
+          curl -fL --retry 3 'https://sdmntprkoreacentral.oaiusercontent.com/files/00000000-974c-8206-bbfc-483e203b51da/raw?se=2026-10-05T00%3A17%3A30Z&sp=r&sv=2026-02-06&sr=b&scid=591caca4-309e-5f4e-8a92-b5e6c6e68054&skoid=9063adf3-a524-4acf-b70a-8731b33f2f50&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-04T23%3A34%3A38Z&ske=2026-10-05T23%3A34%3A38Z&sks=b&skv=2026-02-06&sig=qL2LVyIj63FSwediAysayprRiG0fy9LhKAejLazPdtQ%3D' -o hero-main.jpg
+          echo 'db035655ba6eb9ffe45161f27e15f59d16bfa590a5999f7013c5a7ee2d35439d  hero-main.jpg' | sha256sum -c -
+      - name: Commit hero image
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add gallery1-photo-1.jpg
-          git commit -m "Replace gallery 1 first photo with original"
+          git add hero-main.jpg
+          git commit -m "Replace hero main photo with original"
           git push
