@@ -888,11 +888,14 @@ main{
     <p class="title">Gallery</p>
     <div class="gallery">
       <button class="gcard" type="button" data-album="0" aria-label="갤러리 1" onclick="openAlbum(0);return false;">
-        <img src="/gallery1-photo-1.jpg?v=20261005-2" alt="갤러리 1 대표 사진" loading="lazy" decoding="async" fetchpriority="low">
-        <span class="badge">5 photos</span>
+        <img src="/gallery1-photo-1.jpg?v=20261005-3" alt="갤러리 1 대표 사진" loading="lazy" decoding="async" fetchpriority="low">
+        <span class="badge">8 photos</span>
       </button>
       <button class="gcard empty" type="button" data-album="1" aria-label="갤러리 2" onclick="openAlbum(1);return false;">준비 예정</button>
-      <button class="gcard empty" type="button" data-album="2" aria-label="갤러리 3" onclick="openAlbum(2);return false;">준비 예정</button>
+      <button class="gcard" type="button" data-album="2" aria-label="갤러리 3" onclick="openAlbum(2);return false;">
+        <img src="/gallery3-photo-1.jpg?v=20261005-1" alt="갤러리 3 대표 사진" loading="lazy" decoding="async" fetchpriority="low">
+        <span class="badge">5 photos</span>
+      </button>
       <button class="gcard" type="button" data-album="3" aria-label="갤러리 4" onclick="openAlbum(3);return false;">
         <img id="galleryCover" src="/gallery-photo-1.jpg?v=distinct-cover-20260927-4" alt="갤러리 4 대표 사진" loading="lazy" decoding="async">
         <span class="badge">8 photos</span>
@@ -1069,12 +1072,21 @@ main{
   // 앨범 사진은 페이지 진입 시 받지 않고, 카드를 눌렀을 때 현재 사진만 로드합니다.
   // 현재 사진이 열린 뒤 다음 사진 1장만 미리 받아 슬라이드 전환을 부드럽게 합니다.
   var albums=[[
-    "/gallery1-photo-1.jpg?v=20261005-2",
-    "/gallery1-photo-2.jpg?v=20261005-2",
-    "/gallery1-photo-3.jpg?v=20261005-2",
-    "/gallery1-photo-4.jpg?v=20261005-2",
-    "/gallery1-photo-5.jpg?v=20261005-2"
-  ],[],[],[
+    "/gallery1-photo-1.jpg?v=20261005-3",
+    "/gallery1-photo-2.jpg?v=20261005-3",
+    "/gallery1-photo-3.jpg?v=20261005-3",
+    "/gallery1-photo-4.jpg?v=20261005-3",
+    "/gallery1-photo-5.jpg?v=20261005-3",
+    "/gallery1-photo-6.jpg?v=20261005-3",
+    "/gallery1-photo-7.jpg?v=20261005-3",
+    "/gallery1-photo-8.jpg?v=20261005-3"
+  ],[],[
+    "/gallery3-photo-1.jpg?v=20261005-1",
+    "/gallery3-photo-2.jpg?v=20261005-1",
+    "/gallery3-photo-3.jpg?v=20261005-1",
+    "/gallery3-photo-4.jpg?v=20261005-1",
+    "/gallery3-photo-5.jpg?v=20261005-1"
+  ],[
     "/gallery-photo-1.jpg?v=distinct-cover-20260927-4",
     "/gallery-photo-2.jpg?v=galleryfix-20260927-2",
     "/gallery-photo-3.jpg?v=galleryfix-20260927-3",
