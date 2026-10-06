@@ -1,0 +1,155 @@
+name: Optimize gallery loading
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  optimize:
+    if: contains(github.event.head_commit.message, '[optimize-gallery-loading]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Install image tools
+        run: python -m pip install --quiet pillow
+
+      - name: Create high-quality lightweight gallery 2 photo 8
+        run: |
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          src=Path("gallery2-photo-8-hq.png")
+          out=Path("gallery2-photo-8-hq.jpg")
+          im=Image.open(src).convert("RGB")
+          im.save(out,"JPEG",quality=95,subsampling=0,optimize=True,progressive=True)
+          print("source_bytes",src.stat().st_size)
+          print("output_bytes",out.stat().st_size)
+          print("size",im.size)
+          PY
+
+      - name: Update gallery loading logic
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path("index.html")
+          s=p.read_text(encoding="utf-8")
+
+          old8='"/gallery2-photo-8-hq.png?v=20261006-hq1"'
+          new8='"/gallery2-photo-8-hq.jpg?v=20261006-fast1"'
+          if s.count(old8)!=1:
+              raise SystemExit(f"photo8 ref count={s.count(old8)}")
+          s=s.replace(old8,new8)
+
+          old='''  function loadDecoded(url){
+    if(imageLoads[url]){ return imageLoads[url]; }
+
+    imageLoads[url]=new Promise(function(resolve,reject){
+      var img=new Image();
+      img.decoding="async";
+      img.onload=function(){
+        if(typeof img.decode==="function"){
+          img.decode().catch(function(){}).then(function(){ resolve(img); });
+        }else{
+          resolve(img);
+        }
+      };
+      img.onerror=function(){
+        delete imageLoads[url];
+        reject(new Error("gallery_image_failed"));
+      };
+      img.src=url;
+    });
+
+    return imageLoads[url];
+  }
+
+  function preloadAround(){
+    var photos=albums[currentAlbum]||[];
+    if(!photos.length){ return; }
+
+    var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+    var saveData=!!(conn&&conn.saveData);
+    var slow=!!(conn&&/^(slow-2g|2g)$/.test(conn.effectiveType||""));
+    var ahead=(saveData||slow)?1:2;
+
+    // 다음 사진을 1~2장만 준비합니다. 이전 사진은 이미 본 사진이라 브라우저 캐시에 남습니다.
+    for(var i=1;i<=ahead;i++){
+      var url=photos[currentIndex+i];
+      if(url){ loadDecoded(url).catch(function(){}); }
+    }
+  }'''
+
+          new='''  function loadDecoded(url,priority){
+    if(imageLoads[url]){ return imageLoads[url]; }
+
+    imageLoads[url]=new Promise(function(resolve,reject){
+      var img=new Image();
+      img.decoding="async";
+      try{ img.fetchPriority=priority||"auto"; }catch(e){}
+      img.onload=function(){
+        if(typeof img.decode==="function"){
+          img.decode().catch(function(){}).then(function(){ resolve(img); });
+        }else{
+          resolve(img);
+        }
+      };
+      img.onerror=function(){
+        delete imageLoads[url];
+        reject(new Error("gallery_image_failed"));
+      };
+      img.src=url;
+    });
+
+    return imageLoads[url];
+  }
+
+  function preloadAround(){
+    var photos=albums[currentAlbum]||[];
+    if(!photos.length){ return; }
+
+    var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+    var saveData=!!(conn&&conn.saveData);
+    var slow=!!(conn&&/^(slow-2g|2g)$/.test(conn.effectiveType||""));
+    var ahead=(saveData||slow)?1:2;
+
+    // 갤러리를 연 뒤에만 주변 사진을 낮은 우선순위로 준비합니다.
+    for(var i=1;i<=ahead;i++){
+      var url=photos[currentIndex+i];
+      if(url){ loadDecoded(url,"low").catch(function(){}); }
+    }
+  }'''
+          if old not in s:
+              raise SystemExit("loader block not found")
+          s=s.replace(old,new)
+
+          old2='''    loadDecoded(url).then(function(){
+      // 빠르게 여러 장을 넘겼다면 늦게 끝난 이전 요청은 화면을 덮어쓰지 않습니다.'''
+
+          new2='''    // 현재 사진은 최우선으로 시작하고, 바로 다음 사진들은 동시에 낮은 우선순위로 준비합니다.
+    var currentLoad=loadDecoded(url,"high");
+    preloadAround();
+
+    currentLoad.then(function(){
+      // 빠르게 여러 장을 넘겼다면 늦게 끝난 이전 요청은 화면을 덮어쓰지 않습니다.'''
+          if old2 not in s:
+              raise SystemExit("render load block not found")
+          s=s.replace(old2,new2)
+
+          p.write_text(s,encoding="utf-8")
+          PY
+
+      - name: Commit optimization
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add gallery2-photo-8-hq.jpg index.html
+          git commit -m "Optimize gallery image loading"
+          git push origin main
