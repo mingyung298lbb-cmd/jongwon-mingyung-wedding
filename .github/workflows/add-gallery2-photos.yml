@@ -1,0 +1,60 @@
+name: Temporary Gallery 2 Photo Upload
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/add-gallery2-photos.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-gallery:
+    if: github.event.head_commit.message == 'Temporary workflow for gallery2 image upload'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Download exact uploaded photos
+        env:
+          IMG1_URL: 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/c40b788e-9c92-4756-8996-1c1f3263c780.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiY2YzZDBhMGE1OGM4YzQ1NyIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTM5Mjc3OH0.Epxr1Ojv9SmP6haSUrcEqUxs_gcywuRywJyFkjZal-M'
+          IMG2_URL: 'https://d2jqrm6oza8nb6.cloudfront.net/datasets/8e5ac3bf-88e1-461b-b499-16676f0d8e91.png?_jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlIYXNoIjoiZTcyZmNmNzgzMTQ4ZjgxNCIsImJ1Y2tldCI6InJ1bndheS1kYXRhc2V0cyIsInN0YWdlIjoicHJvZCIsImV4cCI6MTc5MTQxOTAwMH0.3q1KgYyz1OMDOqGnOg8rgGYrVdNGM2S12I0tMXxlXqg'
+        run: |
+          curl -fL "$IMG1_URL" -o gallery2-photo-9.jpg
+          curl -fL "$IMG2_URL" -o gallery2-photo-10.jpg
+          echo "e5df68352ee36ca763942b6230c10f0bb5f46e7fdab3228e020a2f26a86c9185  gallery2-photo-9.jpg" | sha256sum -c -
+          echo "aed0d3a5439f03a7300463b56a9f4c7cba53da13bf3e160fc7c3a22b9e67cdd2  gallery2-photo-10.jpg" | sha256sum -c -
+
+      - name: Replace Gallery 2 last photo and append the two new photos
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path("index.html")
+          s=p.read_text(encoding="utf-8")
+          old='''    "/gallery1-photo-6.jpg?v=20261005-8",
+              "/gallery2-photo-7-hq.png?v=20261006-final7",
+              "/gallery2-photo-8-hq.jpg?v=20261006-fast1",
+              "/gallery1-photo-8.jpg?v=20261005-15"
+            ],['''
+          new='''    "/gallery1-photo-6.jpg?v=20261005-8",
+              "/gallery2-photo-7-hq.png?v=20261006-final7",
+              "/gallery2-photo-8-hq.jpg?v=20261006-fast1",
+              "/gallery2-photo-9.jpg?v=20261006-2115",
+              "/gallery2-photo-10.jpg?v=20261006-2115"
+            ],['''
+          if s.count(old) != 1:
+              raise SystemExit(f"Expected one Gallery 2 tail, found {s.count(old)}")
+          p.write_text(s.replace(old,new),encoding="utf-8")
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html gallery2-photo-9.jpg gallery2-photo-10.jpg
+          git commit -m "Replace Gallery 2 last photo with two new portraits"
+          git push origin HEAD:main
