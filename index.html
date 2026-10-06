@@ -616,6 +616,9 @@ textarea.form-control{min-height:92px;resize:vertical;line-height:1.55}
 .modal-slides{display:flex;align-items:center;justify-content:center;max-width:100%;max-height:84vh}
 .modal-image-stack{max-width:100%;max-height:84vh;display:flex;align-items:center;justify-content:center}
 .modal-img{max-width:100%;max-height:84vh;object-fit:contain;border-radius:5px;user-select:none;-webkit-user-drag:none}
+.modal-slides{position:relative;min-width:36px;min-height:36px}
+.modal-slides.loading::after{content:"";position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border:2px solid rgba(255,255,255,.24);border-top-color:rgba(255,255,255,.88);border-radius:50%;animation:gallerySpin .7s linear infinite}
+@keyframes gallerySpin{to{transform:rotate(360deg)}}
 .modal-img.gallery-slide{display:none}
 .modal-img.gallery-slide.active{display:block}
 .modal-slide{display:none}
@@ -1212,29 +1215,74 @@ main{
   var currentAlbum=0;
   var currentIndex=0;
   var modal=document.getElementById("galleryModal");
+  var modalSlides=document.getElementById("modalSlides");
   var modalImage=document.getElementById("modalImage");
   var prevBtn=document.getElementById("modalPrev");
   var nextBtn=document.getElementById("modalNext");
   var closeBtn=document.getElementById("modalClose");
   var counter=document.getElementById("modalCounter");
-  var preloaded={};
 
-  function preloadNext(){
+  // 페이지 최초 진입에서는 갤러리 원본을 미리 받지 않습니다.
+  // 갤러리를 연 뒤에만 필요한 사진을 디코딩하고, 주변 사진만 제한적으로 미리 받습니다.
+  var imageLoads={};
+  var renderSeq=0;
+
+  function loadDecoded(url){
+    if(imageLoads[url]){ return imageLoads[url]; }
+
+    imageLoads[url]=new Promise(function(resolve,reject){
+      var img=new Image();
+      img.decoding="async";
+      img.onload=function(){
+        if(typeof img.decode==="function"){
+          img.decode().catch(function(){}).then(function(){ resolve(img); });
+        }else{
+          resolve(img);
+        }
+      };
+      img.onerror=function(){
+        delete imageLoads[url];
+        reject(new Error("gallery_image_failed"));
+      };
+      img.src=url;
+    });
+
+    return imageLoads[url];
+  }
+
+  function preloadAround(){
     var photos=albums[currentAlbum]||[];
-    var url=photos[currentIndex+1];
-    if(!url || preloaded[url]){ return; }
-    var img=new Image();
-    preloaded[url]=true;
-    img.decoding="async";
-    img.src=url;
+    if(!photos.length){ return; }
+
+    var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
+    var saveData=!!(conn&&conn.saveData);
+    var slow=!!(conn&&/^(slow-2g|2g)$/.test(conn.effectiveType||""));
+    var ahead=(saveData||slow)?1:2;
+
+    // 다음 사진을 1~2장만 준비합니다. 이전 사진은 이미 본 사진이라 브라우저 캐시에 남습니다.
+    for(var i=1;i<=ahead;i++){
+      var url=photos[currentIndex+i];
+      if(url){ loadDecoded(url).catch(function(){}); }
+    }
+  }
+
+  function setNavState(photos){
+    counter.innerHTML=(currentIndex+1)+" / "+photos.length;
+    if(currentIndex===0){ prevBtn.classList.add("hidden"); }
+    else{ prevBtn.classList.remove("hidden"); }
+    if(currentIndex===photos.length-1){ nextBtn.classList.add("hidden"); }
+    else{ nextBtn.classList.remove("hidden"); }
   }
 
   function renderModal(){
     var photos=albums[currentAlbum]||[];
     var empty=photos.length===0;
+    var seq=++renderSeq;
 
     if(empty){
       modal.classList.add("empty-state");
+      modalSlides.classList.remove("loading");
+      modalImage.style.visibility="";
       modalImage.removeAttribute("src");
       modalImage.alt="";
       counter.innerHTML="";
@@ -1244,33 +1292,53 @@ main{
     }
 
     modal.classList.remove("empty-state");
+    setNavState(photos);
 
-    var url=photos[currentIndex];
-    modalImage.alt="웨딩 갤러리 "+(currentIndex+1);
-    if(modalImage.getAttribute("src")!==url){
-      modalImage.src=url;
-    }else{
-      preloadNext();
+    var albumAtRequest=currentAlbum;
+    var indexAtRequest=currentIndex;
+    var url=photos[indexAtRequest];
+
+    // 이미 정확한 사진이 디코딩되어 화면에 있으면 즉시 유지합니다.
+    if(modalImage.getAttribute("src")===url && modalImage.complete && modalImage.naturalWidth){
+      modalImage.alt="웨딩 갤러리 "+(indexAtRequest+1);
+      modalImage.style.visibility="visible";
+      modalSlides.classList.remove("loading");
+      preloadAround();
+      return;
     }
 
-    counter.innerHTML=(currentIndex+1)+" / "+photos.length;
-    if(currentIndex===0){ prevBtn.classList.add("hidden"); }
-    else{ prevBtn.classList.remove("hidden"); }
-    if(currentIndex===photos.length-1){ nextBtn.classList.add("hidden"); }
-    else{ nextBtn.classList.remove("hidden"); }
-  }
+    // 새 사진이 준비되기 전에는 직전 사진을 숨겨서 같은 사진이 반복돼 보이지 않게 합니다.
+    modalImage.style.visibility="hidden";
+    modalSlides.classList.add("loading");
 
-  modalImage.onload=function(){
-    preloadNext();
-  };
+    loadDecoded(url).then(function(){
+      // 빠르게 여러 장을 넘겼다면 늦게 끝난 이전 요청은 화면을 덮어쓰지 않습니다.
+      if(seq!==renderSeq || currentAlbum!==albumAtRequest || currentIndex!==indexAtRequest){ return; }
+
+      modalImage.alt="웨딩 갤러리 "+(indexAtRequest+1);
+      modalImage.src=url;
+
+      // loadDecoded 단계에서 이미 로드·디코딩이 끝났으므로 캐시에서 즉시 그려집니다.
+      requestAnimationFrame(function(){
+        if(seq!==renderSeq){ return; }
+        modalImage.style.visibility="visible";
+        modalSlides.classList.remove("loading");
+        preloadAround();
+      });
+    }).catch(function(){
+      if(seq!==renderSeq){ return; }
+      modalSlides.classList.remove("loading");
+      modalImage.style.visibility="hidden";
+    });
+  }
 
   window.openAlbum=function(albumIndex){
     currentAlbum=Number(albumIndex)||0;
     currentIndex=0;
-    renderModal();
     modal.classList.add("on");
     modal.setAttribute("aria-hidden","false");
     document.body.style.overflow="hidden";
+    renderModal();
   };
 
   function closeGallery(){
