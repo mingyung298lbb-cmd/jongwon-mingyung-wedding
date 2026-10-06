@@ -1227,12 +1227,13 @@ main{
   var imageLoads={};
   var renderSeq=0;
 
-  function loadDecoded(url){
+  function loadDecoded(url,priority){
     if(imageLoads[url]){ return imageLoads[url]; }
 
     imageLoads[url]=new Promise(function(resolve,reject){
       var img=new Image();
       img.decoding="async";
+      try{ img.fetchPriority=priority||"auto"; }catch(e){}
       img.onload=function(){
         if(typeof img.decode==="function"){
           img.decode().catch(function(){}).then(function(){ resolve(img); });
@@ -1259,10 +1260,10 @@ main{
     var slow=!!(conn&&/^(slow-2g|2g)$/.test(conn.effectiveType||""));
     var ahead=(saveData||slow)?1:2;
 
-    // 다음 사진을 1~2장만 준비합니다. 이전 사진은 이미 본 사진이라 브라우저 캐시에 남습니다.
+    // 갤러리를 연 뒤에만 다음 사진을 낮은 우선순위로 준비합니다.
     for(var i=1;i<=ahead;i++){
       var url=photos[currentIndex+i];
-      if(url){ loadDecoded(url).catch(function(){}); }
+      if(url){ loadDecoded(url,"low").catch(function(){}); }
     }
   }
 
@@ -1311,7 +1312,11 @@ main{
     modalImage.style.visibility="hidden";
     modalSlides.classList.add("loading");
 
-    loadDecoded(url).then(function(){
+    // 현재 사진을 최우선으로 요청하고, 동시에 다음 1~2장을 낮은 우선순위로 준비합니다.
+    var currentLoad=loadDecoded(url,"high");
+    preloadAround();
+
+    currentLoad.then(function(){
       // 빠르게 여러 장을 넘겼다면 늦게 끝난 이전 요청은 화면을 덮어쓰지 않습니다.
       if(seq!==renderSeq || currentAlbum!==albumAtRequest || currentIndex!==indexAtRequest){ return; }
 
