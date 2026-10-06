@@ -1,0 +1,67 @@
+name: Replace gallery 2 photo 7 HQ
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  replace-photo:
+    if: contains(github.event.head_commit.message, '[replace-gallery2-photo7-hq]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Build high-quality copy of current gallery 2 photo 7
+        run: |
+          python - <<'PY'
+          from PIL import Image, ImageFilter
+          from pathlib import Path
+
+          src = Path("gallery1-photo-7.jpg")
+          out = Path("gallery2-photo-7-hq.png")
+
+          im = Image.open(src).convert("RGB")
+          w, h = im.size
+
+          # Preserve the exact photo/composition; only improve display resolution.
+          target_w = max(w, 2200)
+          if target_w > w:
+              target_h = round(h * target_w / w)
+              im = im.resize((target_w, target_h), Image.Resampling.LANCZOS)
+
+          # Mild sharpening only; no generative edits.
+          im = im.filter(ImageFilter.UnsharpMask(radius=1.15, percent=110, threshold=3))
+          im.save(out, "PNG", optimize=True)
+
+          print(f"source={w}x{h}")
+          print(f"output={im.size[0]}x{im.size[1]}")
+          print(f"output_bytes={out.stat().st_size}")
+          PY
+
+      - name: Point gallery 2 photo 7 to HQ image
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path("index.html")
+          s = p.read_text(encoding="utf-8")
+          old = '"/gallery1-photo-7.jpg?v=20261005-8"'
+          new = '"/gallery2-photo-7-hq.png?v=20261006-hq1"'
+          if s.count(old) != 1:
+              raise SystemExit(f"expected exactly one gallery 2 photo 7 reference, found {s.count(old)}")
+          p.write_text(s.replace(old, new), encoding="utf-8")
+          PY
+
+      - name: Commit replacement
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add gallery2-photo-7-hq.png index.html
+          git commit -m "Replace gallery 2 photo 7 with high quality image"
+          git push origin main
