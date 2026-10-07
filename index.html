@@ -878,67 +878,83 @@ main{
 .hero-card.hero-save-card{
   position:relative!important;
   width:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
   aspect-ratio:auto!important;
-  padding:148px 0 30px!important;
+  padding:20px 0 14px!important;
   border:0!important;
   border-radius:0!important;
   overflow:hidden!important;
   background:#e9e6e2!important;
   box-shadow:none!important;
 }
+.hero-card.hero-save-card .save-info{
+  position:relative!important;
+  order:0!important;
+  top:auto!important;
+  left:auto!important;
+  right:auto!important;
+  bottom:auto!important;
+  width:100%!important;
+  margin:0 0 18px!important;
+  padding:0 7%!important;
+  text-align:center!important;
+  color:#443b35!important;
+  z-index:2!important;
+}
+.hero-card.hero-save-card .save-info-line{
+  display:none!important;
+}
+.hero-card.hero-save-card .save-info-names{
+  margin:0!important;
+  font-family:"Noto Serif KR",serif!important;
+  font-size:clamp(25px,7.2vw,39px)!important;
+  font-weight:600!important;
+  line-height:1.2!important;
+}
+.hero-card.hero-save-card .save-heart{
+  color:#c62828!important;
+  margin:0 .20em!important;
+  font-size:.72em!important;
+  transform:translateY(-.05em)!important;
+}
+.hero-card.hero-save-card .save-info-venue{
+  width:auto!important;
+  max-width:none!important;
+  margin:12px auto 0!important;
+  padding:0!important;
+  border:0!important;
+  font-family:"Noto Serif KR",serif!important;
+  font-size:clamp(14px,4vw,20px)!important;
+  font-weight:400!important;
+  line-height:1.5!important;
+}
 .hero-card.hero-save-card .save-main{
-  display:flex!important;
+  order:1!important;
+  display:block!important;
   position:relative!important;
   inset:auto!important;
+  width:100%!important;
   z-index:1!important;
-  align-items:center!important;
-  justify-content:center!important;
 }
 .hero-card.hero-save-card .save-photo-wrap{
   width:100%!important;
+  aspect-ratio:4/3!important;
   height:auto!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
+  display:block!important;
   overflow:hidden!important;
   background:#e9e6e2!important;
 }
 .hero-card.hero-save-card .save-photo{
   display:block!important;
   width:100%!important;
-  height:auto!important;
+  height:100%!important;
   max-width:100%!important;
-  object-fit:contain!important;
-  object-position:center center!important;
+  object-fit:cover!important;
+  object-position:center 43%!important;
   background:#e9e6e2!important;
-}
-.hero-card.hero-save-card .save-info{
-  position:absolute!important;
-  top:26px!important;
-  left:7%!important;
-  right:7%!important;
-  bottom:auto!important;
-  margin:0!important;
-  text-align:center!important;
-  color:#443b35!important;
-  z-index:2!important
-}
-.hero-card.hero-save-card .save-info-line{
-  width:auto!important;max-width:none!important;margin:0 auto!important;padding:0!important;border:0!important;
-  font-family:"Noto Serif KR",serif!important;font-size:clamp(12px,3.5vw,17px)!important;
-  font-weight:500!important;line-height:1.55!important
-}
-.hero-card.hero-save-card .save-info-names{
-  margin-top:10px!important;font-family:"Noto Serif KR",serif!important;
-  font-size:clamp(25px,7.2vw,39px)!important;font-weight:600!important;line-height:1.2!important
-}
-.hero-card.hero-save-card .save-heart{
-  color:#c62828!important;margin:0 .20em!important;font-size:.72em!important;transform:translateY(-.05em)!important
-}
-.hero-card.hero-save-card .save-info-venue{
-  width:auto!important;max-width:none!important;margin:8px auto 0!important;padding:0!important;border:0!important;
-  font-family:"Noto Serif KR",serif!important;font-size:clamp(14px,4vw,20px)!important;
-  font-weight:400!important;line-height:1.5!important
+  border:0!important;
+  border-radius:0!important;
 }
 </style>
 </head>
