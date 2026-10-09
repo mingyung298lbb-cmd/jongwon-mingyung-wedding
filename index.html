@@ -1542,7 +1542,7 @@ section {
 </style>
 
 <style id="photo-controls-pastel-green-20261009">
-/* Compact round gallery arrows in white and pastel-sage */
+/* Minimal borderless gallery arrows and close control in black on white */
 #galleryModal .nav {
   position:fixed!important;
   top:50%!important;
@@ -1553,13 +1553,13 @@ section {
   width:32px!important;
   height:32px!important;
   padding:0!important;
-  border:1px solid rgba(191,214,194,.90)!important;
+  border:0!important;
   border-radius:50%!important;
-  background:rgba(253,255,252,.96)!important;
-  color:#779781!important;
+  background:rgba(255,255,255,.97)!important;
+  color:#111111!important;
   font-size:0!important;
   line-height:0!important;
-  box-shadow:0 2px 9px rgba(33,56,37,.10)!important;
+  box-shadow:none!important;
   cursor:pointer;
   -webkit-tap-highlight-color:transparent;
   transition:background-color .18s ease,border-color .18s ease;
@@ -1579,8 +1579,8 @@ section {
 #galleryModal .nav.prev::before {transform:translateX(1.5px) rotate(225deg);}
 #galleryModal .nav.next::before {transform:translateX(-1.5px) rotate(45deg);}
 #galleryModal .nav:hover,#galleryModal .nav:active {
-  background:#eff7ef!important;
-  border-color:#b5cfb9!important;
+  background:rgba(255,255,255,.90)!important;
+  border:0!important;
 }
 #galleryModal .nav.hidden,
 #galleryModal.empty-state .nav {display:none!important;}
@@ -1593,10 +1593,10 @@ section {
   align-items:center!important;
   justify-content:center!important;
   padding:0 0 2px!important;
-  border:1px solid rgba(191,214,194,.90)!important;
-  background:rgba(253,255,252,.96)!important;
-  color:#779781!important;
-  box-shadow:0 3px 15px rgba(33,56,37,.13)!important;
+  border:0!important;
+  background:rgba(255,255,255,.97)!important;
+  color:#111111!important;
+  box-shadow:none!important;
   font-family:Arial,sans-serif;
   font-size:31px!important;
   font-weight:400!important;
