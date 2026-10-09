@@ -1057,6 +1057,361 @@ main{
 }
 .form-submit:active,.copy:active {background:#ded4c9!important;}
 </style>
+
+<!-- Elegant editorial refinement inspired by airy contemporary wedding stationery.
+     Visual CSS only: original text, photos, gallery ordering, links, forms and JS retained. -->
+<style id="salon-inspired-editorial-20261009">
+:root {
+  --ink:#443b36;
+  --muted:#897e75;
+  --green:#78675c;
+  --line:#e8e0d7;
+  --paper:rgba(255,254,252,.98);
+  --shadow:0 1px 9px rgba(75,61,51,.035);
+}
+html, body {
+  background-color:#fbfaf8!important;
+  color:#443b36!important;
+}
+body::before {
+  opacity:.075!important;
+  background-size:740px auto!important;
+  filter:grayscale(1) sepia(.24) saturate(.35) brightness(1.05)!important;
+}
+main {
+  max-width:540px;
+  background:rgba(255,254,252,.77)!important;
+  box-shadow:0 0 0 1px rgba(223,216,207,.14);
+}
+section {
+  padding-bottom:42px;
+}
+.hero {
+  padding:31px 19px 41px!important;
+}
+.hero-card.hero-save-card {
+  padding:25px 0 16px!important;
+  border:0!important;
+  background:#fffdfa!important;
+  box-shadow:none!important;
+}
+.hero-card.hero-save-card .save-info {
+  margin:0 0 25px!important;
+  color:#4c413b!important;
+}
+.hero-card.hero-save-card .save-info-line {
+  font-family:"Noto Serif KR",serif!important;
+  color:#867a71!important;
+  font-size:clamp(11px,3.1vw,14px)!important;
+  font-weight:400!important;
+  letter-spacing:.075em!important;
+  line-height:1.8!important;
+  margin-bottom:15px!important;
+}
+.hero-card.hero-save-card .save-info-names {
+  font-family:"Noto Serif KR",serif!important;
+  color:#403631!important;
+  font-size:clamp(27px,7.35vw,37px)!important;
+  font-weight:500!important;
+  letter-spacing:-.047em!important;
+  line-height:1.34!important;
+}
+.hero-card.hero-save-card .save-heart {
+  color:#b97578!important;
+  font-size:.65em!important;
+  margin:0 .23em!important;
+  transform:translateY(-.04em)!important;
+}
+.hero-card.hero-save-card .save-info-venue {
+  color:#83766c!important;
+  font-size:clamp(13px,3.75vw,17px)!important;
+  font-weight:400!important;
+  letter-spacing:.05em!important;
+  margin-top:13px!important;
+  line-height:1.6!important;
+}
+.hero-card.hero-save-card .save-photo-wrap,
+.hero-card.hero-save-card .save-photo {
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:#fffdfa!important;
+}
+.invite {
+  min-height:0!important;
+  padding:88px 26px 65px!important;
+  border:0!important;
+  border-top:1px solid #eee8e1!important;
+  border-bottom:1px solid #eee8e1!important;
+  border-radius:0!important;
+  background:#fffefd!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  font-family:"Noto Serif KR",serif!important;
+  font-size:clamp(13px,3.75vw,15px)!important;
+  font-weight:400!important;
+  line-height:2.14!important;
+}
+.invite::before {
+  width:40px!important;
+  height:27px!important;
+  top:28px!important;
+  opacity:.50!important;
+  filter:grayscale(1) sepia(.35) saturate(.36) brightness(1.10)!important;
+}
+.invite::after {
+  box-shadow:none!important;
+}
+.invite-copy {
+  color:#534a44!important;
+  letter-spacing:-.02em;
+}
+.title {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
+  margin:0 0 23px!important;
+  font-family:"Noto Serif KR",serif!important;
+  font-size:13px!important;
+  font-weight:500!important;
+  line-height:1.6!important;
+  letter-spacing:.18em!important;
+  text-align:center;
+  color:#796b60!important;
+}
+.title::before,.title::after {
+  content:"";
+  display:block;
+  height:1px;
+  width:23px;
+  flex:none;
+  background:#d8cbc0;
+  opacity:.72;
+}
+.box {
+  background:#fffefa!important;
+  border:1px solid #eee7df!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.rsvp-jump-wrap {
+  margin:2px 20px 31px 0!important;
+}
+.rsvp-jump {
+  border:1px solid #e5dcd3!important;
+  background:#fffefa!important;
+  color:#76675f!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  padding:8px 13px!important;
+  font-size:11px!important;
+  font-weight:500!important;
+  letter-spacing:.02em;
+}
+.gallery {
+  gap:12px!important;
+}
+.gcard {
+  border:1px solid #ece7df!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  background:#fffdfb!important;
+}
+.gcard .badge {
+  display:none!important;
+}
+.family-section {
+  padding-top:4px!important;
+  padding-bottom:49px!important;
+}
+.family-panel {
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.family-only {
+  gap:12px!important;
+}
+.family-card {
+  padding:29px 7px 25px!important;
+  border:1px solid #eae1d8!important;
+  border-radius:0!important;
+  background:#fffefa!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+}
+.family-side {
+  color:#89786d!important;
+  font-family:"Noto Serif KR",serif!important;
+  font-size:12px!important;
+  font-weight:500!important;
+  letter-spacing:.035em!important;
+  margin-bottom:16px!important;
+}
+.parent-line {
+  gap:6px!important;
+  color:#514740!important;
+  font-family:"Noto Serif KR",serif!important;
+  line-height:1.9!important;
+}
+.parent-role {
+  min-width:0!important;
+  font-size:11px!important;
+  color:#a0958c!important;
+}
+.parent-name {
+  min-width:0!important;
+  font-size:15px!important;
+  font-weight:500!important;
+  letter-spacing:.045em!important;
+  color:#4f433b!important;
+}
+.row {
+  gap:12px!important;
+  padding:13px 0!important;
+  border-bottom:1px solid #eee7df!important;
+}
+.label {
+  font-size:12px!important;
+  color:#8a7e74!important;
+}
+.value {
+  font-size:13px!important;
+  font-weight:500!important;
+  color:#544a43!important;
+  line-height:1.9!important;
+}
+.map-img {
+  margin-top:19px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:#fffefa!important;
+}
+.route-list {
+  gap:0!important;
+  margin-top:13px!important;
+}
+.route {
+  border:0!important;
+  border-bottom:1px solid #eee8e0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  padding:14px 3px!important;
+  font-size:12px!important;
+  font-weight:400!important;
+  line-height:1.95!important;
+  color:#5f554d!important;
+}
+.route:last-child {border-bottom:0!important}
+.route b {color:#69584d!important;font-weight:600!important}
+.account-group {
+  margin-bottom:34px!important;
+}
+.account-group-title {
+  text-align:center;
+  margin-bottom:13px!important;
+  font-family:"Noto Serif KR",serif!important;
+  font-size:14px!important;
+  font-weight:500!important;
+  color:#736158!important;
+  letter-spacing:.08em!important;
+}
+.account {
+  margin-bottom:9px!important;
+}
+.account-title {
+  color:#75685e!important;
+  font-size:13px!important;
+  line-height:1.85!important;
+}
+.account-name {
+  color:#433831!important;
+  font-size:16px!important;
+  font-weight:500!important;
+}
+.account p {
+  font-size:13px!important;
+  color:#71675f!important;
+}
+.choice,.choice-label,
+.form-field input,.form-field select,.form-field textarea,.form-control {
+  border:1px solid #e5ddd3!important;
+  border-radius:0!important;
+  background:#fffefa!important;
+  box-shadow:none!important;
+}
+.form-submit {
+  border-radius:0!important;
+  background:#746257!important;
+  color:#ffffff!important;
+  box-shadow:none!important;
+  font-weight:600!important;
+  letter-spacing:.025em;
+}
+.form-submit:active {background:#5f5149!important;}
+.copy {
+  width:auto!important;
+  min-width:120px!important;
+  max-width:190px!important;
+  margin:0 auto!important;
+  border:1px solid #dcd2c9!important;
+  border-radius:0!important;
+  background:#faf6f1!important;
+  color:#635449!important;
+  box-shadow:none!important;
+  font-size:12px!important;
+  font-weight:500!important;
+  padding:9px 18px!important;
+}
+.copy-mini {
+  border-color:#e5dbd2!important;
+  background:#faf6f2!important;
+  border-radius:0!important;
+  color:#75665c!important;
+}
+.bgm-toggle {
+  width:36px!important;
+  height:36px!important;
+  border:1px solid rgba(190,178,166,.55)!important;
+  background:rgba(255,254,251,.91)!important;
+  box-shadow:0 2px 9px rgba(71,59,49,.055)!important;
+  color:#7b6c61!important;
+}
+.foot {
+  border-top:1px solid #eee8e1;
+  color:#998b80!important;
+  font-family:"Noto Serif KR",serif!important;
+  font-size:10px!important;
+  letter-spacing:.045em;
+  padding:22px 16px 17px!important;
+}
+@media(max-width:420px) {
+  .hero {padding:27px 18px 35px!important}
+  .hero-card.hero-save-card {padding:20px 0 13px!important}
+  .hero-card.hero-save-card .save-info {margin-bottom:22px!important}
+  .invite {
+    padding:80px 21px 56px!important;
+    font-size:13.5px!important;
+    line-height:2.1!important;
+  }
+  .family-card {padding:23px 5px 21px!important}
+  .parent-line {gap:4px!important}
+  .parent-name {font-size:14px!important}
+  .gallery {gap:10px!important}
+  .title {margin-bottom:19px!important}
+}
+@media(prefers-reduced-motion:reduce) {
+  .hero-card,.gcard,.bgm-toggle {transition:none!important;animation:none!important}
+}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
