@@ -1074,14 +1074,15 @@ html, body {
   color:#443b36!important;
 }
 body::before {
-  opacity:.075!important;
+  /* 부드러운 나무/꽃무늬가 은근히 보이도록 복구 */
+  opacity:.28!important;
   background-size:740px auto!important;
-  filter:grayscale(1) sepia(.24) saturate(.35) brightness(1.05)!important;
+  filter:grayscale(1) sepia(.24) saturate(.42) brightness(1.03)!important;
 }
 main {
   max-width:540px;
-  background:rgba(255,254,252,.77)!important;
-  box-shadow:0 0 0 1px rgba(223,216,207,.14);
+  background:rgba(255,254,252,.83)!important;
+  box-shadow:0 0 0 1px rgba(223,216,207,.18);
 }
 section {
   padding-bottom:42px;
@@ -1137,15 +1138,19 @@ section {
   box-shadow:none!important;
   background:#fffdfa!important;
 }
-.invite {
+.box.invite {
   min-height:0!important;
   padding:88px 26px 65px!important;
-  border:0!important;
-  border-top:1px solid #eee8e1!important;
-  border-bottom:1px solid #eee8e1!important;
+  border:1.5px solid #eadfd4!important;
   border-radius:0!important;
-  background:#fffefd!important;
-  background-image:none!important;
+  background-color:#fffdfa!important;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(150,133,116,.045) 0 .55px, transparent .85px),
+    radial-gradient(circle at 74% 38%, rgba(150,133,116,.030) 0 .5px, transparent .8px),
+    radial-gradient(circle at 42% 82%, rgba(150,133,116,.028) 0 .5px, transparent .78px),
+    repeating-linear-gradient(105deg, rgba(157,141,124,.018) 0 1px, transparent 1px 5px),
+    linear-gradient(180deg, #fffefd 0%, #fdf9f4 100%)!important;
+  background-size:19px 19px,27px 27px,23px 23px,100% 100%,100% 100%!important;
   box-shadow:none!important;
   font-family:"Noto Serif KR",serif!important;
   font-size:clamp(13px,3.75vw,15px)!important;
@@ -1156,8 +1161,8 @@ section {
   width:40px!important;
   height:27px!important;
   top:28px!important;
-  opacity:.50!important;
-  filter:grayscale(1) sepia(.35) saturate(.36) brightness(1.10)!important;
+  opacity:.62!important;
+  filter:grayscale(1) sepia(.28) saturate(.42) brightness(1.08)!important;
 }
 .invite::after {
   box-shadow:none!important;
