@@ -1661,59 +1661,62 @@ section {
 </style>
 
 <style id="sage-ivory-global-20261009">
-/* Ivory remains the dominant color; muted sage appears on headings, lines,
-   selected controls and small accents. Photos and the intro paper stay untouched. */
+/* Muted botanical sage on ivory: fuller but still restrained green throughout.
+   Keep all photography, introduction paper texture and established layout untouched. */
 :root {
-  --green:#6e8975;
-  --muted:#849084;
-  --line:#e1e9df;
+  --green:#5f8067;
+  --muted:#748977;
+  --line:#ccdfcd;
 }
 html,body {
-  background-color:#f9fbf8!important;
+  background-color:#f0f7ed!important;
 }
 main {
-  background-color:rgba(252,254,251,.83)!important;
-  box-shadow:0 0 0 1px rgba(196,216,198,.22)!important;
+  background-color:rgba(242,249,239,.86)!important;
+  box-shadow:0 0 0 1px rgba(167,197,167,.28)!important;
 }
 /* Keep the botanical pattern visible but gently shift its monochrome hue to sage. */
 body::before,main::before {
-  filter:grayscale(1) sepia(.20) hue-rotate(65deg) saturate(.67) brightness(1.03)!important;
+  filter:grayscale(1) sepia(.22) hue-rotate(65deg) saturate(1.06) brightness(1.01)!important;
 }
+body::before {opacity:.47!important;}
+main::before {opacity:.35!important;}
 /* Intro: specifically retain pure white paper grain, beige 1.5px border and size. */
 .box.invite {
   border-color:#eadfd4!important;
   background-color:#ffffff!important;
 }
 .title {
-  color:#738e7a!important;
+  color:#5e8067!important;
 }
 .title::before,.title::after {
-  background:#bfcfbe!important;
-  opacity:.80!important;
+  background:#a2c1a8!important;
+  opacity:.92!important;
 }
 .hero-card.hero-save-card .save-info-line {
-  color:#838e80!important;
+  color:#728b76!important;
 }
 .hero-card.hero-save-card .save-info-venue {
-  color:#708873!important;
+  color:#5f8266!important;
 }
 .invite-copy {
   color:#4c534b!important;
 }
 .box:not(.invite),.family-card {
-  border-color:#e2eae0!important;
+  border-color:#cbdcca!important;
+  background-color:#f7fbf5!important;
 }
 .family-side,.account-group-title {
-  color:#728975!important;
+  color:#61816a!important;
 }
 .parent-role,.label {
-  color:#819181!important;
+  color:#738c77!important;
 }
 .parent-line,.parent-name,.value {
   color:#4e594f!important;
 }
 .row,.route {
-  border-bottom-color:#e3ebe2!important;
+  border-bottom-color:#ccdfce!important;
 }
 .route b {color:#657e69!important;}
 .account-title {color:#677c6b!important;}
@@ -1723,29 +1726,29 @@ body::before,main::before {
 .rsvp-jump,
 .copy,.copy-mini,
 #gallerySection .gallery-more {
-  background:#f7faf6!important;
-  border-color:#cbdacb!important;
-  color:#607b67!important;
+  background:#eaf3e8!important;
+  border-color:#b4d0b8!important;
+  color:#4f7258!important;
 }
 .rsvp-jump:hover,.copy:hover,.copy-mini:hover,
 #gallerySection .gallery-more:hover,
 #gallerySection .gallery-more:focus-visible {
-  background:#eef5ec!important;
-  border-color:#adc7b1!important;
+  background:#dcebdc!important;
+  border-color:#99bea1!important;
 }
 #gallerySection .gallery .gcard {
-  border-color:#e4ebe2!important;
+  border-color:#d1e0d0!important;
 }
 /* Soft green fields and states, with dark green CTA for readable white text. */
 .choice,.choice-label,
 .form-control,.form-field input,.form-field select,.form-field textarea {
-  border-color:#dce6db!important;
-  background-color:#fdfefc!important;
+  border-color:#c8ddc9!important;
+  background-color:#fbfef9!important;
 }
 .choice:has(input:checked),.choice-input:checked+.choice-label {
-  background:#eaf2e9!important;
-  border-color:#adc7b2!important;
-  color:#53745d!important;
+  background:#deeedf!important;
+  border-color:#95b99b!important;
+  color:#476f50!important;
   box-shadow:inset 0 0 0 1px rgba(123,153,130,.10)!important;
 }
 .form-field label {color:#647e69!important;}
@@ -1755,15 +1758,25 @@ body::before,main::before {
   box-shadow:0 0 0 3px rgba(143,174,148,.13)!important;
 }
 .form-submit {
-  background:#59745f!important;
+  background:#51755b!important;
   color:#ffffff!important;
 }
 .form-submit:active {background:#48664f!important;}
 .form-status,.guestbook-name {color:#67816c!important;}
 .guestbook-item {border-color:#e0e8de!important;}
 .foot {
-  color:#849388!important;
-  border-top-color:#dce6da!important;
+  color:#748c78!important;
+  border-top-color:#c9dec9!important;
+}
+/* Tinted hero and secondary text blocks introduce sage beyond borders and buttons. */
+.hero-card.hero-save-card {
+  background-color:#f5faf2!important;
+}
+.family-panel,.guestbook-item {
+  border-color:#ccddcc!important;
+}
+.account-group-title,.rsvp-intro {
+  color:#63836b!important;
 }
 ::selection {
   color:#344637;
@@ -2064,6 +2077,9 @@ body::before,main::before {
   // 앨범별 원본 경로와 사진 데이터는 그대로 유지합니다.
   var movedPhotos=flatGallery.splice(24,3);
   flatGallery.splice(9,0,...movedPhotos);
+  // 현재 화면 순서의 28·29번을 12번 바로 뒤로 이동 (13·14번).
+  var movedLaterPhotos=flatGallery.splice(27,2);
+  flatGallery.splice(12,0,...movedLaterPhotos);
   var flatUrls=flatGallery.map(function(item){return item.url;});
   var galleryGrid=document.getElementById("galleryGrid");
   var galleryMore=document.getElementById("galleryMore");
