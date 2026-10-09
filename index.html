@@ -1419,10 +1419,10 @@ section {
 </style>
 
 <style id="gallery-individual-cards-more-20261009">
-/* 원본 앨범 1→2→3→4, 각 앨범 사진 순서를 고정한 2열 그리드 */
+/* 원본 앨범 1→2→3→4, 각 앨범 사진 순서를 고정한 3열 그리드 */
 #gallerySection .gallery {
   display:grid!important;
-  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
   grid-auto-flow:row!important;
   grid-auto-rows:auto;
   gap:9px!important;
@@ -1461,10 +1461,10 @@ section {
 }
 #gallerySection .gallery .gcard.gallery-last-wide {
   grid-column:1 / -1!important;
-  aspect-ratio:4/3!important;
+  aspect-ratio:5/3!important;
   isolation:isolate;
 }
-/* 홀수 장일 때 마지막 사진을 양쪽 열에 걸치게 배치: 빈 반쪽 셀 없음. */
+/* 3열에서 마지막 사진이 한 장 남으면 전체 열을 채워 빈 셀이 없도록 합니다. */
 #gallerySection .gallery .gcard.gallery-last-wide::before {
   content:"";
   position:absolute;
@@ -1816,8 +1816,8 @@ section {
   var galleryGrid=document.getElementById("galleryGrid");
   var galleryMore=document.getElementById("galleryMore");
   var galleryStatus=document.getElementById("galleryStatus");
-  var initialGalleryCount=8;
-  var galleryPageSize=8;
+  var initialGalleryCount=9;
+  var galleryPageSize=9;
   var shownGalleryCount=0;
   var flatMode=true;
 
@@ -1850,7 +1850,7 @@ section {
     galleryStatus.textContent="총 "+flatGallery.length+"장 중 "+shownGalleryCount+"장 표시";
     var finalCard=galleryGrid.lastElementChild;
     if(finalCard){finalCard.classList.remove("gallery-last-wide");}
-    if(remaining===0 && shownGalleryCount%2===1 && finalCard){
+    if(remaining===0 && shownGalleryCount%3===1 && finalCard){
       finalCard.classList.add("gallery-last-wide");
       var lastUrl=flatGallery[flatGallery.length-1].url.replace(/"/g,"%22");
       finalCard.style.setProperty("--last-photo",'url("'+lastUrl+'")');
