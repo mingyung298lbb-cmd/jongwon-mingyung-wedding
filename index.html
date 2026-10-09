@@ -1774,6 +1774,58 @@ main::before {opacity:.20!important;}
 .form-status,.guestbook-name {color:#796b60!important;}
 .foot {border-top-color:#e6e8e2!important;}
 </style>
+
+<style id="compact-account-copy-20261009">
+/* Account bank line and small copy control share one row; keep original copy actions. */
+.box.account {
+  padding:10px 13px!important;
+  margin-bottom:7px!important;
+}
+.box.account .account-title {
+  margin:0 0 3px!important;
+  line-height:1.38!important;
+}
+.box.account .account-info-row {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  width:100%;
+  min-width:0;
+}
+.box.account .account-info-row p {
+  flex:1 1 auto;
+  min-width:0;
+  margin:0!important;
+  line-height:1.45!important;
+  font-size:13px!important;
+  letter-spacing:-.025em;
+  white-space:nowrap;
+}
+.box.account .account-info-row .copy {
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  width:auto!important;
+  min-width:44px!important;
+  max-width:none!important;
+  min-height:32px;
+  margin:0 0 0 auto!important;
+  padding:5px 7px!important;
+  border-radius:0!important;
+  font-size:11px!important;
+  line-height:1.15!important;
+  letter-spacing:0!important;
+  box-shadow:none!important;
+  white-space:nowrap;
+}
+@media(max-width:360px) {
+  .box.account {padding-left:10px!important;padding-right:10px!important;}
+  .box.account .account-info-row {gap:5px;}
+  .box.account .account-info-row p {font-size:12px!important;letter-spacing:-.035em;}
+  .box.account .account-info-row .copy {padding-left:5px!important;padding-right:5px!important;}
+}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -1952,20 +2004,26 @@ main::before {opacity:.20!important;}
 
       <div class="box account">
         <div class="account-title">신랑 <span class="account-name">이종원</span></div>
-        <p>카카오뱅크 3333-30-1777804</p>
-        <button class="copy" type="button" onclick="copyText('3333301777804')">계좌번호 복사</button>
+        <div class="account-info-row">
+          <p>카카오뱅크 3333-30-1777804</p>
+          <button class="copy" type="button" onclick="copyText('3333301777804')" aria-label="카카오뱅크 계좌번호 복사">복사</button>
+        </div>
       </div>
 
       <div class="box account">
         <div class="account-title">신랑 아버지 <span class="account-name">이진곤</span></div>
-        <p>농협 302-1814-6092-61</p>
-        <button class="copy" type="button" onclick="copyText('3021814609261')">계좌번호 복사</button>
+        <div class="account-info-row">
+          <p>농협 302-1814-6092-61</p>
+          <button class="copy" type="button" onclick="copyText('3021814609261')" aria-label="농협 계좌번호 복사">복사</button>
+        </div>
       </div>
 
       <div class="box account">
         <div class="account-title">신랑 어머니 <span class="account-name">김민서</span></div>
-        <p>카카오뱅크 3333-18-5516275</p>
-        <button class="copy" type="button" onclick="copyText('3333185516275')">계좌번호 복사</button>
+        <div class="account-info-row">
+          <p>카카오뱅크 3333-18-5516275</p>
+          <button class="copy" type="button" onclick="copyText('3333185516275')" aria-label="카카오뱅크 계좌번호 복사">복사</button>
+        </div>
       </div>
     </div>
 
@@ -1974,20 +2032,26 @@ main::before {opacity:.20!important;}
 
       <div class="box account">
         <div class="account-title">신부 <span class="account-name">이민경</span></div>
-        <p>신한은행 110-437-514138</p>
-        <button class="copy" type="button" onclick="copyText('110437514138')">계좌번호 복사</button>
+        <div class="account-info-row">
+          <p>신한은행 110-437-514138</p>
+          <button class="copy" type="button" onclick="copyText('110437514138')" aria-label="신한은행 계좌번호 복사">복사</button>
+        </div>
       </div>
 
       <div class="box account">
         <div class="account-title">신부 아버지 <span class="account-name">이범수</span></div>
-        <p>기업은행 008-064337-01-022</p>
-        <button class="copy" type="button" onclick="copyText('00806433701022')">계좌번호 복사</button>
+        <div class="account-info-row">
+          <p>기업은행 008-064337-01-022</p>
+          <button class="copy" type="button" onclick="copyText('00806433701022')" aria-label="기업은행 계좌번호 복사">복사</button>
+        </div>
       </div>
 
       <div class="box account">
         <div class="account-title">신부 어머니 <span class="account-name">조문영</span></div>
-        <p>기업은행 454-036281-02-011</p>
-        <button class="copy" type="button" onclick="copyText('45403628102011')">계좌번호 복사</button>
+        <div class="account-info-row">
+          <p>기업은행 454-036281-02-011</p>
+          <button class="copy" type="button" onclick="copyText('45403628102011')" aria-label="기업은행 계좌번호 복사">복사</button>
+        </div>
       </div>
     </div>
   </section>
