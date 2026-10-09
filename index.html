@@ -1876,6 +1876,74 @@ main::before {opacity:.20!important;}
   border-bottom:0!important;
 }
 </style>
+
+<style id="family-single-frame-two-rows-20261009">
+/* One thin frame with two compact rows: groom's parents / bride's parents. */
+.family-section .family-panel {
+  padding:0!important;
+  border:1px solid #e8e7e2!important;
+  border-radius:0!important;
+  background:#ffffff!important;
+  box-shadow:none!important;
+}
+.family-section .family-only {
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:0!important;
+}
+.family-section .family-card {
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+  align-items:center;
+  padding:11px 12px!important;
+  border:0!important;
+  border-bottom:1px solid #e8e7e2!important;
+  background:transparent!important;
+  text-align:left!important;
+  box-shadow:none!important;
+}
+.family-section .family-card:last-child {border-bottom:0!important;}
+.family-section .family-card .family-side {
+  margin:0!important;
+  line-height:1.5!important;
+  font-size:11.5px!important;
+  letter-spacing:0!important;
+  white-space:nowrap;
+}
+.family-section .family-parents {
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+  white-space:nowrap;
+}
+.family-section .parent-pair {
+  display:inline-flex;
+  align-items:baseline;
+  gap:3px;
+  white-space:nowrap;
+}
+.family-section .parent-pair .parent-role {
+  min-width:0!important;
+  font-size:10.5px!important;
+  letter-spacing:0!important;
+}
+.family-section .parent-pair .parent-name {
+  min-width:0!important;
+  font-size:14px!important;
+  letter-spacing:0!important;
+}
+@media(max-width:370px) {
+  .family-section .family-card {gap:5px;padding:9px 8px!important;}
+  .family-section .family-card .family-side {font-size:10.5px!important;}
+  .family-section .family-parents {gap:6px;}
+  .family-section .parent-pair {gap:2px;}
+  .family-section .parent-pair .parent-role {font-size:10px!important;}
+  .family-section .parent-pair .parent-name {font-size:13px!important;}
+}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -1942,13 +2010,17 @@ main::before {opacity:.20!important;}
       <div class="family-only">
         <div class="family-card">
           <div class="family-side">신랑측 부모님</div>
-          <div class="parent-line"><span class="parent-role">아버지</span><strong class="parent-name">이진곤</strong></div>
-          <div class="parent-line"><span class="parent-role">어머니</span><strong class="parent-name">김민서</strong></div>
+          <div class="family-parents">
+            <span class="parent-pair"><span class="parent-role">아버지</span><strong class="parent-name">이진곤</strong></span>
+            <span class="parent-pair"><span class="parent-role">어머니</span><strong class="parent-name">김민서</strong></span>
+          </div>
         </div>
         <div class="family-card">
           <div class="family-side">신부측 부모님</div>
-          <div class="parent-line"><span class="parent-role">아버지</span><strong class="parent-name">이범수</strong></div>
-          <div class="parent-line"><span class="parent-role">어머니</span><strong class="parent-name">조문영</strong></div>
+          <div class="family-parents">
+            <span class="parent-pair"><span class="parent-role">아버지</span><strong class="parent-name">이범수</strong></span>
+            <span class="parent-pair"><span class="parent-role">어머니</span><strong class="parent-name">조문영</strong></span>
+          </div>
         </div>
       </div>
     </div>
