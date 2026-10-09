@@ -1542,7 +1542,7 @@ section {
 </style>
 
 <style id="photo-controls-pastel-green-20261009">
-/* Gallery arrows: symmetrical, optically centered controls in a restrained white / pastel sage tone */
+/* Compact round gallery arrows in white and pastel-sage */
 #galleryModal .nav {
   position:fixed!important;
   top:50%!important;
@@ -1550,34 +1550,34 @@ section {
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
-  width:42px!important;
-  height:50px!important;
+  width:32px!important;
+  height:32px!important;
   padding:0!important;
   border:1px solid rgba(191,214,194,.90)!important;
-  border-radius:12px!important;
+  border-radius:50%!important;
   background:rgba(253,255,252,.96)!important;
   color:#779781!important;
   font-size:0!important;
   line-height:0!important;
-  box-shadow:0 3px 15px rgba(33,56,37,.13)!important;
+  box-shadow:0 2px 9px rgba(33,56,37,.10)!important;
   cursor:pointer;
   -webkit-tap-highlight-color:transparent;
   transition:background-color .18s ease,border-color .18s ease;
 }
-#galleryModal .nav.prev {left:6px!important;right:auto!important;}
-#galleryModal .nav.next {right:6px!important;left:auto!important;}
+#galleryModal .nav.prev {left:9px!important;right:auto!important;}
+#galleryModal .nav.next {right:9px!important;left:auto!important;}
 #galleryModal .nav::before {
   content:"";
   display:block;
   flex:none;
-  width:12px;
-  height:12px;
-  border-top:2.4px solid currentColor;
-  border-right:2.4px solid currentColor;
+  width:9px;
+  height:9px;
+  border-top:2px solid currentColor;
+  border-right:2px solid currentColor;
   border-radius:1px;
 }
-#galleryModal .nav.prev::before {transform:translateX(2px) rotate(225deg);}
-#galleryModal .nav.next::before {transform:translateX(-2px) rotate(45deg);}
+#galleryModal .nav.prev::before {transform:translateX(1.5px) rotate(225deg);}
+#galleryModal .nav.next::before {transform:translateX(-1.5px) rotate(45deg);}
 #galleryModal .nav:hover,#galleryModal .nav:active {
   background:#eff7ef!important;
   border-color:#b5cfb9!important;
@@ -1651,9 +1651,9 @@ section {
 }
 #bgmToggle.muted .bgm-off {display:flex!important;}
 @media(max-width:360px){
-  #galleryModal .nav {width:38px!important;height:48px!important;}
-  #galleryModal .nav.prev {left:4px!important;}
-  #galleryModal .nav.next {right:4px!important;}
+  #galleryModal .nav {width:30px!important;height:30px!important;}
+  #galleryModal .nav.prev {left:6px!important;}
+  #galleryModal .nav.next {right:6px!important;}
 }
 @media(prefers-reduced-motion:reduce){
   #galleryModal .nav {transition:none!important;}
