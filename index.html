@@ -2077,6 +2077,10 @@ main::before {opacity:.20!important;}
   var galleryPairAt22=flatGallery.slice(21,23);
   flatGallery.splice(14,2,...galleryPairAt22);
   flatGallery.splice(21,2,...galleryPairAt15);
+  // 현재 갤러리 22·23번 사진을 18번 사진 바로 뒤(19·20번)로 이동합니다.
+  // 나머지 사진의 상대적 순서는 유지하고 원본 파일은 변경하지 않습니다.
+  var movedAfter18=flatGallery.splice(21,2);
+  flatGallery.splice(18,0,...movedAfter18);
   var flatUrls=flatGallery.map(function(item){return item.url;});
   var galleryGrid=document.getElementById("galleryGrid");
   var galleryMore=document.getElementById("galleryMore");
