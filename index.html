@@ -1412,6 +1412,111 @@ section {
   .hero-card,.gcard,.bgm-toggle {transition:none!important;animation:none!important}
 }
 </style>
+
+<style id="gallery-individual-cards-more-20261009">
+/* 원본 앨범 1→2→3→4, 각 앨범 사진 순서를 고정한 2열 그리드 */
+#gallerySection .gallery {
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-auto-flow:row!important;
+  grid-auto-rows:auto;
+  gap:9px!important;
+  align-items:start;
+  width:100%;
+}
+#gallerySection .gallery .gcard {
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  height:auto!important;
+  aspect-ratio:5/7!important;
+  padding:0!important;
+  margin:0!important;
+  border:1px solid #ede5dc!important;
+  border-radius:0!important;
+  background:#fffefa!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+#gallerySection .gallery .gcard img {
+  width:100%!important;
+  height:100%!important;
+  display:block!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  border-radius:0!important;
+  background:#fffefa!important;
+}
+#gallerySection .gallery .gcard:focus-visible {
+  outline:2px solid #988277!important;
+  outline-offset:3px;
+}
+#gallerySection .gallery .gcard.gallery-last-wide {
+  grid-column:1 / -1!important;
+  aspect-ratio:4/3!important;
+  isolation:isolate;
+}
+/* 홀수 장일 때 마지막 사진을 양쪽 열에 걸치게 배치: 빈 반쪽 셀 없음. */
+#gallerySection .gallery .gcard.gallery-last-wide::before {
+  content:"";
+  position:absolute;
+  inset:-15px;
+  background-image:var(--last-photo);
+  background-position:center;
+  background-size:cover;
+  filter:blur(13px) saturate(.68) brightness(1.07);
+  opacity:.37;
+  pointer-events:none;
+}
+#gallerySection .gallery .gcard.gallery-last-wide img {
+  position:relative;
+  z-index:1;
+  object-fit:contain!important;
+  background:transparent!important;
+}
+#gallerySection .gallery-more-wrap {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:20px 0 1px;
+}
+#gallerySection .gallery-more {
+  min-width:154px;
+  min-height:42px;
+  padding:11px 22px;
+  border:1px solid #ded2c7;
+  border-radius:0;
+  background:#fffefa;
+  color:#675850;
+  font-family:"Noto Serif KR",serif;
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:.055em;
+  line-height:1.5;
+  cursor:pointer;
+  transition:background-color .18s ease,border-color .18s ease;
+}
+#gallerySection .gallery-more:hover,
+#gallerySection .gallery-more:focus-visible {
+  background:#f6f0eb;
+  border-color:#c3b3a5;
+}
+#gallerySection .gallery-more[hidden] {display:none!important;}
+#gallerySection .gallery-status {
+  position:absolute!important;
+  width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+@media(max-width:370px){
+  #gallerySection .gallery {gap:7px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+  #gallerySection .gallery-more {transition:none!important;}
+}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -1461,26 +1566,16 @@ section {
 
 
 
-  <section>
+  <section class="gallery-section" id="gallerySection">
     <p class="title">Gallery</p>
-    <div class="gallery">
-      <button class="gcard" type="button" data-album="0" aria-label="갤러리 1" onclick="openAlbum(0);return false;">
-        <img src="/gallery3-photo-1.jpg?v=20261005-3" alt="갤러리 1 대표 사진" loading="lazy" decoding="async" fetchpriority="low">
-        <span class="badge">9 photos</span>
-      </button>
-      <button class="gcard" type="button" data-album="1" aria-label="갤러리 2" onclick="openAlbum(1);return false;">
-        <img src="/gallery1-photo-2.jpg?v=20261005-8" alt="갤러리 2 대표 사진" loading="lazy" decoding="async" fetchpriority="low">
-        <span class="badge">9 photos</span>
-      </button>
-      <button class="gcard" type="button" data-album="2" aria-label="갤러리 3" onclick="openAlbum(2);return false;">
-        <img src="/gallery3-front-20261007.jpg?v=20261007-0608" alt="갤러리 3 대표 사진" loading="lazy" decoding="async" fetchpriority="low">
-        <span class="badge">11 photos</span>
-      </button>
-      <button class="gcard" type="button" data-album="3" aria-label="갤러리 4" onclick="openAlbum(3);return false;">
-        <img id="galleryCover" src="/gallery-photo-1.jpg?v=distinct-cover-20260927-4" alt="갤러리 4 대표 사진" loading="lazy" decoding="async">
-        <span class="badge">8 photos</span>
-      </button>
+    <!-- 사진은 아래 albums 순서를 그대로 유지하며 개별 카드로 표시됩니다. -->
+    <div class="gallery" id="galleryGrid" aria-label="웨딩 사진 전체 갤러리"></div>
+    <div class="gallery-more-wrap">
+      <button id="galleryMore" class="gallery-more" type="button"
+              aria-controls="galleryGrid" aria-expanded="false" hidden>사진 더보기</button>
     </div>
+    <p id="galleryStatus" class="gallery-status" role="status" aria-live="polite"></p>
+    <noscript>갤러리 사진을 보려면 자바스크립트를 활성화해 주세요.</noscript>
   </section>
 
   <section class="family-section">
@@ -1704,6 +1799,80 @@ section {
     "/gallery-photo-8.jpg?v=20261001-1"
   ]];
 
+
+  // 개별 썸네일: 앨범별 순서를 변경하지 않고 하나의 목록으로 병합합니다.
+  var flatGallery=[];
+  albums.forEach(function(photos,albumIndex){
+    photos.forEach(function(url,photoIndex){
+      flatGallery.push({url:url,albumIndex:albumIndex,photoIndex:photoIndex});
+    });
+  });
+  var flatUrls=flatGallery.map(function(item){return item.url;});
+  var galleryGrid=document.getElementById("galleryGrid");
+  var galleryMore=document.getElementById("galleryMore");
+  var galleryStatus=document.getElementById("galleryStatus");
+  var initialGalleryCount=8;
+  var galleryPageSize=8;
+  var shownGalleryCount=0;
+  var flatMode=true;
+
+  function addGalleryCard(entry){
+    var card=document.createElement("button");
+    card.type="button";
+    card.className="gcard";
+    card.dataset.album=String(entry.albumIndex);
+    card.dataset.photo=String(entry.photoIndex);
+    card.setAttribute("aria-label","갤러리 "+(entry.albumIndex+1)+"번의 "+(entry.photoIndex+1)+"번째 사진 보기");
+    var img=document.createElement("img");
+    img.src=entry.url;
+    img.alt="웨딩 사진 "+(entry.albumIndex+1)+"-"+(entry.photoIndex+1);
+    img.loading="lazy";
+    img.decoding="async";
+    try{img.fetchPriority="low";}catch(e){}
+    card.appendChild(img);
+    card.addEventListener("click",function(){
+      window.openPhoto(entry.albumIndex,entry.photoIndex);
+    });
+    return card;
+  }
+  function refreshGalleryButton(){
+    var remaining=flatGallery.length-shownGalleryCount;
+    galleryMore.hidden=flatGallery.length<=initialGalleryCount;
+    galleryMore.textContent=remaining>0
+      ? "사진 더보기 · "+remaining+"장"
+      : "사진 접기";
+    galleryMore.setAttribute("aria-expanded",shownGalleryCount>initialGalleryCount?"true":"false");
+    galleryStatus.textContent="총 "+flatGallery.length+"장 중 "+shownGalleryCount+"장 표시";
+    var finalCard=galleryGrid.lastElementChild;
+    if(finalCard){finalCard.classList.remove("gallery-last-wide");}
+    if(remaining===0 && shownGalleryCount%2===1 && finalCard){
+      finalCard.classList.add("gallery-last-wide");
+      var lastUrl=flatGallery[flatGallery.length-1].url.replace(/"/g,"%22");
+      finalCard.style.setProperty("--last-photo",'url("'+lastUrl+'")');
+    }
+  }
+  function showGalleryMore(amount){
+    var limit=Math.min(flatGallery.length,shownGalleryCount+amount);
+    var fragment=document.createDocumentFragment();
+    for(var i=shownGalleryCount;i<limit;i++){
+      fragment.appendChild(addGalleryCard(flatGallery[i]));
+    }
+    galleryGrid.appendChild(fragment);
+    shownGalleryCount=limit;
+    refreshGalleryButton();
+  }
+  galleryMore.addEventListener("click",function(){
+    if(shownGalleryCount>=flatGallery.length){
+      galleryGrid.replaceChildren();
+      shownGalleryCount=0;
+      showGalleryMore(initialGalleryCount);
+      galleryGrid.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth",block:"start"});
+    }else{
+      showGalleryMore(galleryPageSize);
+    }
+  });
+  showGalleryMore(initialGalleryCount);
+
   var currentAlbum=0;
   var currentIndex=0;
   var modal=document.getElementById("galleryModal");
@@ -1744,7 +1913,7 @@ section {
   }
 
   function preloadAround(){
-    var photos=albums[currentAlbum]||[];
+    var photos=flatMode?flatUrls:(albums[currentAlbum]||[]);
     if(!photos.length){ return; }
 
     var conn=navigator.connection||navigator.mozConnection||navigator.webkitConnection;
@@ -1768,7 +1937,7 @@ section {
   }
 
   function renderModal(){
-    var photos=albums[currentAlbum]||[];
+    var photos=flatMode?flatUrls:(albums[currentAlbum]||[]);
     var empty=photos.length===0;
     var seq=++renderSeq;
 
@@ -1829,7 +1998,22 @@ section {
     });
   }
 
+  // 클릭한 개별 사진부터 열고, 화살표/스와이프로 전체 37장을 순서대로 넘깁니다.
+  window.openPhoto=function(albumIndex,photoIndex){
+    var absoluteIndex=flatGallery.findIndex(function(item){
+      return item.albumIndex===albumIndex && item.photoIndex===photoIndex;
+    });
+    if(absoluteIndex<0){return;}
+    flatMode=true;
+    currentAlbum=albumIndex;
+    currentIndex=absoluteIndex;
+    modal.classList.add("on");
+    modal.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+    renderModal();
+  };
   window.openAlbum=function(albumIndex){
+    flatMode=false;
     currentAlbum=Number(albumIndex)||0;
     currentIndex=0;
     modal.classList.add("on");
@@ -1845,7 +2029,7 @@ section {
   }
 
   function move(step){
-    var photos=albums[currentAlbum]||[];
+    var photos=flatMode?flatUrls:(albums[currentAlbum]||[]);
     var next=currentIndex+step;
     if(next<0 || next>=photos.length){ return; }
     currentIndex=next;
