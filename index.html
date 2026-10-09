@@ -2605,5 +2605,61 @@ bgmToggle.addEventListener("click", async function (e) {
   );
 });
 </script>
+
+<script id="wedding-bold-type-20261009">
+/* All existing text becomes bold. Elements that were bold before this change
+   retain at least their previous weight and gain exactly one typographic point. */
+(function(){
+  "use strict";
+  var deltaPx=96/72; // CSS 1pt = 1.333333px
+  var ignore="script,style,link,meta,noscript,svg,svg *,#bgmToggle,#bgmToggle *,#galleryModal .nav,#galleryModal .close";
+  var seen=new WeakSet();
+  function collect(element,list){
+    if(!(element instanceof HTMLElement)){return;}
+    if(!element.matches(ignore) && !seen.has(element)){list.push(element);}
+    element.querySelectorAll("*").forEach(function(child){
+      if(child instanceof HTMLElement && !child.matches(ignore) && !seen.has(child)){
+        list.push(child);
+      }
+    });
+  }
+  function apply(elements,isInitial){
+    // Read ALL original computed weights/sizes before modifying any element:
+    // parent font-weight and font-size changes must not skew child measurements.
+    var entries=[];
+    elements.forEach(function(el){
+      if(seen.has(el)){return;}
+      var c=window.getComputedStyle(el);
+      var weight=parseFloat(c.fontWeight);
+      var size=parseFloat(c.fontSize);
+      // New nodes inserted after load inherit an already-bold parent. Only
+      // elements initially present can be reliably classified as prior-bold.
+      var wasBold=isInitial && isFinite(weight) && weight>=700;
+      entries.push({element:el,weight:weight,size:size,wasBold:wasBold});
+    });
+    entries.forEach(function(entry){
+      var el=entry.element;
+      if(entry.wasBold && isFinite(entry.size)){
+        el.style.setProperty("font-size",(entry.size+deltaPx).toFixed(4)+"px","important");
+      }
+      el.style.setProperty("font-weight",
+        String(isFinite(entry.weight)?Math.max(700,entry.weight):700),"important");
+      seen.add(el);
+    });
+  }
+  var initial=[];
+  collect(document.body,initial);
+  apply(initial,true);
+  // Guestbook entries and other content that arrive asynchronously are bold too.
+  var observer=new MutationObserver(function(records){
+    var added=[];
+    records.forEach(function(record){
+      record.addedNodes.forEach(function(node){collect(node,added);});
+    });
+    if(added.length){apply(added,false);}
+  });
+  observer.observe(document.body,{childList:true,subtree:true});
+})();
+</script>
 </body>
 </html>
