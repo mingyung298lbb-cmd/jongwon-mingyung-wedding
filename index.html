@@ -1074,15 +1074,35 @@ html, body {
   color:#443b36!important;
 }
 body::before {
-  /* 부드러운 나무/꽃무늬가 은근히 보이도록 복구 */
-  opacity:.28!important;
+  /* 바깥 여백에서도 식물 패턴이 보이도록 명도·채도는 낮게 유지 */
+  opacity:.42!important;
   background-size:740px auto!important;
-  filter:grayscale(1) sepia(.24) saturate(.42) brightness(1.03)!important;
+  filter:grayscale(1) sepia(.16) saturate(.58) brightness(1.02)!important;
 }
 main {
   max-width:540px;
   background:rgba(255,254,252,.83)!important;
   box-shadow:0 0 0 1px rgba(223,216,207,.18);
+  isolation:isolate;
+}
+/* 종이 배경 불투명도 때문에 가려지던 기존 wedding-pattern.png를
+   메인 컨텐츠 배경 위에 별도의 레이어로 배치합니다. */
+main::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background-image:url("wedding-pattern.png?v=3");
+  background-repeat:repeat;
+  background-size:740px auto;
+  background-position:center top;
+  opacity:.28;
+  filter:grayscale(1) sepia(.16) saturate(.58) brightness(1.02);
+}
+main > * {
+  position:relative;
+  z-index:1;
 }
 section {
   padding-bottom:42px;
@@ -1143,14 +1163,12 @@ section {
   padding:88px 26px 65px!important;
   border:1.5px solid #eadfd4!important;
   border-radius:0!important;
-  background-color:#fffdfa!important;
-  /* 균일한 종이 바탕 + 미세한 종이결만, 명암 그라데이션 제거 */
-  background-image:
-    radial-gradient(circle at 18% 22%, rgba(150,133,116,.045) 0 .55px, transparent .85px),
-    radial-gradient(circle at 74% 38%, rgba(150,133,116,.030) 0 .5px, transparent .8px),
-    radial-gradient(circle at 42% 82%, rgba(150,133,116,.028) 0 .5px, transparent .78px),
-    repeating-linear-gradient(105deg, rgba(157,141,124,.018) 0 1px, transparent 1px 5px)!important;
-  background-size:19px 19px,27px 27px,23px 23px,100% 100%!important;
+  background:#fffdfa!important;
+  /* 그라데이션 0개: 단일 연아이보리 바탕 위에 균일한 종이 입자 SVG만 사용 */
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22160%22%20height%3D%22160%22%20viewBox%3D%220%200%20160%20160%22%3E%3Cfilter%20id%3D%22grain%22%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.65%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%20seed%3D%228%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22160%22%20height%3D%22160%22%20filter%3D%22url(%23grain)%22%20opacity%3D%22.052%22%2F%3E%3C%2Fsvg%3E")!important;
+  background-repeat:repeat!important;
+  background-size:160px 160px!important;
+  background-position:left top!important;
   box-shadow:none!important;
   font-family:"Noto Serif KR",serif!important;
   font-size:clamp(13px,3.75vw,15px)!important;
