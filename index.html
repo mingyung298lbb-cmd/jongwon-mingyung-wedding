@@ -1812,6 +1812,10 @@ section {
       flatGallery.push({url:url,albumIndex:albumIndex,photoIndex:photoIndex});
     });
   });
+  // 화면상 기존 25·26·27번을 9번 바로 뒤(10·11·12번)로 옮깁니다.
+  // 앨범별 원본 경로와 사진 데이터는 그대로 유지합니다.
+  var movedPhotos=flatGallery.splice(24,3);
+  flatGallery.splice(9,0,...movedPhotos);
   var flatUrls=flatGallery.map(function(item){return item.url;});
   var galleryGrid=document.getElementById("galleryGrid");
   var galleryMore=document.getElementById("galleryMore");
