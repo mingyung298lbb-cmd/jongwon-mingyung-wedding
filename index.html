@@ -2071,6 +2071,12 @@ main::before {opacity:.20!important;}
   // 현재 화면 순서의 28·29번을 12번 바로 뒤로 이동 (13·14번).
   var movedLaterPhotos=flatGallery.splice(27,2);
   flatGallery.splice(12,0,...movedLaterPhotos);
+  // 현재 화면 번호 기준 15·16번과 22·23번의 두 쌍을 맞교환합니다.
+  // 사진 URL과 앨범 원본 데이터는 변경하지 않습니다.
+  var galleryPairAt15=flatGallery.slice(14,16);
+  var galleryPairAt22=flatGallery.slice(21,23);
+  flatGallery.splice(14,2,...galleryPairAt22);
+  flatGallery.splice(21,2,...galleryPairAt15);
   var flatUrls=flatGallery.map(function(item){return item.url;});
   var galleryGrid=document.getElementById("galleryGrid");
   var galleryMore=document.getElementById("galleryMore");
