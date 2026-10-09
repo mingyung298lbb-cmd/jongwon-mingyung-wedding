@@ -1841,6 +1841,41 @@ main::before {opacity:.20!important;}
   line-height:1.5!important;
 }
 </style>
+
+<style id="split-transit-parking-frames-20261009">
+/* Distinct compact frames for walking/public transit and annex parking. */
+.route-list {
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:12px!important;
+  margin-top:13px!important;
+}
+.route-list .route-frame {
+  box-sizing:border-box;
+  min-width:0;
+  padding:9px 13px 6px;
+  border:1px solid #e5e7e3;
+  border-radius:0;
+  background:#ffffff;
+}
+.route-list .route-frame-heading {
+  padding:2px 2px 6px;
+  font-size:13px;
+  line-height:1.55;
+  color:#665950;
+  border-bottom:1px solid #ecebe7;
+  letter-spacing:.02em;
+}
+.route-list .route-frame .route {
+  padding:8px 2px!important;
+  font-size:12px!important;
+  line-height:1.55!important;
+  overflow-wrap:break-word;
+}
+.route-list .route-frame .route:last-child {
+  border-bottom:0!important;
+}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -1926,10 +1961,16 @@ main::before {opacity:.20!important;}
       <div class="row"><span class="label">주소</span><span class="value">서울특별시 중구 청파로 464<br>브라운스톤서울 3층<br><button class="copy-mini" type="button" onclick="copyText('서울특별시 중구 청파로 464 브라운스톤서울 3층','주소가 복사되었습니다.')">주소 복사</button></span></div>
       <img class="map-img" src="https://www.aventium.co.kr/img/map2.gif" alt="아벤티움 웨딩홀 공식 약도 (서소문공원 별관 주차장 포함)" loading="lazy" decoding="async" referrerpolicy="no-referrer" width="592" height="460">
       <div class="route-list">
-        <div class="route"><b>2·5호선 충정로역 4번 출구 (도보 5분)</b><br>출구 방향 70m 직진 후 횡단보도 건너편</div>
-        <div class="route"><b>1·4호선 서울역 15번 출구 (도보 14분)</b><br>서울역 서부광장 방향, 한국경제신문사 맞은편</div>
-        <div class="route"><b>서울역에서 버스 이용</b><br>서울역버스환승센터 6번 승강장 → 간선 603번 탑승 → 한국경제신문사·서소문역사공원(02109) 하차(1정거장)</div>
-        <div class="route"><b>별관 주차장</b> 서소문공원 주차장 · 서울특별시 중구 칠패로 5<br>건물 오른편에 별관 주차장이 있습니다.</div>
+        <div class="route-frame route-frame-transit">
+          <div class="route-frame-heading">도보 · 대중교통</div>
+          <div class="route"><b>2·5호선 충정로역 4번 출구 (도보 5분)</b><br>출구 방향 70m 직진 후 횡단보도 건너편</div>
+          <div class="route"><b>1·4호선 서울역 15번 출구 (도보 14분)</b><br>서울역 서부광장 방향, 한국경제신문사 맞은편</div>
+          <div class="route"><b>서울역에서 버스 이용</b><br>서울역버스환승센터 6번 승강장 → 간선 603번 탑승 → 한국경제신문사·서소문역사공원(02109) 하차(1정거장)</div>
+        </div>
+        <div class="route-frame route-frame-parking">
+          <div class="route-frame-heading">주차장 이용</div>
+          <div class="route"><b>별관 주차장</b> 서소문공원 주차장 · 서울특별시 중구 칠패로 5<br>건물 오른편에 별관 주차장이 있습니다.</div>
+        </div>
       </div>
     </div>
   </section>
