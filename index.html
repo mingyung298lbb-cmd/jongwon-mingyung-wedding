@@ -1425,7 +1425,7 @@ section {
   grid-template-columns:repeat(3,minmax(0,1fr))!important;
   grid-auto-flow:row!important;
   grid-auto-rows:auto;
-  gap:9px!important;
+  gap:5px!important;
   align-items:start;
   width:100%;
 }
@@ -1489,17 +1489,17 @@ section {
   margin:20px 0 1px;
 }
 #gallerySection .gallery-more {
-  min-width:154px;
-  min-height:42px;
-  padding:11px 22px;
+  min-width:136px;
+  min-height:34px;
+  padding:8px 18px;
   border:1px solid #ded2c7;
   border-radius:0;
   background:#fffefa;
   color:#675850;
   font-family:"Noto Serif KR",serif;
-  font-size:12px;
+  font-size:10.5px;
   font-weight:500;
-  letter-spacing:.055em;
+  letter-spacing:.04em;
   line-height:1.5;
   cursor:pointer;
   transition:background-color .18s ease,border-color .18s ease;
@@ -1516,7 +1516,7 @@ section {
   overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
 }
 @media(max-width:370px){
-  #gallerySection .gallery {gap:7px!important;}
+  #gallerySection .gallery {gap:4px!important;}
 }
 @media(prefers-reduced-motion:reduce){
   #gallerySection .gallery-more {transition:none!important;}
@@ -1821,7 +1821,6 @@ section {
   var galleryMore=document.getElementById("galleryMore");
   var galleryStatus=document.getElementById("galleryStatus");
   var initialGalleryCount=9;
-  var galleryPageSize=9;
   var shownGalleryCount=0;
   var flatMode=true;
 
@@ -1877,7 +1876,8 @@ section {
       showGalleryMore(initialGalleryCount);
       galleryGrid.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth",block:"start"});
     }else{
-      showGalleryMore(galleryPageSize);
+      // 펼칠 때 남아 있는 사진을 모두 추가하되, 실제 이미지는 뷰포트에 닿을 때 로드합니다.
+      showGalleryMore(flatGallery.length-shownGalleryCount);
     }
   });
   showGalleryMore(initialGalleryCount);
