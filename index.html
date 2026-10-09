@@ -1877,71 +1877,75 @@ main::before {opacity:.20!important;}
 }
 </style>
 
-<style id="family-single-frame-two-rows-20261009">
-/* One thin frame with two compact rows: groom's parents / bride's parents. */
+<style id="family-side-by-side-two-line-frames-20261009">
+/* Maintain groom/bride side by side. Only the two parent lines are inside the thin frame. */
 .family-section .family-panel {
   padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.family-section .family-only {
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  align-items:start;
+}
+.family-section .family-card {
+  display:block!important;
+  min-width:0;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  text-align:center!important;
+  box-shadow:none!important;
+}
+.family-section .family-card .family-side {
+  margin:0 0 6px!important;
+  font-size:12px!important;
+  line-height:1.45!important;
+  letter-spacing:.025em!important;
+  white-space:nowrap;
+}
+.family-section .family-parents {
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center;
+  align-items:center;
+  gap:0!important;
+  min-width:0;
+  box-sizing:border-box;
+  padding:5px 5px!important;
   border:1px solid #e8e7e2!important;
   border-radius:0!important;
   background:#ffffff!important;
   box-shadow:none!important;
 }
-.family-section .family-only {
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr)!important;
-  gap:0!important;
-}
-.family-section .family-card {
-  display:grid!important;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:8px;
-  align-items:center;
-  padding:11px 12px!important;
-  border:0!important;
-  border-bottom:1px solid #e8e7e2!important;
-  background:transparent!important;
-  text-align:left!important;
-  box-shadow:none!important;
-}
-.family-section .family-card:last-child {border-bottom:0!important;}
-.family-section .family-card .family-side {
-  margin:0!important;
-  line-height:1.5!important;
-  font-size:11.5px!important;
-  letter-spacing:0!important;
-  white-space:nowrap;
-}
-.family-section .family-parents {
-  display:flex;
-  justify-content:flex-end;
-  align-items:center;
-  gap:10px;
-  min-width:0;
-  white-space:nowrap;
-}
-.family-section .parent-pair {
-  display:inline-flex;
+.family-section .family-parents .parent-pair {
+  display:flex!important;
   align-items:baseline;
-  gap:3px;
+  justify-content:center;
+  gap:6px!important;
+  min-height:24px;
+  line-height:1.5!important;
   white-space:nowrap;
 }
-.family-section .parent-pair .parent-role {
+.family-section .family-parents .parent-role {
   min-width:0!important;
-  font-size:10.5px!important;
-  letter-spacing:0!important;
+  font-size:11px!important;
 }
-.family-section .parent-pair .parent-name {
+.family-section .family-parents .parent-name {
   min-width:0!important;
   font-size:14px!important;
-  letter-spacing:0!important;
+  letter-spacing:.035em!important;
 }
 @media(max-width:370px) {
-  .family-section .family-card {gap:5px;padding:9px 8px!important;}
-  .family-section .family-card .family-side {font-size:10.5px!important;}
-  .family-section .family-parents {gap:6px;}
-  .family-section .parent-pair {gap:2px;}
-  .family-section .parent-pair .parent-role {font-size:10px!important;}
-  .family-section .parent-pair .parent-name {font-size:13px!important;}
+  .family-section .family-only {gap:9px!important;}
+  .family-section .family-card .family-side {font-size:11.5px!important;}
+  .family-section .family-parents {padding:5px 3px!important;}
+  .family-section .family-parents .parent-pair {gap:4px!important;}
+  .family-section .family-parents .parent-name {font-size:13px!important;}
 }
 </style>
 </head>
@@ -2041,7 +2045,7 @@ main::before {opacity:.20!important;}
         </div>
         <div class="route-frame route-frame-parking">
           <div class="route-frame-heading">주차장 이용</div>
-          <div class="route"><b>별관 주차장</b> 서소문공원 주차장 · 서울특별시 중구 칠패로 5<br>건물 오른편에 별관 주차장이 있습니다.</div>
+          <div class="route"><b>별관 주차장</b> 서소문공원 주차장<br>건물 오른편에 별관 주차장이 있습니다.</div>
         </div>
       </div>
     </div>
