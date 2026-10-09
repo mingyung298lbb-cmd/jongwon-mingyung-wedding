@@ -1661,127 +1661,58 @@ section {
 </style>
 
 <style id="sage-ivory-global-20261009">
-/* Muted botanical sage on ivory: fuller but still restrained green throughout.
-   Keep all photography, introduction paper texture and established layout untouched. */
-:root {
-  --green:#5f8067;
-  --muted:#748977;
-  --line:#ccdfcd;
-}
+/* White/ivory remains dominant. Sage is limited to subtle outlines,
+   botanical pattern toning and focus states. Original text colors stay. */
 html,body {
-  background-color:#f0f7ed!important;
+  background-color:#fbfaf8!important;
 }
 main {
-  background-color:rgba(242,249,239,.86)!important;
-  box-shadow:0 0 0 1px rgba(167,197,167,.28)!important;
+  background-color:rgba(255,254,252,.87)!important;
+  box-shadow:0 0 0 1px rgba(210,224,210,.20)!important;
 }
-/* Keep the botanical pattern visible but gently shift its monochrome hue to sage. */
 body::before,main::before {
-  filter:grayscale(1) sepia(.22) hue-rotate(65deg) saturate(1.06) brightness(1.01)!important;
+  filter:grayscale(1) sepia(.15) hue-rotate(60deg) saturate(.48) brightness(1.04)!important;
 }
-body::before {opacity:.47!important;}
-main::before {opacity:.35!important;}
-/* Intro: specifically retain pure white paper grain, beige 1.5px border and size. */
+body::before {opacity:.42!important;}
+main::before {opacity:.28!important;}
+/* Solid white introduction, existing fine-grain texture and beige border. */
 .box.invite {
-  border-color:#eadfd4!important;
   background-color:#ffffff!important;
-}
-.title {
-  color:#5e8067!important;
+  border-color:#eadfd4!important;
 }
 .title::before,.title::after {
-  background:#a2c1a8!important;
-  opacity:.92!important;
-}
-.hero-card.hero-save-card .save-info-line {
-  color:#728b76!important;
-}
-.hero-card.hero-save-card .save-info-venue {
-  color:#5f8266!important;
-}
-.invite-copy {
-  color:#4c534b!important;
+  background:#c9d9c8!important;
 }
 .box:not(.invite),.family-card {
-  border-color:#cbdcca!important;
-  background-color:#f7fbf5!important;
+  background-color:#fffefa!important;
+  border-color:#e3eae0!important;
 }
-.family-side,.account-group-title {
-  color:#61816a!important;
-}
-.parent-role,.label {
-  color:#738c77!important;
-}
-.parent-line,.parent-name,.value {
-  color:#4e594f!important;
-}
-.row,.route {
-  border-bottom-color:#ccdfce!important;
-}
-.route b {color:#657e69!important;}
-.account-title {color:#677c6b!important;}
-.account-name {color:#465549!important;}
-.account p {color:#626f63!important;}
-/* Buttons: airy green-tinted white, no enlargement or layout changes. */
-.rsvp-jump,
-.copy,.copy-mini,
-#gallerySection .gallery-more {
-  background:#eaf3e8!important;
-  border-color:#b4d0b8!important;
-  color:#4f7258!important;
+.row,.route {border-bottom-color:#e4ece2!important;}
+#gallerySection .gallery .gcard {border-color:#e4eae2!important;}
+.rsvp-jump,.copy,.copy-mini,#gallerySection .gallery-more {
+  border-color:#d4e0d2!important;
 }
 .rsvp-jump:hover,.copy:hover,.copy-mini:hover,
 #gallerySection .gallery-more:hover,
 #gallerySection .gallery-more:focus-visible {
-  background:#dcebdc!important;
-  border-color:#99bea1!important;
+  background:#f6f9f5!important;
+  border-color:#c2d4c3!important;
 }
-#gallerySection .gallery .gcard {
-  border-color:#d1e0d0!important;
-}
-/* Soft green fields and states, with dark green CTA for readable white text. */
-.choice,.choice-label,
-.form-control,.form-field input,.form-field select,.form-field textarea {
-  border-color:#c8ddc9!important;
-  background-color:#fbfef9!important;
+.choice,.choice-label,.form-control,
+.form-field input,.form-field select,.form-field textarea {
+  border-color:#e0e8de!important;
 }
 .choice:has(input:checked),.choice-input:checked+.choice-label {
-  background:#deeedf!important;
-  border-color:#95b99b!important;
-  color:#476f50!important;
-  box-shadow:inset 0 0 0 1px rgba(123,153,130,.10)!important;
+  background:#f1f6ef!important;
+  border-color:#c5d9c5!important;
 }
-.form-field label {color:#647e69!important;}
 .form-field input:focus,.form-field select:focus,
 .form-field textarea:focus,.form-control:focus {
-  border-color:#8fae94!important;
-  box-shadow:0 0 0 3px rgba(143,174,148,.13)!important;
+  border-color:#a9c5ab!important;
+  box-shadow:0 0 0 3px rgba(145,177,148,.10)!important;
 }
-.form-submit {
-  background:#51755b!important;
-  color:#ffffff!important;
-}
-.form-submit:active {background:#48664f!important;}
-.form-status,.guestbook-name {color:#67816c!important;}
-.guestbook-item {border-color:#e0e8de!important;}
-.foot {
-  color:#748c78!important;
-  border-top-color:#c9dec9!important;
-}
-/* Tinted hero and secondary text blocks introduce sage beyond borders and buttons. */
-.hero-card.hero-save-card {
-  background-color:#f5faf2!important;
-}
-.family-panel,.guestbook-item {
-  border-color:#ccddcc!important;
-}
-.account-group-title,.rsvp-intro {
-  color:#63836b!important;
-}
-::selection {
-  color:#344637;
-  background:rgba(146,182,151,.20);
-}
+.guestbook-item {border-color:#e3eae1!important;}
+.foot {border-top-color:#e1eae0!important;}
 </style>
 </head>
 <body>
