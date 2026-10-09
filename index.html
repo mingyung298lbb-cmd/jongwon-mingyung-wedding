@@ -1540,6 +1540,100 @@ section {
   #gallerySection .gallery-more {transition:none!important;}
 }
 </style>
+
+<style id="photo-controls-pastel-green-20261009">
+/* Gallery arrows: symmetrical, optically centered controls in a restrained white / pastel sage tone */
+#galleryModal .nav {
+  position:fixed!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:42px!important;
+  height:50px!important;
+  padding:0!important;
+  border:1px solid rgba(191,214,194,.90)!important;
+  border-radius:12px!important;
+  background:rgba(253,255,252,.96)!important;
+  color:#779781!important;
+  font-size:0!important;
+  line-height:0!important;
+  box-shadow:0 3px 15px rgba(33,56,37,.13)!important;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:background-color .18s ease,border-color .18s ease;
+}
+#galleryModal .nav.prev {left:6px!important;right:auto!important;}
+#galleryModal .nav.next {right:6px!important;left:auto!important;}
+#galleryModal .nav::before {
+  content:"";
+  display:block;
+  flex:none;
+  width:12px;
+  height:12px;
+  border-top:2.4px solid currentColor;
+  border-right:2.4px solid currentColor;
+  border-radius:1px;
+}
+#galleryModal .nav.prev::before {transform:translateX(2px) rotate(225deg);}
+#galleryModal .nav.next::before {transform:translateX(-2px) rotate(45deg);}
+#galleryModal .nav:hover,#galleryModal .nav:active {
+  background:#eff7ef!important;
+  border-color:#b5cfb9!important;
+}
+#galleryModal .nav.hidden,
+#galleryModal.empty-state .nav {display:none!important;}
+#galleryModal .nav:focus-visible,
+#galleryModal .close:focus-visible,
+#bgmToggle:focus-visible {outline:2px solid #88a790;outline-offset:2px;}
+/* Match the close control's alignment and palette to the paired arrows. */
+#galleryModal .close {
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0 0 2px!important;
+  border:1px solid rgba(191,214,194,.90)!important;
+  background:rgba(253,255,252,.96)!important;
+  color:#779781!important;
+  box-shadow:0 3px 15px rgba(33,56,37,.13)!important;
+  font-family:Arial,sans-serif;
+  font-size:31px!important;
+  font-weight:400!important;
+  line-height:1!important;
+}
+/* Music mute state: replace the corner-mounted tiny X with a large centered X. */
+#bgmToggle {
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#bgmToggle .bgm-off {
+  position:absolute!important;
+  inset:0!important;
+  display:none!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0 0 2px!important;
+  margin:0!important;
+  transform:none!important;
+  font-family:Arial,sans-serif!important;
+  font-size:27px!important;
+  font-weight:500!important;
+  line-height:1!important;
+  color:#779781!important;
+}
+#bgmToggle.muted .bgm-note {visibility:hidden!important;}
+#bgmToggle.muted .bgm-off {display:flex!important;}
+@media(max-width:360px){
+  #galleryModal .nav {width:38px!important;height:48px!important;}
+  #galleryModal .nav.prev {left:4px!important;}
+  #galleryModal .nav.next {right:4px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+  #galleryModal .nav {transition:none!important;}
+}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
