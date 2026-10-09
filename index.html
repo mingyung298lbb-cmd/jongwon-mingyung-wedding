@@ -2272,6 +2272,32 @@ main::before {opacity:.20!important;}
     });
   }
 
+  // 사진 뷰어는 별도의 페이지가 아니므로 브라우저 뒤로가기 한 번에 뷰어만 닫히게 합니다.
+  // 주소는 바꾸지 않고 History API에 모달 상태만 한 번 추가합니다.
+  var galleryHistoryToken="wedding-gallery-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2);
+  var galleryHistoryPending=false;
+  function pushGalleryHistory(){
+    if(galleryHistoryPending){return;}
+    try{
+      var oldState=window.history.state;
+      var state=(oldState && typeof oldState==="object" && !Array.isArray(oldState))
+        ? Object.assign({},oldState)
+        : {};
+      state.__weddingGalleryToken=galleryHistoryToken;
+      window.history.pushState(state,"",window.location.href);
+      galleryHistoryPending=true;
+    }catch(e){
+      // 브라우저에서 History API를 막으면 기존 X 닫기 버튼은 계속 동작합니다.
+      galleryHistoryPending=false;
+    }
+  }
+  function hideGallery(){
+    ++renderSeq; // 비동기 이미지 로드가 닫힌 사진을 다시 표시하지 못하게 합니다.
+    modal.classList.remove("on");
+    modal.setAttribute("aria-hidden","true");
+    document.body.style.overflow="";
+  }
+
   // 클릭한 개별 사진부터 열고, 화살표/스와이프로 전체 37장을 순서대로 넘깁니다.
   window.openPhoto=function(albumIndex,photoIndex){
     var absoluteIndex=flatGallery.findIndex(function(item){
@@ -2281,6 +2307,7 @@ main::before {opacity:.20!important;}
     flatMode=true;
     currentAlbum=albumIndex;
     currentIndex=absoluteIndex;
+    pushGalleryHistory();
     modal.classList.add("on");
     modal.setAttribute("aria-hidden","false");
     document.body.style.overflow="hidden";
@@ -2290,6 +2317,7 @@ main::before {opacity:.20!important;}
     flatMode=false;
     currentAlbum=Number(albumIndex)||0;
     currentIndex=0;
+    pushGalleryHistory();
     modal.classList.add("on");
     modal.setAttribute("aria-hidden","false");
     document.body.style.overflow="hidden";
@@ -2297,10 +2325,24 @@ main::before {opacity:.20!important;}
   };
 
   function closeGallery(){
-    modal.classList.remove("on");
-    modal.setAttribute("aria-hidden","true");
-    document.body.style.overflow="";
+    var hadHistoryEntry=galleryHistoryPending;
+    galleryHistoryPending=false;
+    hideGallery();
+    // X / 바깥 영역 / Esc 로 닫아도 가상 방문 기록을 소비해 뒤로가기 2회 문제를 방지합니다.
+    if(hadHistoryEntry){
+      try{
+        if(window.history.state && window.history.state.__weddingGalleryToken===galleryHistoryToken){
+          window.history.back();
+        }
+      }catch(e){}
+    }
   }
+  window.addEventListener("popstate",function(){
+    if(!galleryHistoryPending || !modal.classList.contains("on")){return;}
+    // 시스템/브라우저 뒤로가기로 돌아왔을 때는 추가 history.back() 없이 사진만 닫습니다.
+    galleryHistoryPending=false;
+    hideGallery();
+  });
 
   function move(step){
     var photos=flatMode?flatUrls:(albums[currentAlbum]||[]);
