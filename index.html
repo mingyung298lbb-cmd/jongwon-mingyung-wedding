@@ -1661,58 +1661,118 @@ section {
 </style>
 
 <style id="sage-ivory-global-20261009">
-/* White/ivory remains dominant. Sage is limited to subtle outlines,
-   botanical pattern toning and focus states. Original text colors stay. */
+/* White is the base. Keep only restrained sage accents on borders and icons.
+   Wedding date, couple names, and venue remain dark charcoal / brown. */
+:root {
+  --ink:#443b36;
+  --muted:#897e75;
+  --green:#78675c;
+  --line:#e8e0d7;
+}
 html,body {
-  background-color:#fbfaf8!important;
+  background-color:#ffffff!important;
+  color:#443b36!important;
 }
 main {
-  background-color:rgba(255,254,252,.87)!important;
-  box-shadow:0 0 0 1px rgba(210,224,210,.20)!important;
+  background-color:rgba(255,255,255,.97)!important;
+  box-shadow:0 0 0 1px rgba(223,216,207,.13)!important;
 }
+/* Botanical motif remains faintly discernible outside the white hero. */
 body::before,main::before {
-  filter:grayscale(1) sepia(.15) hue-rotate(60deg) saturate(.48) brightness(1.04)!important;
+  filter:grayscale(1) sepia(.12) saturate(.34) brightness(1.07)!important;
 }
-body::before {opacity:.42!important;}
-main::before {opacity:.28!important;}
-/* Solid white introduction, existing fine-grain texture and beige border. */
+body::before {opacity:.40!important;}
+main::before {opacity:.20!important;}
+/* Make hero photograph and its information a continuous white composition.
+   Never apply photo filters, crops, or photo effects. */
+.hero {
+  background:#ffffff!important;
+}
+.hero-card.hero-save-card {
+  background:#ffffff!important;
+  box-shadow:none!important;
+}
+.hero-card.hero-save-card .save-photo-wrap,
+.hero-card.hero-save-card .save-photo {
+  background-color:#ffffff!important;
+}
+.hero-card.hero-save-card .save-info {
+  background-color:#ffffff!important;
+  color:#3f3631!important;
+}
+.hero-card.hero-save-card .save-info-line {
+  color:#403832!important;
+}
+.hero-card.hero-save-card .save-info-names {
+  color:#302925!important;
+}
+.hero-card.hero-save-card .save-info-venue {
+  color:#443b35!important;
+}
+.hero-card.hero-save-card .save-heart {
+  color:#b97578!important;
+}
+/* Paper invitation remains flat white with unchanged texture and light beige frame. */
 .box.invite {
   background-color:#ffffff!important;
   border-color:#eadfd4!important;
 }
-.title::before,.title::after {
-  background:#c9d9c8!important;
+.invite-copy {color:#534a44!important;}
+/* Main headings and descriptions: original brown/charcoal typography. */
+.title {color:#796b60!important;}
+.title::before,.title::after {background:#cdd9cb!important;}
+.family-side {color:#89786d!important;}
+.parent-role,.label {color:#8a7e74!important;}
+.parent-line {color:#514740!important;}
+.parent-name {color:#4f433b!important;}
+.value {color:#544a43!important;}
+.account-group-title {color:#736158!important;}
+.account-title {color:#75685e!important;}
+.account-name {color:#433831!important;}
+.account p {color:#71675f!important;}
+.route b {color:#69584d!important;}
+.foot {color:#998b80!important;}
+/* All substantive surfaces return to white. Pastel sage is trim only. */
+.box:not(.invite),.family-card,
+.guestbook-item {
+  background-color:#ffffff!important;
+  border-color:#e8e7e2!important;
 }
-.box:not(.invite),.family-card {
-  background-color:#fffefa!important;
-  border-color:#e3eae0!important;
-}
-.row,.route {border-bottom-color:#e4ece2!important;}
-#gallerySection .gallery .gcard {border-color:#e4eae2!important;}
-.rsvp-jump,.copy,.copy-mini,#gallerySection .gallery-more {
-  border-color:#d4e0d2!important;
+.row,.route {border-bottom-color:#e6e8e2!important;}
+#gallerySection .gallery .gcard {border-color:#e5e9e3!important;}
+.rsvp-jump,.copy,.copy-mini,
+#gallerySection .gallery-more {
+  background-color:#ffffff!important;
+  border-color:#d8e2d7!important;
+  color:#76675f!important;
 }
 .rsvp-jump:hover,.copy:hover,.copy-mini:hover,
 #gallerySection .gallery-more:hover,
 #gallerySection .gallery-more:focus-visible {
-  background:#f6f9f5!important;
-  border-color:#c2d4c3!important;
+  background-color:#f9fbf9!important;
+  border-color:#c7d6c8!important;
 }
 .choice,.choice-label,.form-control,
 .form-field input,.form-field select,.form-field textarea {
-  border-color:#e0e8de!important;
+  background-color:#ffffff!important;
+  border-color:#e4e6e2!important;
+  color:#49423c!important;
 }
 .choice:has(input:checked),.choice-input:checked+.choice-label {
-  background:#f1f6ef!important;
-  border-color:#c5d9c5!important;
+  background-color:#f3f7f3!important;
+  border-color:#cbd9cc!important;
+  color:#675a4f!important;
 }
+.form-field label {color:#70665f!important;}
 .form-field input:focus,.form-field select:focus,
 .form-field textarea:focus,.form-control:focus {
-  border-color:#a9c5ab!important;
-  box-shadow:0 0 0 3px rgba(145,177,148,.10)!important;
+  border-color:#b4cbb6!important;
+  box-shadow:0 0 0 3px rgba(151,177,153,.08)!important;
 }
-.guestbook-item {border-color:#e3eae1!important;}
-.foot {border-top-color:#e1eae0!important;}
+.form-submit {background:#746257!important;color:#ffffff!important;}
+.form-submit:active {background:#5f5149!important;}
+.form-status,.guestbook-name {color:#796b60!important;}
+.foot {border-top-color:#e6e8e2!important;}
 </style>
 </head>
 <body>
