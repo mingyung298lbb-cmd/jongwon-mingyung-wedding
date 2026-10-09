@@ -1878,7 +1878,7 @@ main::before {opacity:.20!important;}
 </style>
 
 <style id="family-side-by-side-two-line-frames-20261009">
-/* Maintain groom/bride side by side. Only the two parent lines are inside the thin frame. */
+/* Groom and bride columns remain side by side; increase each parent frame ~1.8x (60px -> 108px). */
 .family-section .family-panel {
   padding:0!important;
   border:0!important;
@@ -1890,7 +1890,7 @@ main::before {opacity:.20!important;}
   display:grid!important;
   grid-template-columns:repeat(2,minmax(0,1fr))!important;
   gap:12px!important;
-  align-items:start;
+  align-items:stretch!important;
 }
 .family-section .family-card {
   display:block!important;
@@ -1902,50 +1902,53 @@ main::before {opacity:.20!important;}
   box-shadow:none!important;
 }
 .family-section .family-card .family-side {
-  margin:0 0 6px!important;
+  margin:0 0 9px!important;
   font-size:12px!important;
-  line-height:1.45!important;
+  line-height:1.5!important;
   letter-spacing:.025em!important;
   white-space:nowrap;
 }
 .family-section .family-parents {
   display:flex!important;
   flex-direction:column!important;
-  justify-content:center;
-  align-items:center;
-  gap:0!important;
+  justify-content:center!important;
+  align-items:center!important;
+  gap:12px!important;
+  height:108px!important;
+  min-height:108px!important;
+  width:100%!important;
   min-width:0;
-  box-sizing:border-box;
-  padding:5px 5px!important;
-  border:1px solid #e8e7e2!important;
+  box-sizing:border-box!important;
+  padding:14px 6px!important;
+  border:1px solid #d5cbc1!important;
   border-radius:0!important;
-  background:#ffffff!important;
+  background:#fffefa!important;
   box-shadow:none!important;
 }
 .family-section .family-parents .parent-pair {
   display:flex!important;
-  align-items:baseline;
-  justify-content:center;
-  gap:6px!important;
-  min-height:24px;
-  line-height:1.5!important;
+  align-items:baseline!important;
+  justify-content:center!important;
+  gap:7px!important;
+  min-height:27px!important;
+  line-height:1.6!important;
   white-space:nowrap;
 }
 .family-section .family-parents .parent-role {
   min-width:0!important;
-  font-size:11px!important;
+  font-size:11.5px!important;
 }
 .family-section .family-parents .parent-name {
   min-width:0!important;
-  font-size:14px!important;
+  font-size:15px!important;
   letter-spacing:.035em!important;
 }
 @media(max-width:370px) {
   .family-section .family-only {gap:9px!important;}
   .family-section .family-card .family-side {font-size:11.5px!important;}
-  .family-section .family-parents {padding:5px 3px!important;}
+  .family-section .family-parents {padding:14px 3px!important;}
   .family-section .family-parents .parent-pair {gap:4px!important;}
-  .family-section .family-parents .parent-name {font-size:13px!important;}
+  .family-section .family-parents .parent-name {font-size:14px!important;}
 }
 </style>
 </head>
