@@ -1602,7 +1602,7 @@ section {
   font-weight:400!important;
   line-height:1!important;
 }
-/* Music mute state: replace the corner-mounted tiny X with a large centered X. */
+/* Music mute state: overlay the centered X directly ON TOP of the visible musical note. */
 #bgmToggle {
   display:flex!important;
   align-items:center!important;
@@ -1632,6 +1632,7 @@ section {
 #bgmToggle .bgm-off {
   position:absolute!important;
   inset:0!important;
+  z-index:2!important;
   display:none!important;
   align-items:center!important;
   justify-content:center!important;
@@ -1642,9 +1643,12 @@ section {
   font-size:23px!important;
   font-weight:500!important;
   line-height:1!important;
-  color:#779781!important;
+  color:#5f826a!important;
 }
-#bgmToggle.muted .bgm-note {visibility:hidden!important;}
+#bgmToggle.muted .bgm-note {
+  visibility:visible!important;
+  opacity:.72!important;
+}
 #bgmToggle.muted .bgm-off {display:flex!important;}
 @media(max-width:360px){
   #galleryModal .nav {width:38px!important;height:48px!important;}
