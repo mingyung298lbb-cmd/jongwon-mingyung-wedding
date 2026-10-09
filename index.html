@@ -1659,6 +1659,117 @@ section {
   #galleryModal .nav {transition:none!important;}
 }
 </style>
+
+<style id="sage-ivory-global-20261009">
+/* Ivory remains the dominant color; muted sage appears on headings, lines,
+   selected controls and small accents. Photos and the intro paper stay untouched. */
+:root {
+  --green:#6e8975;
+  --muted:#849084;
+  --line:#e1e9df;
+}
+html,body {
+  background-color:#f9fbf8!important;
+}
+main {
+  background-color:rgba(252,254,251,.83)!important;
+  box-shadow:0 0 0 1px rgba(196,216,198,.22)!important;
+}
+/* Keep the botanical pattern visible but gently shift its monochrome hue to sage. */
+body::before,main::before {
+  filter:grayscale(1) sepia(.20) hue-rotate(65deg) saturate(.67) brightness(1.03)!important;
+}
+/* Intro: specifically retain pure white paper grain, beige 1.5px border and size. */
+.box.invite {
+  border-color:#eadfd4!important;
+  background-color:#ffffff!important;
+}
+.title {
+  color:#738e7a!important;
+}
+.title::before,.title::after {
+  background:#bfcfbe!important;
+  opacity:.80!important;
+}
+.hero-card.hero-save-card .save-info-line {
+  color:#838e80!important;
+}
+.hero-card.hero-save-card .save-info-venue {
+  color:#708873!important;
+}
+.invite-copy {
+  color:#4c534b!important;
+}
+.box:not(.invite),.family-card {
+  border-color:#e2eae0!important;
+}
+.family-side,.account-group-title {
+  color:#728975!important;
+}
+.parent-role,.label {
+  color:#819181!important;
+}
+.parent-line,.parent-name,.value {
+  color:#4e594f!important;
+}
+.row,.route {
+  border-bottom-color:#e3ebe2!important;
+}
+.route b {color:#657e69!important;}
+.account-title {color:#677c6b!important;}
+.account-name {color:#465549!important;}
+.account p {color:#626f63!important;}
+/* Buttons: airy green-tinted white, no enlargement or layout changes. */
+.rsvp-jump,
+.copy,.copy-mini,
+#gallerySection .gallery-more {
+  background:#f7faf6!important;
+  border-color:#cbdacb!important;
+  color:#607b67!important;
+}
+.rsvp-jump:hover,.copy:hover,.copy-mini:hover,
+#gallerySection .gallery-more:hover,
+#gallerySection .gallery-more:focus-visible {
+  background:#eef5ec!important;
+  border-color:#adc7b1!important;
+}
+#gallerySection .gallery .gcard {
+  border-color:#e4ebe2!important;
+}
+/* Soft green fields and states, with dark green CTA for readable white text. */
+.choice,.choice-label,
+.form-control,.form-field input,.form-field select,.form-field textarea {
+  border-color:#dce6db!important;
+  background-color:#fdfefc!important;
+}
+.choice:has(input:checked),.choice-input:checked+.choice-label {
+  background:#eaf2e9!important;
+  border-color:#adc7b2!important;
+  color:#53745d!important;
+  box-shadow:inset 0 0 0 1px rgba(123,153,130,.10)!important;
+}
+.form-field label {color:#647e69!important;}
+.form-field input:focus,.form-field select:focus,
+.form-field textarea:focus,.form-control:focus {
+  border-color:#8fae94!important;
+  box-shadow:0 0 0 3px rgba(143,174,148,.13)!important;
+}
+.form-submit {
+  background:#59745f!important;
+  color:#ffffff!important;
+}
+.form-submit:active {background:#48664f!important;}
+.form-status,.guestbook-name {color:#67816c!important;}
+.guestbook-item {border-color:#e0e8de!important;}
+.foot {
+  color:#849388!important;
+  border-top-color:#dce6da!important;
+}
+::selection {
+  color:#344637;
+  background:rgba(146,182,151,.20);
+}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
