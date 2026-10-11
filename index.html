@@ -2256,11 +2256,22 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 
   // Lightweight preview images for display positions 11 and 12.
   // Opening the modal continues to use the original full-resolution photos.
+  // Small WebP thumbnails for each of the first twelve cards. The lightbox always loads the originals.
   var galleryPreviewBySource={
-    "/20261011_181708_437.jpg":"/gallery-preview-11.webp?v=20261011-fast-gallery11",
-    "/20261011_163036.png":"/gallery-preview-12.webp?v=20261011-fast-gallery12"
+    "/gallery3-photo-1.jpg":"/gallery-preview-01.webp?v=20261011-first12",
+    "/gallery3-photo-2.jpg":"/gallery-preview-02.webp?v=20261011-first12",
+    "/gallery1-insert-20261006-1859.jpg":"/gallery-preview-03.webp?v=20261011-first12",
+    "/gallery3-photo-3.jpg":"/gallery-preview-04.webp?v=20261011-first12",
+    "/gallery3-photo-4.jpg":"/gallery-preview-05.webp?v=20261011-first12",
+    "/gallery3-photo-5.jpg":"/gallery-preview-06.webp?v=20261011-first12",
+    "/20261011_192547_356.jpg":"/gallery-preview-07.webp?v=20261011-first12",
+    "/20261011_192714_237.jpg":"/gallery-preview-08.webp?v=20261011-first12",
+    "/20261011_193131_237.jpg":"/gallery-preview-09.webp?v=20261011-first12",
+    "/20261011_164201_906.png":"/gallery-preview-10.webp?v=20261011-first12",
+    "/20261011_181708_437.jpg":"/gallery-preview-11.webp?v=20261011-first12",
+    "/20261011_163036.png":"/gallery-preview-12.webp?v=20261011-first12"
   };
-  function addGalleryCard(entry){
+  function addGalleryCard(entry,displayIndex){
     var card=document.createElement("button");
     card.type="button";
     card.className="gcard";
@@ -2271,9 +2282,9 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     var originalSource=entry.url.split("?")[0];
     var previewUrl=galleryPreviewBySource[originalSource];
     img.alt="웨딩 사진 "+(entry.albumIndex+1)+"-"+(entry.photoIndex+1);
-    img.loading=previewUrl?"eager":"lazy";
+    img.loading=displayIndex<initialGalleryCount?"eager":"lazy";
     img.decoding="async";
-    try{img.fetchPriority=previewUrl?"high":"low";}catch(e){}
+    try{img.fetchPriority=displayIndex<4?"high":displayIndex<initialGalleryCount?"auto":"low";}catch(e){}
     img.src=previewUrl||entry.url;
     card.appendChild(img);
     card.addEventListener("click",function(){
@@ -2301,7 +2312,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     var limit=Math.min(flatGallery.length,shownGalleryCount+amount);
     var fragment=document.createDocumentFragment();
     for(var i=shownGalleryCount;i<limit;i++){
-      fragment.appendChild(addGalleryCard(flatGallery[i]));
+      fragment.appendChild(addGalleryCard(flatGallery[i],i));
     }
     galleryGrid.appendChild(fragment);
     shownGalleryCount=limit;
