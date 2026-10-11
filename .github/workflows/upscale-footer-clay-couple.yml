@@ -32,8 +32,11 @@ jobs:
               rgb = Image.new("RGB", image.size, (255, 255, 255))
               rgb.paste(image, mask=image.getchannel("A"))
               sharpened = rgb.filter(ImageFilter.UnsharpMask(radius=1.05, percent=105, threshold=3))
-              image.paste(sharpened, (0, 0), image.getchannel("A"))
-              image.save(dst, "WEBP", lossless=True, method=6)
+              # Preserve the exact transparency; don't blend alpha twice.
+              r, g, b = sharpened.split()
+              image = Image.merge("RGBA", (r, g, b, image.getchannel("A")))
+              # Visually lossless at displayed size, avoids a large mobile download.
+              image.save(dst, "WEBP", quality=93, method=6)
           with Image.open(dst) as check:
               assert check.size == (orig[0] * 4, orig[1] * 4), check.size
               assert check.mode == "RGBA", check.mode
