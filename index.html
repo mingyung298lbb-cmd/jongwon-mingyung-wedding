@@ -1975,8 +1975,8 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 </script>
 </head>
 <body>
-<button id="bgmToggle" class="bgm-toggle muted" type="button" aria-label="배경음악 켜기" aria-pressed="false">
-  <span class="bgm-note" aria-hidden="true">🔇</span>
+<button id="bgmToggle" class="bgm-toggle" type="button" aria-label="배경음악 끄기" aria-pressed="true">
+  <span class="bgm-note" aria-hidden="true">🔊</span>
 </button>
 
 <audio
@@ -2706,34 +2706,40 @@ const bgm = document.getElementById("bgm");
 const bgmToggle = document.getElementById("bgmToggle");
 const bgmIcon = bgmToggle.querySelector(".bgm-note");
 
+/* Sound is enabled by default. Autoplay may still require a user gesture. */
 let isMuted = false;
 let hasStarted = false;
 
 bgm.volume = 0.45;
 bgm.loop = true;
 
-/* Keep the speaker pictogram and accessibility state synchronized with playback. */
 function syncBgmToggle(){
-  const silent = !hasStarted || isMuted || bgm.paused;
+  const silent = isMuted;
   bgmIcon.textContent = silent ? "🔇" : "🔊";
   bgmToggle.classList.toggle("muted", silent);
   bgmToggle.setAttribute("aria-label", silent ? "배경음악 켜기" : "배경음악 끄기");
   bgmToggle.setAttribute("aria-pressed", String(!silent));
 }
 
-/* Stream audio after the first permitted user interaction. */
+/* Attempt unmuted playback on entry; if blocked, retry on the first gesture. */
 async function startBgm(){
-  if(hasStarted) return true;
+  if(isMuted) return false;
+  if(hasStarted && !bgm.paused) return true;
   try {
     if(!bgm.getAttribute("src")){
       bgm.src = "coffeehouse_game_jazz_original_4min.m4a";
       bgm.load();
     }
-    bgm.currentTime = 0.03;
+    if(!hasStarted) bgm.currentTime = 0.03;
+    bgm.muted = false;
     await bgm.play();
     hasStarted = true;
-    isMuted = false;
-    bgm.muted = false;
+    if(isMuted){
+      bgm.muted = true;
+      bgm.pause();
+      syncBgmToggle();
+      return false;
+    }
     syncBgmToggle();
     return true;
   } catch(e) {
@@ -2742,9 +2748,9 @@ async function startBgm(){
   }
 }
 
-/* On first screen interaction, allow music to start; the icon has its own handler. */
+/* Browsers that block audible autoplay unlock playback at the first interaction. */
 async function unlockBgm(e){
-  if(e.target && e.target.closest && e.target.closest("#bgmToggle")) return;
+  if(isMuted || (e.target && e.target.closest && e.target.closest("#bgmToggle"))) return;
   const started = await startBgm();
   if(started){
     window.removeEventListener("touchstart", unlockBgm);
@@ -2754,19 +2760,26 @@ async function unlockBgm(e){
 window.addEventListener("touchstart", unlockBgm, {passive:true});
 window.addEventListener("click", unlockBgm);
 
-/* The icon starts audio on its first tap, then toggles mute/unmute. */
+/* The initially ON speaker turns OFF on tap, even if autoplay was blocked. */
 bgmToggle.addEventListener("click", async function(e){
   e.stopPropagation();
-  if(!hasStarted){
-    await startBgm();
-    return;
-  }
   isMuted = !isMuted;
-  bgm.muted = isMuted;
-  syncBgmToggle();
+  if(isMuted){
+    bgm.muted = true;
+    bgm.pause();
+    syncBgmToggle();
+  } else {
+    bgm.muted = false;
+    syncBgmToggle();
+    const started = await startBgm();
+    if(started){
+      window.removeEventListener("touchstart", unlockBgm);
+      window.removeEventListener("click", unlockBgm);
+    }
+  }
 });
-bgm.addEventListener("pause", syncBgmToggle);
 syncBgmToggle();
+startBgm();
 </script>
 
 <script id="wedding-bold-type-20261009">
