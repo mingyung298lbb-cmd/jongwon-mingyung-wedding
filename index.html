@@ -1603,7 +1603,7 @@ section {
   font-weight:400!important;
   line-height:1!important;
 }
-/* Music mute state: overlay the centered X directly ON TOP of the visible musical note. */
+/* Beige music control: playing 🔊, muted / not started 🔇. */
 #bgmToggle {
   display:flex!important;
   align-items:center!important;
@@ -1611,11 +1611,11 @@ section {
   width:30px!important;
   height:30px!important;
   padding:0!important;
-  border:1px solid rgba(191,214,194,.90)!important;
+  border:1px solid #decdbb!important;
   border-radius:50%!important;
-  background:rgba(253,255,252,.96)!important;
-  color:#779781!important;
-  box-shadow:0 2px 9px rgba(33,56,37,.09)!important;
+  background:#f7efe6!important;
+  color:#796c61!important;
+  box-shadow:0 2px 9px rgba(90,73,59,.075)!important;
 }
 #bgmToggle .bgm-note {
   display:flex!important;
@@ -1625,32 +1625,21 @@ section {
   height:100%!important;
   padding:0!important;
   margin:0!important;
-  color:#779781!important;
-  font-family:Arial,sans-serif!important;
+  font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif!important;
   font-size:17px!important;
+  font-weight:400!important;
   line-height:1!important;
+  filter:none;
+  transition:filter .18s ease,opacity .18s ease;
 }
-#bgmToggle .bgm-off {
-  position:absolute!important;
-  inset:0!important;
-  z-index:2!important;
-  display:none!important;
-  align-items:center!important;
-  justify-content:center!important;
-  padding:0 0 2px!important;
-  margin:0!important;
-  transform:none!important;
-  font-family:Arial,sans-serif!important;
-  font-size:23px!important;
-  font-weight:500!important;
-  line-height:1!important;
-  color:#5f826a!important;
+#bgmToggle.muted {
+  background:#f9f4ee!important;
+  border-color:#e5d8ca!important;
 }
 #bgmToggle.muted .bgm-note {
-  visibility:visible!important;
-  opacity:.72!important;
+  filter:grayscale(.85) saturate(.25);
+  opacity:.67!important;
 }
-#bgmToggle.muted .bgm-off {display:flex!important;}
 @media(max-width:360px){
   #galleryModal .nav {width:30px!important;height:30px!important;}
   #galleryModal .nav.prev {left:6px!important;}
@@ -1985,9 +1974,8 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 </script>
 </head>
 <body>
-<button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
-  <span class="bgm-note">♫</span>
-  <span class="bgm-off">×</span>
+<button id="bgmToggle" class="bgm-toggle muted" type="button" aria-label="배경음악 켜기" aria-pressed="false">
+  <span class="bgm-note" aria-hidden="true">🔇</span>
 </button>
 
 <audio
@@ -2715,6 +2703,7 @@ async function copyText(t,msg="계좌번호가 복사되었습니다."){
 <script>
 const bgm = document.getElementById("bgm");
 const bgmToggle = document.getElementById("bgmToggle");
+const bgmIcon = bgmToggle.querySelector(".bgm-note");
 
 let isMuted = false;
 let hasStarted = false;
@@ -2722,64 +2711,61 @@ let hasStarted = false;
 bgm.volume = 0.45;
 bgm.loop = true;
 
-/* 파일 전체는 미리 받지 않고 메타데이터만 준비.
-   첫 사용자 상호작용에서 즉시 스트리밍 재생 시작 */
-async function startBgm() {
-  if (hasStarted) return true;
+/* Keep the speaker pictogram and accessibility state synchronized with playback. */
+function syncBgmToggle(){
+  const silent = !hasStarted || isMuted || bgm.paused;
+  bgmIcon.textContent = silent ? "🔇" : "🔊";
+  bgmToggle.classList.toggle("muted", silent);
+  bgmToggle.setAttribute("aria-label", silent ? "배경음악 켜기" : "배경음악 끄기");
+  bgmToggle.setAttribute("aria-pressed", String(!silent));
+}
 
+/* Stream audio after the first permitted user interaction. */
+async function startBgm(){
+  if(hasStarted) return true;
   try {
-    if (!bgm.getAttribute("src")) {
+    if(!bgm.getAttribute("src")){
       bgm.src = "coffeehouse_game_jazz_original_4min.m4a";
       bgm.load();
     }
     bgm.currentTime = 0.03;
     await bgm.play();
     hasStarted = true;
+    isMuted = false;
+    bgm.muted = false;
+    syncBgmToggle();
     return true;
-  } catch (e) {
+  } catch(e) {
+    syncBgmToggle();
     return false;
   }
 }
 
-/* 페이지 아무 곳이나 처음 터치/클릭하면 재생.
-   BGM 버튼 자체는 아래 전용 핸들러가 처리함. */
-async function unlockBgm(e) {
-  if (e.target && e.target.closest && e.target.closest("#bgmToggle")) return;
-
+/* On first screen interaction, allow music to start; the icon has its own handler. */
+async function unlockBgm(e){
+  if(e.target && e.target.closest && e.target.closest("#bgmToggle")) return;
   const started = await startBgm();
-  if (started) {
+  if(started){
     window.removeEventListener("touchstart", unlockBgm);
     window.removeEventListener("click", unlockBgm);
   }
 }
-
-window.addEventListener("touchstart", unlockBgm, { passive: true });
+window.addEventListener("touchstart", unlockBgm, {passive:true});
 window.addEventListener("click", unlockBgm);
 
-/* 음소거 버튼:
-   아직 재생 전이면 첫 클릭은 '재생 시작', 이후부터 음소거 토글 */
-bgmToggle.addEventListener("click", async function (e) {
+/* The icon starts audio on its first tap, then toggles mute/unmute. */
+bgmToggle.addEventListener("click", async function(e){
   e.stopPropagation();
-
-  if (!hasStarted) {
-    const started = await startBgm();
-    if (started) {
-      isMuted = false;
-      bgm.muted = false;
-      bgmToggle.classList.remove("muted");
-      bgmToggle.setAttribute("aria-label", "배경음악 음소거");
-    }
+  if(!hasStarted){
+    await startBgm();
     return;
   }
-
   isMuted = !isMuted;
   bgm.muted = isMuted;
-  bgmToggle.classList.toggle("muted", isMuted);
-  bgmToggle.setAttribute(
-    "aria-label",
-    isMuted ? "배경음악 켜기" : "배경음악 음소거"
-  );
+  syncBgmToggle();
 });
+bgm.addEventListener("pause", syncBgmToggle);
+syncBgmToggle();
 </script>
 
 <script id="wedding-bold-type-20261009">
