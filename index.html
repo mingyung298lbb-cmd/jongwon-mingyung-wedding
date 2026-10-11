@@ -2254,22 +2254,42 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   var shownGalleryCount=0;
   var flatMode=true;
 
-  // Lightweight preview images for display positions 11 and 12.
-  // Opening the modal continues to use the original full-resolution photos.
-  // Small WebP thumbnails for each of the first twelve cards. The lightbox always loads the originals.
+  // Optimized, position-matched WebP thumbnails for ALL gallery cards.
+  // Full-quality source images are only used inside the enlarged photo viewer.
   var galleryPreviewBySource={
-    "/gallery3-photo-1.jpg":"/gallery-preview-01.webp?v=20261011-first12",
-    "/gallery3-photo-2.jpg":"/gallery-preview-02.webp?v=20261011-first12",
-    "/gallery1-insert-20261006-1859.jpg":"/gallery-preview-03.webp?v=20261011-first12",
-    "/gallery3-photo-3.jpg":"/gallery-preview-04.webp?v=20261011-first12",
-    "/gallery3-photo-4.jpg":"/gallery-preview-05.webp?v=20261011-first12",
-    "/gallery3-photo-5.jpg":"/gallery-preview-06.webp?v=20261011-first12",
-    "/20261011_192547_356.jpg":"/gallery-preview-07.webp?v=20261011-first12",
-    "/20261011_192714_237.jpg":"/gallery-preview-08.webp?v=20261011-first12",
-    "/20261011_193131_237.jpg":"/gallery-preview-09.webp?v=20261011-first12",
-    "/20261011_164201_906.png":"/gallery-preview-10.webp?v=20261011-first12",
-    "/20261011_181708_437.jpg":"/gallery-preview-11.webp?v=20261011-first12",
-    "/20261011_163036.png":"/gallery-preview-12.webp?v=20261011-first12"
+    "/gallery3-photo-1.jpg":"/gallery-preview-01.webp?v=20261011-all33",
+    "/gallery3-photo-2.jpg":"/gallery-preview-02.webp?v=20261011-all33",
+    "/gallery1-insert-20261006-1859.jpg":"/gallery-preview-03.webp?v=20261011-all33",
+    "/gallery3-photo-3.jpg":"/gallery-preview-04.webp?v=20261011-all33",
+    "/gallery3-photo-4.jpg":"/gallery-preview-05.webp?v=20261011-all33",
+    "/gallery3-photo-5.jpg":"/gallery-preview-06.webp?v=20261011-all33",
+    "/20261011_192547_356.jpg":"/gallery-preview-07.webp?v=20261011-all33",
+    "/20261011_192714_237.jpg":"/gallery-preview-08.webp?v=20261011-all33",
+    "/20261011_193131_237.jpg":"/gallery-preview-09.webp?v=20261011-all33",
+    "/20261011_164201_906.png":"/gallery-preview-10.webp?v=20261011-all33",
+    "/20261011_181708_437.jpg":"/gallery-preview-11.webp?v=20261011-all33",
+    "/20261011_163036.png":"/gallery-preview-12.webp?v=20261011-all33",
+    "/20261011_200322_609.png":"/gallery-preview-13.webp?v=20261011-all33",
+    "/gallery-new-23-20261009.png":"/gallery-preview-14.webp?v=20261011-all33",
+    "/20261011_190829_380.jpg":"/gallery-preview-15.webp?v=20261011-all33",
+    "/gallery1-photo-6.jpg":"/gallery-preview-16.webp?v=20261011-all33",
+    "/gallery2-photo-7-hq.png":"/gallery-preview-17.webp?v=20261011-all33",
+    "/gallery2-photo-8-hq.jpg":"/gallery-preview-18.webp?v=20261011-all33",
+    "/20261011_194600_865.png":"/gallery-preview-19.webp?v=20261011-all33",
+    "/20261011_194759_914.png":"/gallery-preview-20.webp?v=20261011-all33",
+    "/gallery3-front-20261007.jpg":"/gallery-preview-21.webp?v=20261011-all33",
+    "/gallery3new-photo-5.jpg":"/gallery-preview-22.webp?v=20261011-all33",
+    "/gallery3new-photo-6.jpg":"/gallery-preview-23.webp?v=20261011-all33",
+    "/gallery3new-photo-7.jpg":"/gallery-preview-24.webp?v=20261011-all33",
+    "/gallery3new-photo-8.jpg":"/gallery-preview-25.webp?v=20261011-all33",
+    "/gallery-photo-1.jpg":"/gallery-preview-26.webp?v=20261011-all33",
+    "/gallery-photo-2.jpg":"/gallery-preview-27.webp?v=20261011-all33",
+    "/gallery-photo-3.jpg":"/gallery-preview-28.webp?v=20261011-all33",
+    "/gallery-photo-4.jpg":"/gallery-preview-29.webp?v=20261011-all33",
+    "/gallery-photo-5.jpg":"/gallery-preview-30.webp?v=20261011-all33",
+    "/gallery-photo-6.jpg":"/gallery-preview-31.webp?v=20261011-all33",
+    "/gallery-photo-7.jpg":"/gallery-preview-32.webp?v=20261011-all33",
+    "/gallery-photo-8.jpg":"/gallery-preview-33.webp?v=20261011-all33"
   };
   function addGalleryCard(entry,displayIndex){
     var card=document.createElement("button");
@@ -2282,9 +2302,17 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     var originalSource=entry.url.split("?")[0];
     var previewUrl=galleryPreviewBySource[originalSource];
     img.alt="웨딩 사진 "+(entry.albumIndex+1)+"-"+(entry.photoIndex+1);
-    img.loading=displayIndex<initialGalleryCount?"eager":"lazy";
+    // Tiny 13–33 previews begin downloading when "More" is tapped,
+    // rather than waiting for the user to scroll near each row.
+    img.loading="eager";
     img.decoding="async";
-    try{img.fetchPriority=displayIndex<4?"high":displayIndex<initialGalleryCount?"auto":"low";}catch(e){}
+    try{img.fetchPriority=displayIndex<4?"high":"auto";}catch(e){}
+    if(previewUrl){
+      img.onerror=function(){
+        img.onerror=null;
+        img.src=entry.url; // Gracefully fall back if a preview asset fails.
+      };
+    }
     img.src=previewUrl||entry.url;
     card.appendChild(img);
     card.addEventListener("click",function(){
@@ -2304,7 +2332,8 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     if(finalCard){finalCard.classList.remove("gallery-last-wide");}
     if(remaining===0 && shownGalleryCount%4===1 && finalCard){
       finalCard.classList.add("gallery-last-wide");
-      var lastUrl=flatGallery[flatGallery.length-1].url.replace(/"/g,"%22");
+      var lastOriginal=flatGallery[flatGallery.length-1].url;
+      var lastUrl=(galleryPreviewBySource[lastOriginal.split("?")[0]]||lastOriginal).replace(/"/g,"%22");
       finalCard.style.setProperty("--last-photo",'url("'+lastUrl+'")');
     }
   }
@@ -2325,7 +2354,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
       showGalleryMore(initialGalleryCount);
       galleryGrid.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth",block:"start"});
     }else{
-      // 펼칠 때 남아 있는 사진을 모두 추가하되, 실제 이미지는 뷰포트에 닿을 때 로드합니다.
+      // 펼치는 즉시 가벼운 미리보기 21장을 병렬 다운로드합니다.
       showGalleryMore(flatGallery.length-shownGalleryCount);
     }
   });
