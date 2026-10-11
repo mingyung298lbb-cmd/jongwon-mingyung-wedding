@@ -2842,7 +2842,7 @@ bgmToggle.addEventListener("click", async function (e) {
 (function(){
   "use strict";
   var deltaPx=96/72; // CSS 1pt = 1.333333px
-  var ignore="script,style,link,meta,noscript,svg,svg *,#bgmToggle,#bgmToggle *,#galleryModal .nav,#galleryModal .close,.save-info-names,.save-info-names *";
+  var ignore="script,style,link,meta,noscript,svg,svg *,#bgmToggle,#bgmToggle *,#galleryModal .nav,#galleryModal .close,.save-info-names,.save-info-names *,.save-info-line,.save-info-line *";
   var seen=new WeakSet();
   function collect(element,list){
     if(!(element instanceof HTMLElement)){return;}
