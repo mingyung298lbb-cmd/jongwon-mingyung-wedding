@@ -1974,23 +1974,52 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 })();
 </script>
 <style id="wedding-footer-chibis-20261011">
-.footer-chibi-pair {
-  display:flex!important;
-  justify-content:center!important;
-  align-items:center!important;
-  width:100%;
-  padding:3px 0 0!important;
-  margin:0 auto!important;
-}
-.footer-chibi-pair img {
-  display:block!important;
-  width:91px!important;
+/* Footer miniatures: high-resolution transparent couple and an independently spinning clay heart. */
+.footer-chibi-stage {
+  display:table!important;
+  position:relative!important;
+  width:max-content!important;
   height:auto!important;
-  max-width:28vw!important;
+  margin:16px auto 12px!important;
+  padding:0!important;
+  line-height:0!important;
+  background:transparent!important;
+  border:0!important;
+  isolation:isolate;
+}
+.footer-chibi-stage .footer-chibi-couple {
+  display:block!important;
+  width:auto!important;
+  height:220px!important;
+  max-width:90vw!important;
   object-fit:contain!important;
-  mix-blend-mode:multiply;
+  background:transparent!important;
+  mix-blend-mode:normal!important;
   border:0!important;
   box-shadow:none!important;
+}
+.footer-chibi-stage .footer-clay-heart {
+  display:block!important;
+  position:absolute!important;
+  left:50.3%!important;
+  top:37.4%!important;
+  width:33px!important;
+  height:auto!important;
+  z-index:1!important;
+  pointer-events:none!important;
+  transform-origin:center center!important;
+  animation:footerClayHeartRotate 5.2s linear infinite!important;
+  filter:drop-shadow(0 1px 2px rgba(130,61,60,.12));
+}
+@keyframes footerClayHeartRotate {
+  from { transform:translate(-50%,-50%) rotateZ(0deg); }
+  to   { transform:translate(-50%,-50%) rotateZ(360deg); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .footer-chibi-stage .footer-clay-heart {
+    animation:none!important;
+    transform:translate(-50%,-50%)!important;
+  }
 }
 </style>
 </head>
@@ -2233,8 +2262,9 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   </section>
 
   <div class="foot">이종원 · 이민경 · 2027.03.21 · 아벤티움 웨딩홀</div>
-  <div class="footer-chibi-pair" aria-label="신부와 신랑 캐릭터">
-    <img src="data:image/webp;base64,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" alt="작게 나란히 서 있는 신부와 신랑 캐릭터" width="127" height="180" loading="lazy" decoding="async">
+  <div class="footer-chibi-stage" aria-label="신랑과 신부의 웨딩 캐릭터">
+    <img class="footer-chibi-couple" src="/footer-couple-hd.webp?v=20261011-highres" alt="왼쪽 신랑과 오른쪽 신부 캐릭터" width="276" height="400" loading="lazy" decoding="async">
+    <img class="footer-clay-heart" src="/footer-heart-clay.webp?v=20261011-zaxis-heart" alt="" aria-hidden="true" width="90" height="78" loading="lazy" decoding="async">
   </div>
 </main>
 
