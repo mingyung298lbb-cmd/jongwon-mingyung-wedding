@@ -2274,7 +2274,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     "/gallary1-plus.jpg?v=20261006-1",
     "/gallery3new-photo-2.jpg?v=20261005-2",
     "/gallery3new-photo-3.jpg?v=20261005-2",
-    "/gallery3new-photo-4.jpg?v=20261005-2"
+    "/20261011_164201_906.png?v=20261011-gallery14"
   ],[
     "/gallery-photo-1.jpg?v=distinct-cover-20260927-4",
     "/gallery-photo-2.jpg?v=galleryfix-20260927-2",
@@ -2311,6 +2311,12 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   // 나머지 사진의 상대적 순서는 유지하고 원본 파일은 변경하지 않습니다.
   var movedAfter18=flatGallery.splice(21,2);
   flatGallery.splice(18,0,...movedAfter18);
+  // 현재 표시되는 갤러리 7·8·9번 묶음과 10·11·12번 묶음을 위치만 맞교환합니다.
+  // 썸네일·팝업·슬라이드 순서가 모두 동일하도록 flatGallery에서 교환합니다.
+  var galleryPhotos7to9=flatGallery.slice(6,9);
+  var galleryPhotos10to12=flatGallery.slice(9,12);
+  flatGallery.splice(6,3,...galleryPhotos10to12);
+  flatGallery.splice(9,3,...galleryPhotos7to9);
   var flatUrls=flatGallery.map(function(item){return item.url;});
   var galleryGrid=document.getElementById("galleryGrid");
   var galleryMore=document.getElementById("galleryMore");
