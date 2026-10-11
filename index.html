@@ -1951,6 +1951,37 @@ main::before {opacity:.20!important;}
   .family-section .family-parents .parent-name {font-size:14px!important;}
 }
 </style>
+<!-- Keep the names hidden until their exact webfont has finished loading, avoiding a fallback-to-webfont flash. -->
+<style id="main-names-font-stable-20261011">
+html:not(.main-names-font-ready):not(.main-names-font-fallback) .hero-card.hero-save-card .save-info-names {
+  visibility:hidden!important;
+}
+html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
+  font-family:"Apple SD Gothic Neo","Malgun Gothic",sans-serif!important;
+}
+</style>
+<script id="main-names-font-load-20261011">
+(function(){
+  "use strict";
+  var root=document.documentElement, settled=false, timer;
+  function finish(loaded){
+    if(settled)return;
+    settled=true;
+    clearTimeout(timer);
+    root.classList.add(loaded?"main-names-font-ready":"main-names-font-fallback");
+  }
+  // Keep other parts of the invitation visible; only the main names wait for this font.
+  timer=setTimeout(function(){finish(false);},4000);
+  try{
+    if(document.fonts && document.fonts.load){
+      document.fonts.load('400 37px "Gowun Batang"',"이종원 이민경").then(
+        function(faces){finish(faces.length>0);},
+        function(){finish(false);}
+      );
+    }else{finish(false);}
+  }catch(e){finish(false);}
+})();
+</script>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" aria-label="배경음악 음소거">
@@ -2811,7 +2842,7 @@ bgmToggle.addEventListener("click", async function (e) {
 (function(){
   "use strict";
   var deltaPx=96/72; // CSS 1pt = 1.333333px
-  var ignore="script,style,link,meta,noscript,svg,svg *,#bgmToggle,#bgmToggle *,#galleryModal .nav,#galleryModal .close";
+  var ignore="script,style,link,meta,noscript,svg,svg *,#bgmToggle,#bgmToggle *,#galleryModal .nav,#galleryModal .close,.save-info-names,.save-info-names *";
   var seen=new WeakSet();
   function collect(element,list){
     if(!(element instanceof HTMLElement)){return;}
