@@ -1,0 +1,47 @@
+name: Upscale original footer clay figures
+on:
+  push:
+    paths:
+      - '.github/workflows/upscale-footer-clay-couple.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  upscale-clay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install Pillow
+        run: python -m pip install --quiet Pillow
+      - name: Generate sharp 4x transparent clay couple
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageFilter
+          src = Path("footer-couple-hd.webp")
+          dst = Path("footer-couple-ultra.webp")
+          with Image.open(src) as base:
+              base = base.convert("RGBA")
+              orig = base.size
+              # Premultiplied alpha prevents dark fringes around the hair and dress.
+              image = base.convert("RGBa").resize(
+                  (orig[0] * 4, orig[1] * 4), Image.Resampling.LANCZOS
+              ).convert("RGBA")
+              rgb = Image.new("RGB", image.size, (255, 255, 255))
+              rgb.paste(image, mask=image.getchannel("A"))
+              sharpened = rgb.filter(ImageFilter.UnsharpMask(radius=1.05, percent=105, threshold=3))
+              image.paste(sharpened, (0, 0), image.getchannel("A"))
+              image.save(dst, "WEBP", lossless=True, method=6)
+          with Image.open(dst) as check:
+              assert check.size == (orig[0] * 4, orig[1] * 4), check.size
+              assert check.mode == "RGBA", check.mode
+          print(f"Saved {dst}: {orig} -> {check.size}, {dst.stat().st_size} bytes")
+          PY
+      - name: Commit new high resolution asset
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add footer-couple-ultra.webp
+          git diff --cached --quiet || (git commit -m "Add 4x upscale of original clay couple" && git push)
