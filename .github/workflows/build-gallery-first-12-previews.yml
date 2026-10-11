@@ -1,0 +1,55 @@
+name: Optimize first 12 gallery thumbnails
+on:
+  push:
+    paths:
+      - '.github/workflows/build-gallery-first-12-previews.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install Pillow
+        run: python -m pip install --quiet Pillow
+      - name: Create WebP thumbnails for gallery positions 1 to 10
+        run: |
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+          from urllib.parse import urlsplit
+          from PIL import Image, ImageOps
+          html=Path("index.html").read_text(encoding="utf-8")
+          albums_match=re.search(r"var albums=(\[\[.*?\]\]);",html,re.S)
+          order_match=re.search(r"var displayOrder=\[([\d,]+)\];",html)
+          if not albums_match or not order_match:
+              raise ValueError("Gallery source list or order missing")
+          albums=json.loads(albums_match.group(1))
+          sources=[url for album in albums for url in album]
+          order=[int(k) for k in order_match.group(1).split(",")]
+          assert len(order)>=12 and len(set(order))==len(order)
+          first12=[sources[i] for i in order[:12]]
+          assert first12[10].split("?")[0]=="/20261011_181708_437.jpg"
+          assert first12[11].split("?")[0]=="/20261011_163036.png"
+          for num,src in enumerate(first12[:10],start=1):
+              input_name=urlsplit(src).path.lstrip("/")
+              out_name=f"gallery-preview-{num:02d}.webp"
+              with Image.open(input_name) as im:
+                  im=ImageOps.exif_transpose(im).convert("RGB")
+                  im.thumbnail((480,720),Image.Resampling.LANCZOS)
+                  im.save(out_name,"WEBP",quality=80,method=6)
+              size=Path(out_name).stat().st_size
+              print(f"{num:02}: {input_name} -> {out_name} ({size} bytes)")
+              if size<1000 or size>200000:
+                  raise RuntimeError(f"thumbnail size out of range: {out_name} ({size})")
+          PY
+      - name: Commit previews without changing originals
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add gallery-preview-{01..10}.webp
+          git diff --cached --quiet || (git commit -m 'Create small WebP previews for first 10 gallery cards' && git push)
