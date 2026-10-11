@@ -2540,9 +2540,17 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   prevBtn.onclick=function(){ move(-1); };
   nextBtn.onclick=function(){ move(1); };
 
+  // Black side areas navigate; tapping outside the photo never closes the gallery.
+  // Leave the existing arrow and close buttons untouched.
+  var lastGallerySwipeTime=0;
   modal.onclick=function(e){
     e=e||window.event;
-    if(e.target===modal){ closeGallery(); }
+    if(e.target!==modal && e.target!==modalSlides){return;}
+    // A touch swipe already navigates on touchend; ignore its synthetic click.
+    if(Date.now()-lastGallerySwipeTime<450){return;}
+    var bounds=modal.getBoundingClientRect();
+    var isLeftSide=e.clientX<bounds.left+bounds.width/2;
+    move(isLeftSide?-1:1);
   };
 
   document.addEventListener("keydown",function(e){
@@ -2560,6 +2568,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     if(!e.changedTouches || !e.changedTouches.length){ return; }
     var dx=e.changedTouches[0].clientX-touchStartX;
     if(Math.abs(dx)<45){ return; }
+    lastGallerySwipeTime=Date.now();
     move(dx>0?-1:1);
   },false);
 })();
