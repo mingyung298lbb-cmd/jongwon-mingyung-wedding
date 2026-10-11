@@ -1437,10 +1437,10 @@ section {
 </style>
 
 <style id="gallery-individual-cards-more-20261009">
-/* 원본 앨범 1→2→3→4, 각 앨범 사진 순서를 고정한 3열 그리드 */
+/* 원본 앨범 1→2→3→4, 지정된 사진 순서를 유지한 4열 그리드 */
 #gallerySection .gallery {
   display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
   grid-auto-flow:row!important;
   grid-auto-rows:auto;
   gap:5px!important;
@@ -1476,29 +1476,6 @@ section {
 #gallerySection .gallery .gcard:focus-visible {
   outline:2px solid #988277!important;
   outline-offset:3px;
-}
-#gallerySection .gallery .gcard.gallery-last-wide {
-  grid-column:1 / -1!important;
-  aspect-ratio:5/3!important;
-  isolation:isolate;
-}
-/* 3열에서 마지막 사진이 한 장 남으면 전체 열을 채워 빈 셀이 없도록 합니다. */
-#gallerySection .gallery .gcard.gallery-last-wide::before {
-  content:"";
-  position:absolute;
-  inset:-15px;
-  background-image:var(--last-photo);
-  background-position:center;
-  background-size:cover;
-  filter:blur(13px) saturate(.68) brightness(1.07);
-  opacity:.37;
-  pointer-events:none;
-}
-#gallerySection .gallery .gcard.gallery-last-wide img {
-  position:relative;
-  z-index:1;
-  object-fit:contain!important;
-  background:transparent!important;
 }
 #gallerySection .gallery-more-wrap {
   display:flex;
@@ -2291,13 +2268,6 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
       : "사진 접기";
     galleryMore.setAttribute("aria-expanded",shownGalleryCount>initialGalleryCount?"true":"false");
     galleryStatus.textContent="총 "+flatGallery.length+"장 중 "+shownGalleryCount+"장 표시";
-    var finalCard=galleryGrid.lastElementChild;
-    if(finalCard){finalCard.classList.remove("gallery-last-wide");}
-    if(remaining===0 && shownGalleryCount%3===1 && finalCard){
-      finalCard.classList.add("gallery-last-wide");
-      var lastUrl=flatGallery[flatGallery.length-1].url.replace(/"/g,"%22");
-      finalCard.style.setProperty("--last-photo",'url("'+lastUrl+'")');
-    }
   }
   function showGalleryMore(amount){
     var limit=Math.min(flatGallery.length,shownGalleryCount+amount);
