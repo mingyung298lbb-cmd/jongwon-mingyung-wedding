@@ -2292,7 +2292,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
       sourceGallery.push({url:url,albumIndex:albumIndex,photoIndex:photoIndex});
     });
   });
-  var displayOrder=[0,1,2,3,4,5,20,21,22,23,33,24,6,7,8,12,13,9,10,11,14,15,16,17,18,19,25,26,27,28,29,30,31,32];
+  var displayOrder=[0,1,2,3,4,5,20,21,22,23,33,24,6,7,8,10,11,9,12,13,14,15,16,17,18,19,25,26,27,28,29,30,31,32];
   var flatGallery=displayOrder.map(function(i){return sourceGallery[i];});
   var flatUrls=flatGallery.map(function(item){return item.url;});
   var galleryGrid=document.getElementById("galleryGrid");
