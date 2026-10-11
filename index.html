@@ -2249,10 +2249,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     "/gallery1-insert-20261006-1859.jpg?v=20261006-2001",
     "/gallery3-photo-3.jpg?v=20261005-3",
     "/gallery3-photo-4.jpg?v=20261005-3",
-    "/gallery3-photo-5.jpg?v=20261005-3",
-    "/gallery-photo-14.jpg?v=20261005-new678-1",
-    "/gallery-photo-15.jpg?v=20261006-1917",
-    "/gallery-photo-16.jpg?v=20261006-1917"
+    "/gallery3-photo-5.jpg?v=20261005-3"
   ],[
     "/gallery-new-22-20261009.png?v=20261009-172223",
     "/gallery-new-23-20261009.png?v=20261009-172223",
@@ -2286,36 +2283,16 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   ]];
 
 
-  // 개별 썸네일: 앨범별 순서를 변경하지 않고 하나의 목록으로 병합합니다.
-  var flatGallery=[];
+  // Current gallery order: keep all remaining photos in place after deleting slots 10–12.
+  // Album references are retained for thumbnail-to-modal navigation.
+  var sourceGallery=[];
   albums.forEach(function(photos,albumIndex){
     photos.forEach(function(url,photoIndex){
-      flatGallery.push({url:url,albumIndex:albumIndex,photoIndex:photoIndex});
+      sourceGallery.push({url:url,albumIndex:albumIndex,photoIndex:photoIndex});
     });
   });
-  // 화면상 기존 25·26·27번을 9번 바로 뒤(10·11·12번)로 옮깁니다.
-  // 앨범별 원본 경로와 사진 데이터는 그대로 유지합니다.
-  var movedPhotos=flatGallery.splice(23,3);
-  flatGallery.splice(9,0,...movedPhotos);
-  // 현재 화면 순서의 28·29번을 12번 바로 뒤로 이동 (13·14번).
-  var movedLaterPhotos=flatGallery.splice(26,2);
-  flatGallery.splice(12,0,...movedLaterPhotos);
-  // 현재 화면 번호 기준 15·16번과 22·23번의 두 쌍을 맞교환합니다.
-  // 사진 URL과 앨범 원본 데이터는 변경하지 않습니다.
-  var galleryPairAt15=flatGallery.slice(14,16);
-  var galleryPairAt22=flatGallery.slice(20,22);
-  flatGallery.splice(14,2,...galleryPairAt22);
-  flatGallery.splice(20,2,...galleryPairAt15);
-  // 현재 갤러리 22·23번 사진을 18번 사진 바로 뒤(19·20번)로 이동합니다.
-  // 나머지 사진의 상대적 순서는 유지하고 원본 파일은 변경하지 않습니다.
-  var movedAfter18=flatGallery.splice(20,2);
-  flatGallery.splice(17,0,...movedAfter18);
-  // 현재 표시되는 갤러리 7·8·9번 묶음과 10·11·12번 묶음을 위치만 맞교환합니다.
-  // 썸네일·팝업·슬라이드 순서가 모두 동일하도록 flatGallery에서 교환합니다.
-  var galleryPhotos7to9=flatGallery.slice(6,9);
-  var galleryPhotos10to12=flatGallery.slice(9,12);
-  flatGallery.splice(6,3,...galleryPhotos10to12);
-  flatGallery.splice(9,3,...galleryPhotos7to9);
+  var displayOrder=[0,1,2,3,4,5,20,21,22,23,24,12,13,8,6,7,9,10,11,14,15,16,17,18,19,25,26,27,28,29,30,31,32];
+  var flatGallery=displayOrder.map(function(i){return sourceGallery[i];});
   var flatUrls=flatGallery.map(function(item){return item.url;});
   var galleryGrid=document.getElementById("galleryGrid");
   var galleryMore=document.getElementById("galleryMore");
