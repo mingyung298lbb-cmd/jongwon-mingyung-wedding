@@ -2254,6 +2254,12 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   var shownGalleryCount=0;
   var flatMode=true;
 
+  // Lightweight preview images for display positions 11 and 12.
+  // Opening the modal continues to use the original full-resolution photos.
+  var galleryPreviewBySource={
+    "/20261011_181708_437.jpg":"/gallery-preview-11.webp?v=20261011-fast-gallery11",
+    "/20261011_163036.png":"/gallery-preview-12.webp?v=20261011-fast-gallery12"
+  };
   function addGalleryCard(entry){
     var card=document.createElement("button");
     card.type="button";
@@ -2262,11 +2268,13 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     card.dataset.photo=String(entry.photoIndex);
     card.setAttribute("aria-label","갤러리 "+(entry.albumIndex+1)+"번의 "+(entry.photoIndex+1)+"번째 사진 보기");
     var img=document.createElement("img");
-    img.src=entry.url;
+    var originalSource=entry.url.split("?")[0];
+    var previewUrl=galleryPreviewBySource[originalSource];
     img.alt="웨딩 사진 "+(entry.albumIndex+1)+"-"+(entry.photoIndex+1);
-    img.loading="lazy";
+    img.loading=previewUrl?"eager":"lazy";
     img.decoding="async";
-    try{img.fetchPriority="low";}catch(e){}
+    try{img.fetchPriority=previewUrl?"high":"low";}catch(e){}
+    img.src=previewUrl||entry.url;
     card.appendChild(img);
     card.addEventListener("click",function(){
       window.openPhoto(entry.albumIndex,entry.photoIndex);
