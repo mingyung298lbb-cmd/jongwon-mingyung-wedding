@@ -1477,6 +1477,30 @@ section {
   outline:2px solid #988277!important;
   outline-offset:3px;
 }
+/* 마지막 사진 한 장만 남을 때: 4열 전체 너비에 사진을 중앙 정렬하고
+   동일 사진의 부드러운 블러를 배경에 깔아 빈 공간을 자연스럽게 채웁니다. */
+#gallerySection .gallery .gcard.gallery-last-wide {
+  grid-column:1 / -1!important;
+  aspect-ratio:5/3!important;
+  isolation:isolate;
+}
+#gallerySection .gallery .gcard.gallery-last-wide::before {
+  content:"";
+  position:absolute;
+  inset:-15px;
+  background-image:var(--last-photo);
+  background-position:center;
+  background-size:cover;
+  filter:blur(13px) saturate(.68) brightness(1.07);
+  opacity:.37;
+  pointer-events:none;
+}
+#gallerySection .gallery .gcard.gallery-last-wide img {
+  position:relative;
+  z-index:1;
+  object-fit:contain!important;
+  background:transparent!important;
+}
 #gallerySection .gallery-more-wrap {
   display:flex;
   align-items:center;
@@ -2268,6 +2292,13 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
       : "사진 접기";
     galleryMore.setAttribute("aria-expanded",shownGalleryCount>initialGalleryCount?"true":"false");
     galleryStatus.textContent="총 "+flatGallery.length+"장 중 "+shownGalleryCount+"장 표시";
+    var finalCard=galleryGrid.lastElementChild;
+    if(finalCard){finalCard.classList.remove("gallery-last-wide");}
+    if(remaining===0 && shownGalleryCount%4===1 && finalCard){
+      finalCard.classList.add("gallery-last-wide");
+      var lastUrl=flatGallery[flatGallery.length-1].url.replace(/"/g,"%22");
+      finalCard.style.setProperty("--last-photo",'url("'+lastUrl+'")');
+    }
   }
   function showGalleryMore(amount){
     var limit=Math.min(flatGallery.length,shownGalleryCount+amount);
