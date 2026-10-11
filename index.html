@@ -2243,14 +2243,16 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 (function(){
   // 앨범 사진은 페이지 진입 시 받지 않고, 카드를 눌렀을 때 현재 사진만 로드합니다.
   // 현재 사진이 열린 뒤 다음 사진 1장만 미리 받아 슬라이드 전환을 부드럽게 합니다.
-  var albums=[[
+  var albums=[
+  [
     "/gallery3-photo-1.jpg?v=20261005-3",
     "/gallery3-photo-2.jpg?v=20261005-3",
     "/gallery1-insert-20261006-1859.jpg?v=20261006-2001",
     "/gallery3-photo-3.jpg?v=20261005-3",
     "/gallery3-photo-4.jpg?v=20261005-3",
     "/gallery3-photo-5.jpg?v=20261005-3"
-  ],[
+  ],
+  [
     "/gallery-new-22-20261009.png?v=20261009-172223",
     "/gallery-new-23-20261009.png?v=20261009-172223",
     "/20261011_190829_380.jpg?v=20261011-hero-gallery-new",
@@ -2259,11 +2261,11 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     "/gallery2-photo-8-hq.jpg?v=20261006-fast1",
     "/gallery2-photo-9.jpg?v=20261006-2115",
     "/gallery2-photo-10.jpg?v=20261006-2115"
-  ],[
+  ],
+  [
     "/gallery3-front-20261007.jpg?v=20261007-0608",
     "/gallery3new-photo-5.jpg?v=20261005-2",
     "/gallery3new-photo-6.jpg?v=20261005-2",
-    "/gallery3-insert-3-4-20261007.jpg?v=20261007-0608",
     "/gallery3new-photo-7.jpg?v=20261005-2",
     "/gallery3new-photo-8.jpg?v=20261005-2",
     "/gallery3new-photo-1.jpg?v=20261005-2",
@@ -2271,7 +2273,8 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     "/gallery3new-photo-2.jpg?v=20261005-2",
     "/20261011_181708_437.jpg?v=20261011-181708-newbw",
     "/20261011_164201_906.png?v=20261011-gallery14"
-  ],[
+  ],
+  [
     "/gallery-photo-1.jpg?v=distinct-cover-20260927-4",
     "/gallery-photo-2.jpg?v=galleryfix-20260927-2",
     "/gallery-photo-3.jpg?v=galleryfix-20260927-3",
@@ -2281,7 +2284,8 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     "/gallery-photo-7.jpg?v=galleryfix-20260927-7",
     "/gallery-photo-8.jpg?v=20261001-1",
     "/20261011_163036.png?v=20261011-reupload-newbw"
-  ]];
+  ]
+];
 
 
   // Current gallery order: keep all remaining photos in place after deleting slots 10–12.
@@ -2292,7 +2296,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
       sourceGallery.push({url:url,albumIndex:albumIndex,photoIndex:photoIndex});
     });
   });
-  var displayOrder=[0,1,2,3,4,5,24,23,33,20,21,22,6,7,8,10,11,9,12,13,14,15,16,17,18,19,25,26,27,28,29,30,31,32];
+  var displayOrder=[0,1,2,3,4,5,23,22,32,19,20,21,6,7,8,10,11,9,12,13,14,15,16,17,18,24,25,26,27,28,29,30,31];
   var flatGallery=displayOrder.map(function(i){return sourceGallery[i];});
   var flatUrls=flatGallery.map(function(item){return item.url;});
   var galleryGrid=document.getElementById("galleryGrid");
