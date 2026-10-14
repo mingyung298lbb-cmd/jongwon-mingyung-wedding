@@ -1,0 +1,42 @@
+name: Build new gallery previews (2026-10-14)
+on:
+  push:
+    paths:
+      - '.github/workflows/build-20261014-gallery-thumbnails.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  create-previews:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install Pillow
+        run: python -m pip install --quiet Pillow
+      - name: Make WebP previews for uploaded gallery 1 and 3, preserving originals
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps
+          mapping = [
+              ("20261014_193901_405.jpg", "gallery-preview-20261014-01.webp"),
+              ("20261014_195909.jpg", "gallery-preview-20261014-03.webp"),
+          ]
+          for source, preview in mapping:
+              with Image.open(source) as original:
+                  photo = ImageOps.exif_transpose(original).convert("RGB")
+                  photo.thumbnail((480, 720), Image.Resampling.LANCZOS)
+                  photo.save(preview, "WEBP", quality=82, method=6)
+              size = Path(preview).stat().st_size
+              print(f"{source} => {preview}: {size} bytes (original not modified)")
+              if not 1000 <= size <= 200000:
+                  raise RuntimeError(f"Unexpected preview size: {preview}: {size}")
+          PY
+      - name: Commit previews only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add gallery-preview-20261014-01.webp gallery-preview-20261014-03.webp
+          git diff --cached --quiet || (git commit -m 'Add small previews for 2026-10-14 uploaded gallery images' && git push)
