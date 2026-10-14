@@ -15,7 +15,7 @@ jobs:
           persist-credentials: true
       - name: Install Pillow
         run: python -m pip install --quiet Pillow
-      - name: Make WebP previews for uploaded gallery 1 and 3, preserving originals
+      - name: Make WebP previews for uploaded wedding gallery originals, preserving originals
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -23,6 +23,7 @@ jobs:
           mapping = [
               ("20261014_193901_405.jpg", "gallery-preview-20261014-01.webp"),
               ("20261014_195909.jpg", "gallery-preview-20261014-03.webp"),
+              ("20261014_210131_734.jpg", "gallery-preview-20261014-replace-01.webp"),
           ]
           for source, preview in mapping:
               with Image.open(source) as original:
@@ -38,5 +39,5 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add gallery-preview-20261014-01.webp gallery-preview-20261014-03.webp
+          git add gallery-preview-20261014-01.webp gallery-preview-20261014-03.webp gallery-preview-20261014-replace-01.webp
           git diff --cached --quiet || (git commit -m 'Add small previews for 2026-10-14 uploaded gallery images' && git push)
