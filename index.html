@@ -2071,6 +2071,8 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 @media (prefers-reduced-motion:reduce) {
   #guestbookList .guestbook-carousel-track { transition:none; }
 }
+/* No empty status row or redundant vertical gap after the guestbook submit button. */
+#commentStatus:empty { display:none!important; }
 #guestbookSection .guestbook-more-wrap {
   display:flex;
   justify-content:center;
@@ -2275,7 +2277,6 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
         </div>
         <button id="commentSubmit" class="form-submit" type="submit">축하 메시지 남기기</button>
         <div id="commentStatus" class="form-status" aria-live="polite"></div>
-        <div class="form-note">메시지는 등록 후 청첩장에 바로 공개됩니다.</div>
       </form>
       <div id="guestbookList" class="guestbook-list"></div>
       <div id="guestbookViewAllWrap" class="guestbook-more-wrap" hidden>
