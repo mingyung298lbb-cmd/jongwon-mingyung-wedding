@@ -2923,9 +2923,11 @@ function renderGuestbook(comments){
     return card;
   }
 
-  // Five or fewer comments, or an expanded full view: display the complete list.
+  // Full view shows newest first, so the oldest comment is at the bottom.
+  // The five-at-a-time carousel below keeps its original oldest-first order.
   if(ordered.length<=5||guestbookExpanded){
-    ordered.forEach(item=>list.appendChild(makeCommentCard(item)));
+    const visibleComments=guestbookExpanded?ordered.slice().reverse():ordered;
+    visibleComments.forEach(item=>list.appendChild(makeCommentCard(item)));
     return;
   }
 
