@@ -2921,8 +2921,31 @@ function stopGuestbookCarousel(){
   }
 }
 
-// The public comments API returns newest first (reverse Google Sheet row order).
-// Dates are neither used nor exposed to guests.
+// Handles ISO dates, numeric timestamps and Korean "2026. 10. 15. 오후 3:12" dates.
+function guestbookTimestamp(item){
+  const raw=item?.createdAt ?? item?.timestamp ?? item?.date ?? item?.datetime;
+  if(typeof raw==="number" && Number.isFinite(raw)){
+    return raw<100000000000 ? raw*1000 : raw;
+  }
+  if(!raw)return Number.POSITIVE_INFINITY;
+  const text=String(raw).trim();
+  if(/^\d{10,13}$/.test(text)){
+    const n=Number(text);
+    return text.length===10?n*1000:n;
+  }
+  const parsed=Date.parse(text);
+  if(Number.isFinite(parsed))return parsed;
+  const match=text.match(/(\d{4})\s*[년.\/-]\s*(\d{1,2})\s*[월.\/-]\s*(\d{1,2})\s*(?:일)?[.,\s]*(?:(오전|오후|AM|PM)\s*)?(\d{1,2})?\s*(?::\s*(\d{1,2}))?\s*(?::\s*(\d{1,2}))?/i);
+  if(!match)return Number.POSITIVE_INFINITY;
+  const year=Number(match[1]),month=Number(match[2]),day=Number(match[3]);
+  let hours=Number(match[5]||0);
+  const period=(match[4]||"").toUpperCase();
+  if(period==="오후"||period==="PM")hours=hours%12+12;
+  if(period==="오전"||period==="AM")hours=hours%12;
+  const dt=new Date(year,month-1,day,hours,Number(match[6]||0),Number(match[7]||0));
+  return dt.getFullYear()===year&&dt.getMonth()===month-1&&dt.getDate()===day
+    ?dt.getTime():Number.POSITIVE_INFINITY;
+}
 
 function renderGuestbook(comments,animateExpansion){
   const list=document.getElementById("guestbookList");
@@ -2931,14 +2954,11 @@ function renderGuestbook(comments,animateExpansion){
   list.classList.remove("guestbook-carousel");
   list.replaceChildren();
 
-  // Keep only display fields. The API's list order is newest first.
-  guestbookLastComments=Array.isArray(comments)
-    ?comments.map(item=>({
-      name:String(item?.name||"").trim(),
-      message:String(item?.message||"").trim()
-    })).filter(item=>item.name&&item.message)
-    :[];
-  const ordered=guestbookLastComments.slice().reverse();
+  guestbookLastComments=Array.isArray(comments)?comments.slice():[];
+  const ordered=guestbookLastComments
+    .map((item,index)=>({item,index,time:guestbookTimestamp(item)}))
+    .sort((a,b)=>a.time-b.time||a.index-b.index)
+    .map(row=>row.item);
 
   if(ordered.length<=3)guestbookExpanded=false;
   const viewAllWrap=document.getElementById("guestbookViewAllWrap");
@@ -3075,7 +3095,7 @@ if(guestbookViewAllButton){
 // Load public comments as soon as this script runs, rather than waiting until
 // someone scrolls near the guestbook. A recent local cache removes repeat-visit
 // loading delays while a fresh request always keeps the content up to date.
-const GUESTBOOK_CACHE_KEY="wedding-public-comments-v2";
+const GUESTBOOK_CACHE_KEY="wedding-public-comments-v1";
 const GUESTBOOK_CACHE_MAX_AGE=10*60*1000;
 let guestbookLoadRequestId=0;
 let guestbookHasContent=false;
@@ -3126,13 +3146,8 @@ async function loadPublicComments(){
     if(!Array.isArray(data?.comments))throw new Error("invalid_comments_response");
     if(requestId!==guestbookLoadRequestId)return;
     guestbookHasContent=true;
-    // The old web-app deployment may still include dates: strip on receipt.
-    const publicComments=data.comments.map(item=>({
-      name:String(item?.name||"").trim(),
-      message:String(item?.message||"").trim()
-    })).filter(item=>item.name&&item.message);
-    cacheGuestbook(publicComments);
-    renderGuestbook(publicComments);
+    cacheGuestbook(data.comments);
+    renderGuestbook(data.comments);
   }catch(err){
     if(requestId!==guestbookLoadRequestId)return;
     console.error("Public comments load failed:",err);
