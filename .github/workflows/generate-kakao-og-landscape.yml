@@ -1,0 +1,46 @@
+name: Create uncropped landscape Kakao OG image
+on:
+  push:
+    paths:
+      - '.github/workflows/generate-kakao-og-landscape.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  prepare-og:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Install Pillow
+        run: python -m pip install --quiet Pillow
+      - name: Fit full portrait into landscape OG without cropping the people
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageOps
+          src=Path("kakao-og-20261015-share-refresh-03.jpg")
+          dst=Path("kakao-og-20261015-landscape-uncropped.jpg")
+          with Image.open(src) as im:
+              im=ImageOps.exif_transpose(im).convert("RGB")
+              assert im.size==(1536,1536), im.size
+              # The supplied 1536x1536 OG contains a complete portrait inside
+              # a very large white square. Remove only OUTSIDE white padding.
+              # This is the exact boundary of the uncropped internal portrait.
+              portrait=im.crop((405,279,1131,1257))
+              portrait.thumbnail((460,596),Image.Resampling.LANCZOS)
+              canvas=Image.new("RGB",(1200,630),(255,255,255))
+              canvas.paste(portrait,((1200-portrait.width)//2,(630-portrait.height)//2))
+              canvas.save(dst,"JPEG",quality=92,subsampling=0,optimize=True)
+          with Image.open(dst) as check:
+              assert check.size==(1200,630), check.size
+          assert dst.stat().st_size < 300000
+          print("Created OG:",dst,check.size,dst.stat().st_size,"bytes")
+          PY
+      - name: Commit uncropped OG asset (no site deploy)
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add kakao-og-20261015-landscape-uncropped.jpg
+          git diff --cached --quiet || (git commit -m 'Add 1200x630 full-portrait OG image without clipping' && git push)
