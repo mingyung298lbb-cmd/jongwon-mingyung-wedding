@@ -2039,6 +2039,30 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   }
 }
 </style>
+<style id="wedding-footer-lines-20261015">
+/* Footer: two intentionally separate lines, names only below figurines. */
+main > .foot {text-align:center;line-height:1.45;}
+main > .foot .foot-date {
+  font-size:13pt!important;
+  font-weight:600;
+  white-space:nowrap;
+}
+main > .foot .foot-place {
+  margin-top:4px;
+  font-size:11.5pt!important;
+  font-weight:500;
+  white-space:nowrap;
+}
+main > .footer-couple-names {
+  text-align:center;
+  font-family:"Noto Serif KR",serif;
+  font-size:10pt!important;
+  line-height:1.5;
+  color:#998b80;
+  letter-spacing:.02em;
+  padding:0 12px 18px;
+}
+</style>
 <style id="guestbook-carousel-20261015">
 /* Public messages: three at a time, horizontally sliding every 4s.
    Keep the existing 2px white-beige comment-card borders unchanged. */
@@ -2539,7 +2563,10 @@ document.documentElement.classList.add("wedding-hero-progressive");
     </div>
   </section>
 
-  <div class="foot">이종원 · 이민경 · 2027.03.21 · 오전 11시 · 아벤티움 웨딩홀</div>
+  <div class="foot">
+    <div class="foot-date">2027.03.21 · 오전 11시</div>
+    <div class="foot-place">아벤티움 웨딩홀</div>
+  </div>
   <div class="footer-chibi-stage" role="img" aria-label="왼쪽의 신랑과 오른쪽의 신부, 가운데에서 좌우로 천천히 기울어지는 분홍색 클레이 하트">
     <span class="footer-chibi-half footer-chibi-groom" aria-hidden="true">
       <img class="footer-chibi-couple" src="/footer-couple-ultra.webp?v=20261012-clay-4x" alt="" width="1104" height="1600" loading="lazy" decoding="async">
@@ -2549,6 +2576,7 @@ document.documentElement.classList.add("wedding-hero-progressive");
       <img class="footer-chibi-couple" src="/footer-couple-ultra.webp?v=20261012-clay-4x" alt="" width="1104" height="1600" loading="lazy" decoding="async">
     </span>
   </div>
+  <div class="footer-couple-names">이종원•이민경</div>
 </main>
 
 <iframe name="rsvpFrame" id="rsvpFrame" title="RSVP 전송" style="display:none"></iframe>
