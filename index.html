@@ -2123,24 +2123,38 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 /* Three named section headings only: original 13px × 1.15 = 14.95px. */
 .title.title-emphasis-115x {font-size:14.95px!important;}
 </style>
+<script id="wedding-hero-progressive-boot-20261015">
+/* Enable image-ready reveal before the first hero paint; no-JS stays visible. */
+document.documentElement.classList.add("wedding-hero-progressive");
+</script>
 <style id="wedding-hero-first-reveal-20261015">
-/* The first hero is already in the viewport, so it needs an entry animation
-   independent of the scroll IntersectionObserver. This does not delay
-   downloading or alter the original photograph or its dimensions. */
-@keyframes weddingHeroFirstReveal {
-  from { opacity:0; transform:translate3d(0,14px,0); }
+/* The full-resolution hero is still fetched at high priority. Do not animate
+   the entire large image+text layer: it can stutter during image decoding.
+   Fade only the image after it is decoded and let the much lighter text animate
+   independently. Images and their natural proportions remain unchanged. */
+@keyframes weddingHeroInfoReveal {
+  from { opacity:0; transform:translate3d(0,12px,0); }
   to   { opacity:1; transform:translate3d(0,0,0); }
 }
 @media (prefers-reduced-motion:no-preference) {
-  main > .hero.hero-save {
-    animation:weddingHeroFirstReveal 1360ms cubic-bezier(.2,.7,.23,1) both;
+  html.wedding-hero-progressive #heroImage {
+    opacity:0;
+    transition:opacity 2448ms cubic-bezier(.2,.7,.23,1);
+  }
+  html.wedding-hero-progressive.wedding-hero-image-ready #heroImage {
+    opacity:1;
+  }
+  html.wedding-hero-progressive .hero-card.hero-save-card .save-info {
+    animation:weddingHeroInfoReveal 2448ms cubic-bezier(.2,.7,.23,1) both;
   }
 }
 @media (prefers-reduced-motion:reduce) {
-  main > .hero.hero-save {
-    animation:none!important;
+  html.wedding-hero-progressive #heroImage,
+  html.wedding-hero-progressive .hero-card.hero-save-card .save-info {
     opacity:1!important;
     transform:none!important;
+    animation:none!important;
+    transition:none!important;
   }
 }
 </style>
@@ -2152,8 +2166,8 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   .wedding-scroll-reveal {
     opacity:0;
     transform:translate3d(0,14px,0);
-    transition:opacity 1360ms cubic-bezier(.2,.7,.23,1),
-               transform 1360ms cubic-bezier(.2,.7,.23,1);
+    transition:opacity 2448ms cubic-bezier(.2,.7,.23,1),
+               transform 2448ms cubic-bezier(.2,.7,.23,1);
     transition-delay:var(--scroll-reveal-delay,0ms);
     will-change:opacity,transform;
   }
@@ -2303,7 +2317,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
       <div class="save-main">
         <div class="save-photo-wrap">
           <!-- 메인 사진은 hero-main.jpg 파일만 교체하면 됩니다. 어떤 비율의 사진도 중앙정렬을 유지합니다. -->
-          <img id="heroImage" class="save-photo" src="/20261011_190829_380.jpg?v=20261011-hero-gallery-new" alt="이종원 이민경 웨딩 사진" loading="eager" fetchpriority="high" decoding="sync">
+          <img id="heroImage" class="save-photo" src="/20261011_190829_380.jpg?v=20261011-hero-gallery-new" alt="이종원 이민경 웨딩 사진" loading="eager" fetchpriority="high" decoding="async">
         </div>
       </div>
 
@@ -3496,6 +3510,43 @@ startBgm();
   observer.observe(document.body,{childList:true,subtree:true});
 })();
 </script>
+<script id="wedding-hero-image-ready-20261015">
+(function(){
+  "use strict";
+  var img=document.getElementById("heroImage");
+  if(!img)return;
+  var activated=false, fallbackTimer;
+  function ready(){
+    if(activated)return;
+    activated=true;
+    clearTimeout(fallbackTimer);
+    // Allow the browser one paint with opacity 0 before starting the fade.
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        document.documentElement.classList.add("wedding-hero-image-ready");
+      });
+    });
+  }
+  function decoded(){
+    try{
+      if(typeof img.decode==="function"){
+        img.decode().then(ready,ready);
+        return;
+      }
+    }catch(e){}
+    ready();
+  }
+  if(img.complete){
+    if(img.naturalWidth)decoded();
+    else img.addEventListener("load",decoded,{once:true});
+  }else{
+    img.addEventListener("load",decoded,{once:true});
+  }
+  img.addEventListener("error",ready,{once:true});
+  // Do not hide the image indefinitely if the download stalls.
+  fallbackTimer=setTimeout(ready,10000);
+})();
+</script>
 <script id="wedding-scroll-block-reveal-20261015">
 (function(){
   "use strict";
@@ -3554,7 +3605,7 @@ startBgm();
       const el=entry.target;
       observer.unobserve(el);
       // When adjacent blocks enter together, reveal each a little later.
-      el.style.setProperty("--scroll-reveal-delay",Math.min(index*180,540)+"ms");
+      el.style.setProperty("--scroll-reveal-delay",Math.min(index*324,972)+"ms");
       requestAnimationFrame(function(){
         el.classList.add("wedding-scroll-visible");
         el.addEventListener("transitionend",function done(event){
