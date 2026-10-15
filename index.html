@@ -2071,6 +2071,36 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 @media (prefers-reduced-motion:reduce) {
   #guestbookList .guestbook-carousel-track { transition:none; }
 }
+#guestbookSection .guestbook-more-wrap {
+  display:flex;
+  justify-content:center;
+  margin:16px 0 0;
+}
+#guestbookSection .guestbook-more-wrap[hidden] { display:none!important; }
+#guestbookSection .guestbook-view-all {
+  min-width:136px;
+  min-height:36px;
+  padding:8px 18px;
+  border:1px solid #d8e2d7;
+  border-radius:0;
+  background:#ffffff;
+  color:#76675f;
+  font-family:"Noto Serif KR",serif;
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.04em;
+  line-height:1.5;
+  cursor:pointer;
+  transition:background-color .18s ease,border-color .18s ease;
+}
+#guestbookSection .guestbook-view-all:hover,
+#guestbookSection .guestbook-view-all:focus-visible {
+  background:#f9fbf9;
+  border-color:#c7d6c8;
+}
+@media (prefers-reduced-motion:reduce) {
+  #guestbookSection .guestbook-view-all { transition:none; }
+}
 </style>
 </head>
 <body>
@@ -2248,6 +2278,9 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
         <div class="form-note">메시지는 등록 후 청첩장에 바로 공개됩니다.</div>
       </form>
       <div id="guestbookList" class="guestbook-list"></div>
+      <div id="guestbookViewAllWrap" class="guestbook-more-wrap" hidden>
+        <button id="guestbookViewAll" class="guestbook-view-all" type="button" aria-controls="guestbookList" aria-expanded="false">전체보기</button>
+      </div>
     </div>
   </section>
 
@@ -2801,6 +2834,8 @@ if(commentFrame){
 
 let guestbookCarouselTimer=null;
 let guestbookCarouselResetTimer=null;
+let guestbookExpanded=false;
+let guestbookLastComments=[];
 
 function stopGuestbookCarousel(){
   if(guestbookCarouselTimer!==null){
@@ -2846,10 +2881,20 @@ function renderGuestbook(comments){
   list.classList.remove("guestbook-carousel");
   list.replaceChildren();
 
-  const ordered=comments
+  guestbookLastComments=Array.isArray(comments)?comments.slice():[];
+  const ordered=guestbookLastComments
     .map((item,index)=>({item,index,time:guestbookTimestamp(item)}))
     .sort((a,b)=>a.time-b.time||a.index-b.index)
     .map(row=>row.item);
+
+  if(ordered.length<=5)guestbookExpanded=false;
+  const viewAllWrap=document.getElementById("guestbookViewAllWrap");
+  const viewAllButton=document.getElementById("guestbookViewAll");
+  if(viewAllWrap&&viewAllButton){
+    viewAllWrap.hidden=ordered.length<=5;
+    viewAllButton.textContent=guestbookExpanded?"접기 · 슬라이드 보기":"전체보기 · "+ordered.length+"개";
+    viewAllButton.setAttribute("aria-expanded",guestbookExpanded?"true":"false");
+  }
 
   if(!ordered.length){
     const empty=document.createElement("div");
@@ -2878,8 +2923,8 @@ function renderGuestbook(comments){
     return card;
   }
 
-  // Five or fewer messages stay visible together without auto-sliding.
-  if(ordered.length<=5){
+  // Five or fewer comments, or an expanded full view: display the complete list.
+  if(ordered.length<=5||guestbookExpanded){
     ordered.forEach(item=>list.appendChild(makeCommentCard(item)));
     return;
   }
@@ -2945,6 +2990,22 @@ function renderGuestbook(comments){
       markCurrent(current);
     }
   },5000);
+}
+
+const guestbookViewAllButton=document.getElementById("guestbookViewAll");
+if(guestbookViewAllButton){
+  guestbookViewAllButton.addEventListener("click",()=>{
+    const collapsing=guestbookExpanded;
+    guestbookExpanded=!guestbookExpanded;
+    renderGuestbook(guestbookLastComments);
+    if(collapsing){
+      const list=document.getElementById("guestbookList");
+      if(list){
+        const reducedMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        list.scrollIntoView({behavior:reducedMotion?"auto":"smooth",block:"start"});
+      }
+    }
+  });
 }
 
 async function loadPublicComments(){
