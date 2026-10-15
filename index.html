@@ -2041,6 +2041,37 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   }
 }
 </style>
+<style id="guestbook-carousel-20261015">
+/* Public messages: five at a time, horizontally sliding every 1.5s.
+   Keep the existing 2px white-beige comment-card borders unchanged. */
+#guestbookList.guestbook-carousel {
+  display:block;
+  overflow:hidden;
+  width:100%;
+}
+#guestbookList .guestbook-carousel-track {
+  display:flex;
+  width:100%;
+  align-items:stretch;
+  transition:transform 380ms ease-in-out;
+  will-change:transform;
+}
+#guestbookList .guestbook-carousel-track.guestbook-no-transition {
+  transition:none!important;
+}
+#guestbookList .guestbook-carousel-page {
+  display:grid;
+  align-content:start;
+  gap:9px;
+  flex:0 0 100%;
+  min-width:0;
+  box-sizing:border-box;
+  padding:1px;
+}
+@media (prefers-reduced-motion:reduce) {
+  #guestbookList .guestbook-carousel-track { transition:none; }
+}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" type="button" aria-label="배경음악 끄기" aria-pressed="true">
@@ -2768,18 +2799,67 @@ if(commentFrame){
   });
 }
 
+let guestbookCarouselTimer=null;
+let guestbookCarouselResetTimer=null;
+
+function stopGuestbookCarousel(){
+  if(guestbookCarouselTimer!==null){
+    clearInterval(guestbookCarouselTimer);
+    guestbookCarouselTimer=null;
+  }
+  if(guestbookCarouselResetTimer!==null){
+    clearTimeout(guestbookCarouselResetTimer);
+    guestbookCarouselResetTimer=null;
+  }
+}
+
+// Handles ISO dates, numeric timestamps and Korean "2026. 10. 15. 오후 3:12" dates.
+function guestbookTimestamp(item){
+  const raw=item?.createdAt ?? item?.timestamp ?? item?.date ?? item?.datetime;
+  if(typeof raw==="number" && Number.isFinite(raw)){
+    return raw<100000000000 ? raw*1000 : raw;
+  }
+  if(!raw)return Number.POSITIVE_INFINITY;
+  const text=String(raw).trim();
+  if(/^\d{10,13}$/.test(text)){
+    const n=Number(text);
+    return text.length===10?n*1000:n;
+  }
+  const parsed=Date.parse(text);
+  if(Number.isFinite(parsed))return parsed;
+  const match=text.match(/(\d{4})\s*[년.\/-]\s*(\d{1,2})\s*[월.\/-]\s*(\d{1,2})\s*(?:일)?[.,\s]*(?:(오전|오후|AM|PM)\s*)?(\d{1,2})?\s*(?::\s*(\d{1,2}))?\s*(?::\s*(\d{1,2}))?/i);
+  if(!match)return Number.POSITIVE_INFINITY;
+  const year=Number(match[1]),month=Number(match[2]),day=Number(match[3]);
+  let hours=Number(match[5]||0);
+  const period=(match[4]||"").toUpperCase();
+  if(period==="오후"||period==="PM")hours=hours%12+12;
+  if(period==="오전"||period==="AM")hours=hours%12;
+  const dt=new Date(year,month-1,day,hours,Number(match[6]||0),Number(match[7]||0));
+  return dt.getFullYear()===year&&dt.getMonth()===month-1&&dt.getDate()===day
+    ?dt.getTime():Number.POSITIVE_INFINITY;
+}
+
 function renderGuestbook(comments){
   const list=document.getElementById("guestbookList");
   if(!list)return;
-  list.textContent="";
-  if(!comments.length){
+  stopGuestbookCarousel();
+  list.classList.remove("guestbook-carousel");
+  list.replaceChildren();
+
+  const ordered=comments
+    .map((item,index)=>({item,index,time:guestbookTimestamp(item)}))
+    .sort((a,b)=>a.time-b.time||a.index-b.index)
+    .map(row=>row.item);
+
+  if(!ordered.length){
     const empty=document.createElement("div");
     empty.className="comment-empty";
     empty.textContent="아직 공개된 축하 메시지가 없습니다.";
     list.appendChild(empty);
     return;
   }
-  comments.slice(0,30).forEach(item=>{
+
+  function makeCommentCard(item){
     const card=document.createElement("div");
     card.className="guestbook-item";
     const meta=document.createElement("div");
@@ -2795,8 +2875,76 @@ function renderGuestbook(comments){
     message.textContent=item.message||"";
     meta.append(name,date);
     card.append(meta,message);
-    list.appendChild(card);
+    return card;
+  }
+
+  // Five or fewer messages stay visible together without auto-sliding.
+  if(ordered.length<=5){
+    ordered.forEach(item=>list.appendChild(makeCommentCard(item)));
+    return;
+  }
+
+  list.classList.add("guestbook-carousel");
+  const track=document.createElement("div");
+  track.className="guestbook-carousel-track";
+  const pages=[];
+  for(let i=0;i<ordered.length;i+=5){
+    const page=document.createElement("div");
+    page.className="guestbook-carousel-page";
+    page.setAttribute("role","group");
+    page.setAttribute("aria-label","축하 메시지 "+(i+1)+"~"+Math.min(i+5,ordered.length)+" / "+ordered.length);
+    ordered.slice(i,i+5).forEach(item=>page.appendChild(makeCommentCard(item)));
+    pages.push(page);
+    track.appendChild(page);
+  }
+  // An extra copy of the first group allows a smooth last-to-first slide.
+  const firstCopy=pages[0].cloneNode(true);
+  firstCopy.setAttribute("aria-hidden","true");
+  track.appendChild(firstCopy);
+  list.appendChild(track);
+
+  const count=pages.length;
+  const reducedMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let current=0;
+  function markCurrent(index){
+    pages.forEach((page,i)=>page.setAttribute("aria-hidden",i!==index?"true":"false"));
+  }
+  markCurrent(0);
+  function resetToFirst(){
+    if(current!==count)return;
+    if(guestbookCarouselResetTimer!==null){
+      clearTimeout(guestbookCarouselResetTimer);
+      guestbookCarouselResetTimer=null;
+    }
+    track.classList.add("guestbook-no-transition");
+    current=0;
+    track.style.transform="translate3d(0,0,0)";
+    markCurrent(0);
+    void track.offsetWidth; // Flush the instant reset before resuming transitions.
+    track.classList.remove("guestbook-no-transition");
+  }
+  track.addEventListener("transitionend",event=>{
+    if(event.target===track&&event.propertyName==="transform")resetToFirst();
   });
+
+  guestbookCarouselTimer=setInterval(()=>{
+    if(document.hidden)return;
+    if(reducedMotion){
+      current=(current+1)%count;
+      track.style.transform="translate3d(-"+(current*100)+"%,0,0)";
+      markCurrent(current);
+      return;
+    }
+    if(current===count)resetToFirst();
+    current++;
+    track.style.transform="translate3d(-"+(current*100)+"%,0,0)";
+    if(current===count){
+      // Fallback if transitionend is missed on a throttled browser.
+      guestbookCarouselResetTimer=setTimeout(resetToFirst,510);
+    }else{
+      markCurrent(current);
+    }
+  },1500);
 }
 
 async function loadPublicComments(){
