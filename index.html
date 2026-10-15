@@ -2166,8 +2166,8 @@ document.documentElement.classList.add("wedding-hero-progressive");
   .wedding-scroll-reveal {
     opacity:0;
     transform:translate3d(0,14px,0);
-    transition:opacity 2448ms cubic-bezier(.2,.7,.23,1),
-               transform 2448ms cubic-bezier(.2,.7,.23,1);
+    transition:opacity 4896ms cubic-bezier(.2,.7,.23,1),
+               transform 4896ms cubic-bezier(.2,.7,.23,1);
     transition-delay:var(--scroll-reveal-delay,0ms);
     will-change:opacity,transform;
   }
@@ -3605,7 +3605,7 @@ startBgm();
       const el=entry.target;
       observer.unobserve(el);
       // When adjacent blocks enter together, reveal each a little later.
-      el.style.setProperty("--scroll-reveal-delay",Math.min(index*324,972)+"ms");
+      el.style.setProperty("--scroll-reveal-delay",Math.min(index*648,1944)+"ms");
       requestAnimationFrame(function(){
         el.classList.add("wedding-scroll-visible");
         el.addEventListener("transitionend",function done(event){
