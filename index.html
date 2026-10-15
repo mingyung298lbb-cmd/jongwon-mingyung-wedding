@@ -2893,7 +2893,7 @@ function renderGuestbook(comments){
   const viewAllButton=document.getElementById("guestbookViewAll");
   if(viewAllWrap&&viewAllButton){
     viewAllWrap.hidden=ordered.length<=3;
-    viewAllButton.textContent=guestbookExpanded?"접기 · 슬라이드 보기":"전체보기 · "+ordered.length+"개";
+    viewAllButton.textContent=guestbookExpanded?"접기 · 슬라이드 보기":"전체보기";
     viewAllButton.setAttribute("aria-expanded",guestbookExpanded?"true":"false");
   }
 
