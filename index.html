@@ -2206,6 +2206,39 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   border-right:2px solid currentColor!important;
   border-radius:0!important;
 }
+/* Close icon matches the translucent, borderless gallery chevrons. The
+   visible X has no circle; retain a 44x44 invisible touch target. */
+#galleryModal .close,
+#galleryModal .close:hover,
+#galleryModal .close:active {
+  position:fixed!important;
+  top:calc(8px + env(safe-area-inset-top))!important;
+  right:calc(8px + env(safe-area-inset-right))!important;
+  width:44px!important;
+  height:44px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:rgba(255,255,255,.64)!important;
+  opacity:1!important;
+  font-size:32px!important;
+  font-family:Arial,sans-serif!important;
+  line-height:1!important;
+  cursor:pointer;
+}
+#galleryModal .close:active {color:rgba(255,255,255,.95)!important;}
+#galleryModal .close:focus-visible {
+  outline:2px solid rgba(255,255,255,.75)!important;
+  outline-offset:-3px!important;
+}
+@media (hover:hover) {
+  #galleryModal .close:hover {color:rgba(255,255,255,.96)!important;}
+}
 #galleryModal .nav:active {color:rgba(255,255,255,.95)!important;}
 #galleryModal .nav:focus-visible {
   outline:2px solid rgba(255,255,255,.75)!important;
