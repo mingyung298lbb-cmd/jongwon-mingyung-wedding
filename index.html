@@ -2131,8 +2131,8 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   .wedding-scroll-reveal {
     opacity:0;
     transform:translate3d(0,14px,0);
-    transition:opacity 680ms cubic-bezier(.2,.7,.23,1),
-               transform 680ms cubic-bezier(.2,.7,.23,1);
+    transition:opacity 1360ms cubic-bezier(.2,.7,.23,1),
+               transform 1360ms cubic-bezier(.2,.7,.23,1);
     transition-delay:var(--scroll-reveal-delay,0ms);
     will-change:opacity,transform;
   }
@@ -3500,7 +3500,7 @@ startBgm();
       const el=entry.target;
       observer.unobserve(el);
       // When adjacent blocks enter together, reveal each a little later.
-      el.style.setProperty("--scroll-reveal-delay",Math.min(index*90,270)+"ms");
+      el.style.setProperty("--scroll-reveal-delay",Math.min(index*180,540)+"ms");
       requestAnimationFrame(function(){
         el.classList.add("wedding-scroll-visible");
         el.addEventListener("transitionend",function done(event){
