@@ -3358,7 +3358,7 @@ startBgm();
 <script id="wedding-scroll-block-reveal-20261015">
 (function(){
   "use strict";
-  if(!("IntersectionObserver" in window) ||
+  if(typeof window.IntersectionObserver!=="function" ||
      (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)){
     return;
   }
@@ -3404,7 +3404,7 @@ startBgm();
   });
   if(!pending.length)return;
 
-  const observer=new IntersectionObserver(function(entries){
+  const observer=new window.IntersectionObserver(function(entries){
     const arriving=entries
       .filter(function(entry){return entry.isIntersecting;})
       .sort(function(a,b){return a.boundingClientRect.top-b.boundingClientRect.top;});
