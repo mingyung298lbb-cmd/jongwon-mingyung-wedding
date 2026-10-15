@@ -2042,7 +2042,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 }
 </style>
 <style id="guestbook-carousel-20261015">
-/* Public messages: three at a time, horizontally sliding every 5s.
+/* Public messages: three at a time, horizontally sliding every 4s.
    Keep the existing 2px white-beige comment-card borders unchanged. */
 #guestbookList.guestbook-carousel {
   display:block;
@@ -2992,7 +2992,7 @@ function renderGuestbook(comments){
     }else{
       markCurrent(current);
     }
-  },5000);
+  },4000);
 }
 
 const guestbookViewAllButton=document.getElementById("guestbookViewAll");
@@ -3011,30 +3011,78 @@ if(guestbookViewAllButton){
   });
 }
 
+// Load public comments as soon as this script runs, rather than waiting until
+// someone scrolls near the guestbook. A recent local cache removes repeat-visit
+// loading delays while a fresh request always keeps the content up to date.
+const GUESTBOOK_CACHE_KEY="wedding-public-comments-v1";
+const GUESTBOOK_CACHE_MAX_AGE=10*60*1000;
+let guestbookLoadRequestId=0;
+let guestbookHasContent=false;
+
+function readCachedGuestbook(){
+  try{
+    const raw=localStorage.getItem(GUESTBOOK_CACHE_KEY);
+    if(!raw)return null;
+    const value=JSON.parse(raw);
+    if(!Array.isArray(value?.comments)||!Number.isFinite(value?.at))return null;
+    if(Date.now()-value.at>GUESTBOOK_CACHE_MAX_AGE||value.at>Date.now()+60000)return null;
+    return value.comments;
+  }catch(err){return null;}
+}
+
+function cacheGuestbook(comments){
+  try{
+    localStorage.setItem(GUESTBOOK_CACHE_KEY,JSON.stringify({
+      at:Date.now(),
+      comments:comments
+    }));
+  }catch(err){/* Private browsing or full storage must not block rendering. */}
+}
+
+function showGuestbookStatus(message,retry){
+  const list=document.getElementById("guestbookList");
+  if(!list)return;
+  stopGuestbookCarousel();
+  list.classList.remove("guestbook-carousel");
+  list.replaceChildren();
+  const note=document.createElement(retry?"button":"div");
+  note.className="comment-empty";
+  note.textContent=message;
+  if(retry){
+    note.type="button";
+    note.style.cssText="display:block;width:100%;border:0;background:transparent;cursor:pointer;";
+    note.addEventListener("click",loadPublicComments,{once:true});
+  }
+  list.appendChild(note);
+}
+
 async function loadPublicComments(){
+  const requestId=++guestbookLoadRequestId;
   try{
     const res=await fetch(RSVP_API_URL+"?action=comments&_="+Date.now(),{cache:"no-store"});
     if(!res.ok)throw new Error("comments_failed");
     const data=await res.json();
-    renderGuestbook(Array.isArray(data?.comments)?data.comments:[]);
+    if(!Array.isArray(data?.comments))throw new Error("invalid_comments_response");
+    if(requestId!==guestbookLoadRequestId)return;
+    guestbookHasContent=true;
+    cacheGuestbook(data.comments);
+    renderGuestbook(data.comments);
   }catch(err){
-    console.error(err);
-    renderGuestbook([]);
+    if(requestId!==guestbookLoadRequestId)return;
+    console.error("Public comments load failed:",err);
+    // If valid comments are already visible from cache, do not erase them.
+    if(!guestbookHasContent)showGuestbookStatus("댓글을 불러오지 못했습니다. 눌러서 다시 시도",true);
   }
 }
 
-const guestbookSection=document.getElementById("guestbookSection");
-if(guestbookSection && "IntersectionObserver" in window){
-  const commentObserver=new IntersectionObserver(entries=>{
-    if(entries.some(entry=>entry.isIntersecting)){
-      loadPublicComments();
-      commentObserver.disconnect();
-    }
-  },{rootMargin:"250px 0px"});
-  commentObserver.observe(guestbookSection);
+const initialCachedGuestbook=readCachedGuestbook();
+if(initialCachedGuestbook!==null){
+  guestbookHasContent=true;
+  renderGuestbook(initialCachedGuestbook);
 }else{
-  window.addEventListener("load",loadPublicComments,{once:true});
+  showGuestbookStatus("축하 메시지를 불러오는 중입니다.",false);
 }
+loadPublicComments();
 
 async function copyText(t,msg="계좌번호가 복사되었습니다."){
   try{await navigator.clipboard.writeText(t);alert(msg)}
