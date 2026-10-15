@@ -2123,6 +2123,33 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 /* Three named section headings only: original 13px × 1.15 = 14.95px. */
 .title.title-emphasis-115x {font-size:14.95px!important;}
 </style>
+<style id="scroll-block-reveal-20261015">
+/* Inspired by the reference invitation: each content block softly rises in
+   as it enters the screen.  JS marks only off-screen elements, so first-paint
+   content, slow networks and non-JS browsers remain fully readable. */
+@media (prefers-reduced-motion:no-preference) {
+  .wedding-scroll-reveal {
+    opacity:0;
+    transform:translate3d(0,24px,0);
+    transition:opacity 740ms cubic-bezier(.2,.7,.23,1),
+               transform 740ms cubic-bezier(.2,.7,.23,1);
+    transition-delay:var(--scroll-reveal-delay,0ms);
+    will-change:opacity,transform;
+  }
+  .wedding-scroll-reveal.wedding-scroll-visible {
+    opacity:1;
+    transform:translate3d(0,0,0);
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  .wedding-scroll-reveal,
+  .wedding-scroll-reveal.wedding-scroll-visible {
+    opacity:1!important;
+    transform:none!important;
+    transition:none!important;
+  }
+}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" type="button" aria-label="배경음악 끄기" aria-pressed="true">
@@ -3326,6 +3353,80 @@ startBgm();
     if(added.length){apply(added,false);}
   });
   observer.observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+<script id="wedding-scroll-block-reveal-20261015">
+(function(){
+  "use strict";
+  if(!("IntersectionObserver" in window) ||
+     (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)){
+    return;
+  }
+
+  // Animate independent blocks, rather than whole sections. Nested containers
+  // are deliberately excluded to prevent doubled transforms or layout shifts.
+  // Gallery photos and expanded comments retain their existing "more" animations.
+  const selectors=[
+    "main > section > .title",
+    "main > section > .box.invite",
+    "main > .rsvp-jump-wrap",
+    "#gallerySection > .gallery",
+    "#gallerySection > .gallery-more-wrap",
+    ".family-section .family-card",
+    "main > section > .box > .row",
+    "main > section > .box > .map-img",
+    "main > section .route-frame",
+    "#rsvpSection .rsvp-intro",
+    "#rsvpSection .rsvp-form .form-field",
+    "#rsvpSection .rsvp-form .form-submit",
+    "#rsvpSection .rsvp-form .form-note",
+    "#guestbookSection .comment-form .form-field",
+    "#guestbookSection .comment-form .form-submit",
+    "#guestbookSection > .box > #guestbookList",
+    "#guestbookSection > .box > #guestbookViewAllWrap",
+    "main .account-group-title",
+    "main .account-group > .box.account",
+    "main > .foot",
+    "main > .footer-chibi-stage"
+  ];
+  const nodes=Array.from(document.querySelectorAll(selectors.join(",")));
+  if(!nodes.length)return;
+
+  const visibleNow=window.innerHeight||document.documentElement.clientHeight;
+  // All nodes receive their state in one pass. Already-visible content should
+  // never disappear after page load or on a restored scroll position.
+  const pending=[];
+  nodes.forEach(function(el){
+    const rect=el.getBoundingClientRect();
+    if(rect.top<visibleNow-44 && rect.bottom>0)return;
+    el.classList.add("wedding-scroll-reveal");
+    pending.push(el);
+  });
+  if(!pending.length)return;
+
+  const observer=new IntersectionObserver(function(entries){
+    const arriving=entries
+      .filter(function(entry){return entry.isIntersecting;})
+      .sort(function(a,b){return a.boundingClientRect.top-b.boundingClientRect.top;});
+    if(!arriving.length)return;
+    arriving.forEach(function(entry,index){
+      const el=entry.target;
+      observer.unobserve(el);
+      // When adjacent blocks enter together, reveal each a little later.
+      el.style.setProperty("--scroll-reveal-delay",Math.min(index*125,375)+"ms");
+      requestAnimationFrame(function(){
+        el.classList.add("wedding-scroll-visible");
+        el.addEventListener("transitionend",function done(event){
+          if(event.target!==el||event.propertyName!=="opacity")return;
+          el.removeEventListener("transitionend",done);
+          el.style.removeProperty("--scroll-reveal-delay");
+          el.style.willChange="auto";
+        });
+      });
+    });
+  },{root:null,rootMargin:"0px 0px -9% 0px",threshold:0.08});
+
+  pending.forEach(function(el){observer.observe(el);});
 })();
 </script>
 </body>
