@@ -2042,7 +2042,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 }
 </style>
 <style id="guestbook-carousel-20261015">
-/* Public messages: five at a time, horizontally sliding every 5s.
+/* Public messages: three at a time, horizontally sliding every 5s.
    Keep the existing 2px white-beige comment-card borders unchanged. */
 #guestbookList.guestbook-carousel {
   display:block;
@@ -2888,11 +2888,11 @@ function renderGuestbook(comments){
     .sort((a,b)=>a.time-b.time||a.index-b.index)
     .map(row=>row.item);
 
-  if(ordered.length<=5)guestbookExpanded=false;
+  if(ordered.length<=3)guestbookExpanded=false;
   const viewAllWrap=document.getElementById("guestbookViewAllWrap");
   const viewAllButton=document.getElementById("guestbookViewAll");
   if(viewAllWrap&&viewAllButton){
-    viewAllWrap.hidden=ordered.length<=5;
+    viewAllWrap.hidden=ordered.length<=3;
     viewAllButton.textContent=guestbookExpanded?"접기 · 슬라이드 보기":"전체보기 · "+ordered.length+"개";
     viewAllButton.setAttribute("aria-expanded",guestbookExpanded?"true":"false");
   }
@@ -2925,8 +2925,8 @@ function renderGuestbook(comments){
   }
 
   // Full view shows newest first, so the oldest comment is at the bottom.
-  // The five-at-a-time carousel below keeps its original oldest-first order.
-  if(ordered.length<=5||guestbookExpanded){
+  // The three-at-a-time carousel below keeps its original oldest-first order.
+  if(ordered.length<=3||guestbookExpanded){
     const visibleComments=guestbookExpanded?ordered.slice().reverse():ordered;
     visibleComments.forEach(item=>list.appendChild(makeCommentCard(item)));
     return;
@@ -2936,12 +2936,12 @@ function renderGuestbook(comments){
   const track=document.createElement("div");
   track.className="guestbook-carousel-track";
   const pages=[];
-  for(let i=0;i<ordered.length;i+=5){
+  for(let i=0;i<ordered.length;i+=3){
     const page=document.createElement("div");
     page.className="guestbook-carousel-page";
     page.setAttribute("role","group");
-    page.setAttribute("aria-label","축하 메시지 "+(i+1)+"~"+Math.min(i+5,ordered.length)+" / "+ordered.length);
-    ordered.slice(i,i+5).forEach(item=>page.appendChild(makeCommentCard(item)));
+    page.setAttribute("aria-label","축하 메시지 "+(i+1)+"~"+Math.min(i+3,ordered.length)+" / "+ordered.length);
+    ordered.slice(i,i+3).forEach(item=>page.appendChild(makeCommentCard(item)));
     pages.push(page);
     track.appendChild(page);
   }
