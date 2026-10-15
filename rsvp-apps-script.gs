@@ -21,14 +21,14 @@ function doGet(e) {
   const sh = ss.getSheetByName(COMMENT_SHEET);
   if (!sh || sh.getLastRow() < 4) return json_({ ok:true, comments:[] });
 
-  // Read only B:D (name, comment and publication status).
-  // Column A is the private submission date; never fetch or send it to visitors.
-  const values = sh.getRange(4, 2, sh.getLastRow() - 3, 3).getValues();
+  const values = sh.getRange(4, 1, sh.getLastRow() - 3, 5).getValues();
+  const tz = Session.getScriptTimeZone() || "Asia/Seoul";
   const comments = values
-    .filter(r => String(r[2]).trim() === "공개")
+    .filter(r => String(r[3]).trim() === "공개")
     .map(r => ({
-      name: String(r[0] || "").trim(),
-      message: String(r[1] || "").trim()
+      name: String(r[1] || "").trim(),
+      message: String(r[2] || "").trim(),
+      date: r[0] instanceof Date ? Utilities.formatDate(r[0], tz, "yyyy.MM.dd") : String(r[0] || "")
     }))
     .filter(x => x.name && x.message)
     .slice(-50)
