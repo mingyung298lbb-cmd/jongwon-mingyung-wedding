@@ -2130,9 +2130,9 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 @media (prefers-reduced-motion:no-preference) {
   .wedding-scroll-reveal {
     opacity:0;
-    transform:translate3d(0,24px,0);
-    transition:opacity 740ms cubic-bezier(.2,.7,.23,1),
-               transform 740ms cubic-bezier(.2,.7,.23,1);
+    transform:translate3d(0,14px,0);
+    transition:opacity 680ms cubic-bezier(.2,.7,.23,1),
+               transform 680ms cubic-bezier(.2,.7,.23,1);
     transition-delay:var(--scroll-reveal-delay,0ms);
     will-change:opacity,transform;
   }
@@ -2148,6 +2148,86 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     transform:none!important;
     transition:none!important;
   }
+}
+</style>
+
+<style id="wedding-mobile-gallery-viewport-20261015">
+/* Full-screen gallery viewing: fit each original photo without distortion or
+   cropping, using the available viewport on phones in both orientations. */
+#galleryModal {
+  box-sizing:border-box!important;
+  width:100vw!important;
+  height:100vh!important;
+  height:100dvh!important;
+  padding:calc(48px + env(safe-area-inset-top)) 4px
+          calc(35px + env(safe-area-inset-bottom))!important;
+  overflow:hidden!important;
+}
+#galleryModal .modal-slides {
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  padding:0!important;
+}
+#galleryModal .modal-img {
+  display:block;
+  width:auto!important;
+  height:auto!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  border-radius:0!important;
+}
+/* The arrow glyphs alone are visible; large invisible tap targets remain. */
+#galleryModal .nav,
+#galleryModal .nav:hover,
+#galleryModal .nav:active {
+  width:44px!important;
+  height:64px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  color:rgba(255,255,255,.64)!important;
+  opacity:1!important;
+}
+#galleryModal .nav.prev {left:max(2px,env(safe-area-inset-left))!important;right:auto!important;}
+#galleryModal .nav.next {right:max(2px,env(safe-area-inset-right))!important;left:auto!important;}
+#galleryModal .nav::before {
+  width:12px!important;
+  height:12px!important;
+  border-top:2px solid currentColor!important;
+  border-right:2px solid currentColor!important;
+  border-radius:0!important;
+}
+#galleryModal .nav:active {color:rgba(255,255,255,.95)!important;}
+#galleryModal .nav:focus-visible {
+  outline:2px solid rgba(255,255,255,.75)!important;
+  outline-offset:-3px!important;
+}
+@media (hover:hover) {
+  #galleryModal .nav:hover {color:rgba(255,255,255,.96)!important;}
+}
+/* Preserve the current thumbnail ratio and fade a newly decoded preview in. */
+#gallerySection .gcard img.gallery-thumb-loading {
+  opacity:.18;
+  transition:opacity 420ms ease-out;
+}
+#gallerySection .gcard img {
+  transition:opacity 420ms ease-out;
+}
+.hero-card.hero-save-card .save-info-line .wedding-main-date {
+  font-weight:700!important;
+  color:inherit!important;
+}
+@media (prefers-reduced-motion:reduce) {
+  #gallerySection .gcard img {transition:none!important;}
 }
 </style>
 </head>
@@ -2174,7 +2254,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
       </div>
 
       <div class="save-info">
-        <div class="save-info-line">2027년 3월 21일 일요일 오전 11시</div>
+        <div class="save-info-line"><strong class="wedding-main-date">2027년 3월 21일</strong> 일요일 오전 11시</div>
         <div class="save-info-names">이종원<span class="save-heart">♥</span>이민경</div>
         <div class="save-info-venue">아벤티움 웨딩홀</div>
       </div>
@@ -2486,17 +2566,24 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     var originalSource=entry.url.split("?")[0];
     var previewUrl=galleryPreviewBySource[originalSource];
     img.alt="웨딩 사진 "+(entry.albumIndex+1)+"-"+(entry.photoIndex+1);
-    // Tiny 13–33 previews begin downloading when "More" is tapped,
-    // rather than waiting for the user to scroll near each row.
-    img.loading="eager";
+    // First row loads immediately; all later thumbnails begin loading just
+    // before entering the viewport. The More flow separately preloads its
+    // lightweight images so staggered rows do not pop in late.
+    img.loading=displayIndex<4?"eager":"lazy";
     img.decoding="async";
     try{img.fetchPriority=displayIndex<4?"high":"auto";}catch(e){}
-    if(previewUrl){
-      img.onerror=function(){
-        img.onerror=null;
-        img.src=entry.url; // Gracefully fall back if a preview asset fails.
-      };
-    }
+    img.classList.add("gallery-thumb-loading");
+    img.onload=function(){
+      img.classList.remove("gallery-thumb-loading");
+    };
+    img.onerror=function(){
+      if(previewUrl && img.dataset.fallback!=="1"){
+        img.dataset.fallback="1";
+        img.src=entry.url; // Keep a full-size fallback if a preview fails.
+      }else{
+        img.classList.remove("gallery-thumb-loading");
+      }
+    };
     img.src=previewUrl||entry.url;
     card.appendChild(img);
     card.addEventListener("click",function(){
@@ -3398,7 +3485,7 @@ startBgm();
   const pending=[];
   nodes.forEach(function(el){
     const rect=el.getBoundingClientRect();
-    if(rect.top<visibleNow-44 && rect.bottom>0)return;
+    if(rect.top<visibleNow-30 && rect.bottom>0)return;
     el.classList.add("wedding-scroll-reveal");
     pending.push(el);
   });
@@ -3413,7 +3500,7 @@ startBgm();
       const el=entry.target;
       observer.unobserve(el);
       // When adjacent blocks enter together, reveal each a little later.
-      el.style.setProperty("--scroll-reveal-delay",Math.min(index*125,375)+"ms");
+      el.style.setProperty("--scroll-reveal-delay",Math.min(index*90,270)+"ms");
       requestAnimationFrame(function(){
         el.classList.add("wedding-scroll-visible");
         el.addEventListener("transitionend",function done(event){
@@ -3424,7 +3511,7 @@ startBgm();
         });
       });
     });
-  },{root:null,rootMargin:"0px 0px -9% 0px",threshold:0.08});
+  },{root:null,rootMargin:"0px 0px 12% 0px",threshold:0.01});
 
   pending.forEach(function(el){observer.observe(el);});
 })();
