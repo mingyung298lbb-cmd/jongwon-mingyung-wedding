@@ -3002,14 +3002,16 @@ function renderGuestbook(comments,animateExpansion){
     // Each comment line gently appears in turn; all entries are present in
     // the DOM right away, so no data disappears if a new response arrives.
     const rowDelay=Math.min(190,2600/Math.max(1,visibleComments.length-1));
+    const fragment=document.createDocumentFragment();
     visibleComments.forEach((item,index)=>{
       const card=makeCommentCard(item);
       if(animateFullView){
         card.classList.add("guestbook-full-reveal");
         card.style.animationDelay=Math.round(index*rowDelay)+"ms";
       }
-      list.appendChild(card);
+      fragment.appendChild(card);
     });
+    list.appendChild(fragment); // Insert all comments in one DOM update.
     return;
   }
 
@@ -3137,6 +3139,21 @@ function showGuestbookStatus(message,retry){
   list.appendChild(note);
 }
 
+// Ignore refreshes that return the same comments; replacing the whole carousel
+// on every visit resets the animation and creates a visible flicker or stutter.
+function sameGuestbookComments(previous,current){
+  if(!Array.isArray(previous)||!Array.isArray(current)||previous.length!==current.length)return false;
+  return previous.every((item,index)=>{
+    const next=current[index];
+    if(!next)return false;
+    return String(item?.name??"")===String(next.name??"") &&
+      String(item?.message??"")===String(next.message??"") &&
+      String(item?.date??"")===String(next.date??"") &&
+      String(item?.createdAt??"")===String(next.createdAt??"") &&
+      String(item?.timestamp??"")===String(next.timestamp??"");
+  });
+}
+
 async function loadPublicComments(){
   const requestId=++guestbookLoadRequestId;
   try{
@@ -3145,9 +3162,12 @@ async function loadPublicComments(){
     const data=await res.json();
     if(!Array.isArray(data?.comments))throw new Error("invalid_comments_response");
     if(requestId!==guestbookLoadRequestId)return;
+    // When the cached content already matches, preserve existing cards,
+    // carousel position, animation timer and expanded/collapsed state.
+    const unchanged=guestbookHasContent&&sameGuestbookComments(guestbookLastComments,data.comments);
     guestbookHasContent=true;
+    if(!unchanged)renderGuestbook(data.comments);
     cacheGuestbook(data.comments);
-    renderGuestbook(data.comments);
   }catch(err){
     if(requestId!==guestbookLoadRequestId)return;
     console.error("Public comments load failed:",err);
