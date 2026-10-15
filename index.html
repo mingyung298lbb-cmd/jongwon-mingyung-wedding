@@ -2104,6 +2104,23 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   #guestbookSection .guestbook-view-all { transition:none; }
 }
 </style>
+<style id="expand-row-reveal-20261015">
+/* Fade in each new gallery row / expanded comment, without altering photo layout. */
+@keyframes weddingExpandReveal {
+  from {opacity:0;transform:translateY(12px);}
+  to   {opacity:1;transform:translateY(0);}
+}
+#gallerySection .gallery .gcard.more-row-reveal,
+#guestbookList .guestbook-item.guestbook-full-reveal {
+  animation:weddingExpandReveal 560ms cubic-bezier(.2,.72,.2,1) both!important;
+}
+@media (prefers-reduced-motion:reduce) {
+  #gallerySection .gallery .gcard.more-row-reveal,
+  #guestbookList .guestbook-item.guestbook-full-reveal {
+    animation:none!important;
+  }
+}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" type="button" aria-label="배경음악 끄기" aria-pressed="true">
@@ -2475,8 +2492,60 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
       finalCard.style.setProperty("--last-photo",'url("'+lastUrl+'")');
     }
   }
-  function showGalleryMore(amount){
+  var galleryRevealTimers=[];
+  var galleryRevealPreloads=[];
+  var galleryRevealRunning=false;
+  function finishGalleryReveal(){
+    galleryRevealTimers.forEach(clearTimeout);
+    galleryRevealTimers=[];
+    galleryRevealPreloads=[];
+    galleryRevealRunning=false;
+    galleryMore.disabled=false;
+    galleryGrid.removeAttribute("aria-busy");
+  }
+  function showGalleryMore(amount,animateRows){
     var limit=Math.min(flatGallery.length,shownGalleryCount+amount);
+    var reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(animateRows && !reducedMotion && limit>shownGalleryCount){
+      var first=shownGalleryCount;
+      var rowSize=4; // Four gallery cards per existing row.
+      var rowCount=Math.ceil((limit-first)/rowSize);
+      galleryRevealRunning=true;
+      galleryMore.disabled=true;
+      galleryMore.textContent="사진 펼치는 중…";
+      galleryGrid.setAttribute("aria-busy","true");
+
+      // Request every lightweight preview immediately, independent of the
+      // gradual row reveal, so later rows do not start loading too late.
+      galleryRevealPreloads=[];
+      for(var p=first;p<limit;p++){
+        var item=flatGallery[p];
+        var thumb=galleryPreviewBySource[item.url.split("?")[0]]||item.url;
+        var preload=new Image();
+        preload.decoding="async";
+        preload.src=thumb;
+        galleryRevealPreloads.push(preload);
+      }
+      for(let row=0;row<rowCount;row++){
+        galleryRevealTimers.push(setTimeout(function(){
+          var begin=first+row*rowSize;
+          var stop=Math.min(begin+rowSize,limit);
+          var fragment=document.createDocumentFragment();
+          for(var i=begin;i<stop;i++){
+            var card=addGalleryCard(flatGallery[i],i);
+            card.classList.add("more-row-reveal");
+            fragment.appendChild(card);
+          }
+          galleryGrid.appendChild(fragment);
+          shownGalleryCount=stop;
+          if(row===rowCount-1){
+            finishGalleryReveal();
+            refreshGalleryButton();
+          }
+        },row*320));
+      }
+      return;
+    }
     var fragment=document.createDocumentFragment();
     for(var i=shownGalleryCount;i<limit;i++){
       fragment.appendChild(addGalleryCard(flatGallery[i],i));
@@ -2486,14 +2555,15 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
     refreshGalleryButton();
   }
   galleryMore.addEventListener("click",function(){
+    if(galleryRevealRunning)return;
     if(shownGalleryCount>=flatGallery.length){
+      finishGalleryReveal();
       galleryGrid.replaceChildren();
       shownGalleryCount=0;
       showGalleryMore(initialGalleryCount);
-      galleryGrid.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth",block:"start"});
+      galleryGrid.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
     }else{
-      // 펼치는 즉시 가벼운 미리보기 21장을 병렬 다운로드합니다.
-      showGalleryMore(flatGallery.length-shownGalleryCount);
+      showGalleryMore(flatGallery.length-shownGalleryCount,true);
     }
   });
   showGalleryMore(initialGalleryCount);
@@ -2875,7 +2945,7 @@ function guestbookTimestamp(item){
     ?dt.getTime():Number.POSITIVE_INFINITY;
 }
 
-function renderGuestbook(comments){
+function renderGuestbook(comments,animateExpansion){
   const list=document.getElementById("guestbookList");
   if(!list)return;
   stopGuestbookCarousel();
@@ -2928,7 +2998,19 @@ function renderGuestbook(comments){
   // The three-at-a-time carousel below keeps its original oldest-first order.
   if(ordered.length<=3||guestbookExpanded){
     const visibleComments=guestbookExpanded?ordered.slice().reverse():ordered;
-    visibleComments.forEach(item=>list.appendChild(makeCommentCard(item)));
+    const animateFullView=animateExpansion && guestbookExpanded &&
+      !(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    // Each comment line gently appears in turn; all entries are present in
+    // the DOM right away, so no data disappears if a new response arrives.
+    const rowDelay=Math.min(190,2600/Math.max(1,visibleComments.length-1));
+    visibleComments.forEach((item,index)=>{
+      const card=makeCommentCard(item);
+      if(animateFullView){
+        card.classList.add("guestbook-full-reveal");
+        card.style.animationDelay=Math.round(index*rowDelay)+"ms";
+      }
+      list.appendChild(card);
+    });
     return;
   }
 
@@ -3000,7 +3082,7 @@ if(guestbookViewAllButton){
   guestbookViewAllButton.addEventListener("click",()=>{
     const collapsing=guestbookExpanded;
     guestbookExpanded=!guestbookExpanded;
-    renderGuestbook(guestbookLastComments);
+    renderGuestbook(guestbookLastComments,!collapsing);
     if(collapsing){
       const list=document.getElementById("guestbookList");
       if(list){
