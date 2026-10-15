@@ -2042,7 +2042,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 }
 </style>
 <style id="guestbook-carousel-20261015">
-/* Public messages: five at a time, horizontally sliding every 1.5s.
+/* Public messages: five at a time, horizontally sliding every 5s.
    Keep the existing 2px white-beige comment-card borders unchanged. */
 #guestbookList.guestbook-carousel {
   display:block;
@@ -2053,7 +2053,7 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
   display:flex;
   width:100%;
   align-items:stretch;
-  transition:transform 380ms ease-in-out;
+  transition:transform 600ms ease-in-out;
   will-change:transform;
 }
 #guestbookList .guestbook-carousel-track.guestbook-no-transition {
@@ -2940,11 +2940,11 @@ function renderGuestbook(comments){
     track.style.transform="translate3d(-"+(current*100)+"%,0,0)";
     if(current===count){
       // Fallback if transitionend is missed on a throttled browser.
-      guestbookCarouselResetTimer=setTimeout(resetToFirst,510);
+      guestbookCarouselResetTimer=setTimeout(resetToFirst,750);
     }else{
       markCurrent(current);
     }
-  },1500);
+  },5000);
 }
 
 async function loadPublicComments(){
