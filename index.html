@@ -2218,8 +2218,18 @@ document.documentElement.classList.add("wedding-hero-progressive");
 /* Make the full introduction area the same pure white as the hero,
    including the gap around the invitation, so there is no visible seam. */
 main > .hero.hero-save + section {
-  background:#ffffff!important;
-  background-image:none!important;
+  /* Keep the hero-to-introduction area pure white, then gradually expose
+     the original botanical paper over the final 170px. This prevents a hard
+     horizontal boundary above the RSVP shortcut and Gallery. */
+  background:linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #ffffff calc(100% - 170px),
+    rgba(255,255,255,.94) calc(100% - 140px),
+    rgba(255,255,255,.67) calc(100% - 90px),
+    rgba(255,255,255,.28) calc(100% - 40px),
+    rgba(255,255,255,0) 100%
+  )!important;
   border:0!important;
   box-shadow:none!important;
 }
