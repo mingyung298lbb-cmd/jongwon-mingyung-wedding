@@ -2681,7 +2681,7 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
   </section>
 
   <footer class="foot" id="weddingDdayFooter" aria-label="결혼식 디데이">
-    결혼식까지 <span id="weddingDdayValue">D-156</span>
+    <span id="weddingDdayPrefix">결혼식까지 </span><span id="weddingDdayValue">D-156</span>
   </footer>
 
 </main>
@@ -3870,7 +3870,8 @@ startBgm();
 (function(){
   "use strict";
   var value=document.getElementById("weddingDdayValue");
-  if(!value)return;
+  var prefix=document.getElementById("weddingDdayPrefix");
+  if(!value||!prefix)return;
   function updateDday(){
     // Count calendar days in Korea, regardless of the visitor's time zone.
     var parts=new Intl.DateTimeFormat("en-US",{
@@ -3881,7 +3882,8 @@ startBgm();
     var today=Date.UTC(date.year,date.month-1,date.day);
     var wedding=Date.UTC(2027,2,21);
     var days=Math.round((wedding-today)/86400000);
-    value.textContent=days>0?"D-"+days:(days===0?"D-DAY":"D+"+Math.abs(days));
+    value.textContent=days>0?"D-"+days:(days===0?"Today!":"D+"+Math.abs(days));
+    prefix.style.display=days===0?"none":"";
   }
   updateDday();
   window.addEventListener("pageshow",updateDday);
