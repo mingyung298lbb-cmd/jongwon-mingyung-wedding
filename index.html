@@ -2132,6 +2132,15 @@ main > .foot {
 /* Three named section headings only: original 13px × 1.15 = 14.95px. */
 .title.title-emphasis-115x {font-size:14.95px!important;}
 </style>
+<script id="wedding-invite-font-preload-20261016">
+/* Request the exact Korean glyphs early to prevent a visible fallback-font swap. */
+if (document.fonts && document.fonts.load) {
+  window.weddingInviteFontPromise = document.fonts.load(
+    '400 15px "Noto Serif KR"',
+    '저희 두 사람이 서로의 곁을 지키며, 한 길을 걸어가려 합니다. 소중한 날 함께해 주시고 축복해 주시면 감사하겠습니다.'
+  ).catch(function(){});
+}
+</script>
 <script id="wedding-hero-progressive-boot-20261015">
 /* Enable image-ready reveal before the first hero paint; no-JS stays visible. */
 document.documentElement.classList.add("wedding-hero-progressive");
@@ -2177,8 +2186,10 @@ document.documentElement.classList.add("wedding-hero-progressive");
     visibility:hidden!important;
     pointer-events:none!important;
   }
+  /* The invitation has its own ribbon/line sequence; don't animate its parent.
+     A nested moving layer can make small text appear to resize on first paint. */
   html.wedding-hero-progressive.wedding-hero-intro-complete main > .hero + section {
-    animation:weddingAfterHeroReveal 760ms cubic-bezier(.2,.7,.23,1) both;
+    animation:none;
   }
   /* Do not display Gallery at the same moment as the introduction.
      The full section (including its title) waits until the introduction settles. */
@@ -2216,19 +2227,17 @@ document.documentElement.classList.add("wedding-hero-progressive");
     transition:opacity 520ms cubic-bezier(.2,.7,.23,1) 120ms,
                transform 520ms cubic-bezier(.2,.7,.23,1) 120ms!important;
   }
-  html.wedding-hero-progressive.wedding-hero-intro-complete .box.invite::before {
+  html.wedding-hero-progressive.wedding-invite-reveal-start .box.invite::before {
     opacity:.95!important;
     transform:translate(-50%,0)!important;
   }
   html.wedding-hero-progressive .box.invite .invite-line {
     opacity:0;
-    transform:translate3d(0,8px,0);
-    transition:opacity 560ms cubic-bezier(.2,.7,.23,1),
-               transform 560ms cubic-bezier(.2,.7,.23,1);
+    /* Fade text without transforms to avoid subpixel text rasterization jitter. */
+    transition:opacity 560ms cubic-bezier(.2,.7,.23,1);
   }
-  html.wedding-hero-progressive.wedding-hero-intro-complete .box.invite .invite-line {
+  html.wedding-hero-progressive.wedding-invite-reveal-start .box.invite .invite-line {
     opacity:1;
-    transform:translate3d(0,0,0);
   }
   html.wedding-hero-progressive .box.invite .invite-line:nth-child(1) {
     transition-delay:700ms;
@@ -3684,6 +3693,30 @@ startBgm();
   imageFallback=setTimeout(markPhotoDecoded,10000);
 })();
 </script>
+<script id="wedding-invite-font-gated-reveal-20261016">
+(function(){
+  "use strict";
+  var root=document.documentElement, started=false;
+  function show(){
+    if(started)return;
+    started=true;
+    root.classList.add("wedding-invite-reveal-start");
+    document.dispatchEvent(new Event("wedding-invite-reveal-start"));
+  }
+  function afterHero(){
+    var timer=setTimeout(show,3500); // Avoid indefinitely hiding copy on bad networks.
+    Promise.resolve(window.weddingInviteFontPromise).then(function(){
+      clearTimeout(timer);
+      requestAnimationFrame(show);
+    },function(){
+      clearTimeout(timer);
+      show();
+    });
+  }
+  if(root.classList.contains("wedding-hero-intro-complete"))afterHero();
+  else document.addEventListener("wedding-hero-intro-complete",afterHero,{once:true});
+})();
+</script>
 <script id="wedding-gallery-after-introduction-20261016">
 (function(){
   "use strict";
@@ -3696,10 +3729,10 @@ startBgm();
       root.classList.add("wedding-gallery-released");
     },2800);
   }
-  if(root.classList.contains("wedding-hero-intro-complete")){
+  if(root.classList.contains("wedding-invite-reveal-start")){
     scheduleGallery();
   }else{
-    document.addEventListener("wedding-hero-intro-complete",scheduleGallery,{once:true});
+    document.addEventListener("wedding-invite-reveal-start",scheduleGallery,{once:true});
   }
 })();
 </script>
@@ -3716,7 +3749,6 @@ startBgm();
   // Gallery photos and expanded comments retain their existing "more" animations.
   const selectors=[
     "main > section > .title",
-    "main > section > .box.invite",
     "main > .rsvp-jump-wrap",
     "#gallerySection > .gallery",
     "#gallerySection > .gallery-more-wrap",
