@@ -1968,8 +1968,7 @@ main > .calendar-final-section > img {
   border:0;
   border-radius:0;
   object-fit:contain;
-  /* Soften only the boundary into the same white paper background.
-     The original 1254px PNG and its contents remain unchanged. */
+  /* Blend the page boundary only; do not crop, recolor, resave, or alter original pixels. */
   -webkit-mask-image:
     linear-gradient(to right,transparent 0%,#000 5%,#000 95%,transparent 100%),
     linear-gradient(to bottom,transparent 0%,#000 5%,#000 95%,transparent 100%);
@@ -2551,7 +2550,7 @@ document.documentElement.classList.add("wedding-hero-progressive");
 
   <section class="calendar-final-section" aria-label="2027년 3월 결혼식 달력">
     <h2 class="title title-emphasis-115x calendar-final-heading">Calendar</h2>
-    <img src="/wedding-calendar-final-2027.png" alt="2027년 3월 달력, 21일 일요일 결혼식. 이종원과 이민경, 오전 11시 아벤티움 웨딩홀" width="1254" height="1254" loading="lazy" decoding="async">
+    <img src="/wedding-calendar-2027-replacement.jpg?v=20261016-user-original" alt="2027년 3월 달력, 21일 일요일 결혼식. 이종원과 이민경, 오전 11시 아벤티움 웨딩홀" width="1536" height="1536" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/wedding-calendar-final-2027.png';">
     <div class="calendar-clay-heart-wrap" role="img" aria-label="좌우로 천천히 흔들리는 클레이 하트">
       <img class="calendar-clay-heart" src="/footer-heart-clay.webp?v=20261011-zaxis-heart" alt="" width="90" height="78" loading="lazy" decoding="async">
     </div>
