@@ -1938,6 +1938,30 @@ main::before {opacity:.20!important;}
   .family-section .family-parents .parent-name {font-size:14px!important;}
 }
 </style>
+<style id="wedding-hero-photo-edge-blend-20261016">
+/* Match the white paper and fade only the hero photograph's outermost edges.
+   Original photo bytes, dimensions, layout, and reveal timing remain untouched. */
+main > .hero.hero-save .hero-card.hero-save-card .save-photo-wrap {
+  background:#ffffff!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+main > .hero.hero-save #heroImage {
+  background:#ffffff!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  -webkit-mask-image:
+    linear-gradient(to right,transparent 0%,#000 5%,#000 95%,transparent 100%),
+    linear-gradient(to bottom,transparent 0%,#000 5%,#000 95%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:
+    linear-gradient(to right,transparent 0%,#000 5%,#000 95%,transparent 100%),
+    linear-gradient(to bottom,transparent 0%,#000 5%,#000 95%,transparent 100%);
+  mask-composite:intersect;
+}
+</style>
 <style id="wedding-final-calendar-image-20261016">
 /* Lift the closing calendar into the page flow: no isolated photo-card look. */
 main > section.accounts-section {
