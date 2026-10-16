@@ -1970,24 +1970,54 @@ html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
 })();
 </script>
 <style id="wedding-final-calendar-image-20261016">
-/* Original 1254x1254 calendar graphic, displayed without cropping or filters. */
+/* Lift the closing calendar into the page flow: no isolated photo-card look. */
+main > section.accounts-section {
+  padding-bottom:2px!important;
+}
+main > section.accounts-section .account-group:last-child {
+  margin-bottom:4px!important;
+}
 main > .calendar-final-section {
   width:100%!important;
   max-width:100%!important;
-  margin:18px auto 8px!important;
-  padding:0 14px 8px!important;
+  margin:0 auto!important;
+  padding:0!important;
   text-align:center;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
 }
 main > .calendar-final-section img {
   display:block;
   width:100%;
-  height:auto;
   max-width:100%;
+  height:auto;
+  margin:0 auto;
   border:0;
   border-radius:0;
-  margin:0 auto;
   object-fit:contain;
-  filter:none;
+  /* Soften only the boundary into the same white paper background.
+     The original 1254px PNG and its contents remain unchanged. */
+  -webkit-mask-image:
+    linear-gradient(to right,transparent 0%,#000 5%,#000 95%,transparent 100%),
+    linear-gradient(to bottom,transparent 0%,#000 5%,#000 95%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:
+    linear-gradient(to right,transparent 0%,#000 5%,#000 95%,transparent 100%),
+    linear-gradient(to bottom,transparent 0%,#000 5%,#000 95%,transparent 100%);
+  mask-composite:intersect;
+}
+/* The footer is a small, subdued caption, not a second invitation headline. */
+main > .foot {
+  font-size:8pt!important;
+  font-weight:400!important;
+  letter-spacing:.012em!important;
+  line-height:1.45!important;
+  color:#998b80!important;
+  border-top:0!important;
+  margin:-2px auto 0!important;
+  padding:0 10px 20px!important;
+  text-align:center;
 }
 </style>
 <style id="guestbook-carousel-20261015">
@@ -2430,7 +2460,7 @@ document.documentElement.classList.add("wedding-hero-progressive");
     </div>
   </section>
 
-  <section>
+  <section class="accounts-section">
     <p class="title title-emphasis-115x">마음 전하실 곳</p>
 
     <div class="account-group">
