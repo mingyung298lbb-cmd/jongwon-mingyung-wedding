@@ -2154,6 +2154,16 @@ document.documentElement.classList.add("wedding-hero-progressive");
   html.wedding-hero-progressive.wedding-hero-intro-complete main > .hero + section {
     animation:weddingAfterHeroReveal 760ms cubic-bezier(.2,.7,.23,1) both;
   }
+  /* Do not display Gallery at the same moment as the introduction.
+     The full section (including its title) waits until the introduction settles. */
+  html.wedding-hero-progressive:not(.wedding-gallery-released) #gallerySection {
+    opacity:0!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+  html.wedding-hero-progressive.wedding-gallery-released #gallerySection {
+    animation:weddingAfterHeroReveal 900ms cubic-bezier(.2,.7,.23,1) both;
+  }
 }
 @media (prefers-reduced-motion:reduce) {
   html.wedding-hero-progressive #heroImage,
@@ -3605,6 +3615,25 @@ startBgm();
   img.addEventListener("error",markPhotoDecoded,{once:true});
   // An unreachable image must not leave the rest of the invitation hidden.
   imageFallback=setTimeout(markPhotoDecoded,10000);
+})();
+</script>
+<script id="wedding-gallery-after-introduction-20261016">
+(function(){
+  "use strict";
+  var root=document.documentElement, scheduled=false;
+  function scheduleGallery(){
+    if(scheduled)return;
+    scheduled=true;
+    // Introduction fade takes 760ms; leave another 1.2s before Gallery appears.
+    setTimeout(function(){
+      root.classList.add("wedding-gallery-released");
+    },1960);
+  }
+  if(root.classList.contains("wedding-hero-intro-complete")){
+    scheduleGallery();
+  }else{
+    document.addEventListener("wedding-hero-intro-complete",scheduleGallery,{once:true});
+  }
 })();
 </script>
 <script id="wedding-scroll-block-reveal-20261015">
