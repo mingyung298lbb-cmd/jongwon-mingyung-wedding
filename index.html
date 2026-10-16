@@ -2680,6 +2680,10 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
     </div>
   </section>
 
+  <footer class="foot" id="weddingDdayFooter" aria-label="결혼식 디데이">
+    결혼식까지 <span id="weddingDdayValue">D-156</span>
+  </footer>
+
 </main>
 
 <iframe name="rsvpFrame" id="rsvpFrame" title="RSVP 전송" style="display:none"></iframe>
@@ -3860,6 +3864,30 @@ startBgm();
   },{root:null,rootMargin:"0px 0px 12% 0px",threshold:0.01});
 
   pending.forEach(function(el){observer.observe(el);});
+})();
+</script>
+<script id="wedding-footer-dday-20261016">
+(function(){
+  "use strict";
+  var value=document.getElementById("weddingDdayValue");
+  if(!value)return;
+  function updateDday(){
+    // Count calendar days in Korea, regardless of the visitor's time zone.
+    var parts=new Intl.DateTimeFormat("en-US",{
+      timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"
+    }).formatToParts(new Date());
+    var date={};
+    parts.forEach(function(p){if(p.type==="year"||p.type==="month"||p.type==="day")date[p.type]=Number(p.value);});
+    var today=Date.UTC(date.year,date.month-1,date.day);
+    var wedding=Date.UTC(2027,2,21);
+    var days=Math.round((wedding-today)/86400000);
+    value.textContent=days>0?"D-"+days:(days===0?"D-DAY":"D+"+Math.abs(days));
+  }
+  updateDday();
+  window.addEventListener("pageshow",updateDday);
+  document.addEventListener("visibilitychange",function(){
+    if(!document.hidden)updateDday();
+  });
 })();
 </script>
 </body>
