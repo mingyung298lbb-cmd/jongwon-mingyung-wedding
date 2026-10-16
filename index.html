@@ -2223,6 +2223,17 @@ main > .hero.hero-save + section {
   border:0!important;
   box-shadow:none!important;
 }
+/* The hero reveal previously hid ALL following sections, making this white
+   section transparent and exposing the botanical wallpaper until the card
+   appeared. Keep only its white backing visible from the first paint.
+   The card itself remains clipped until its 2-second top-down reveal. */
+@media (prefers-reduced-motion:no-preference) {
+  html.wedding-hero-progressive:not(.wedding-hero-intro-complete) main > .hero.hero-save + section {
+    opacity:1!important;
+    visibility:visible!important;
+    pointer-events:none!important;
+  }
+}
 main > .hero.hero-save + section > .box.invite {
   background-color:#ffffff!important;
   background-image:none!important;
