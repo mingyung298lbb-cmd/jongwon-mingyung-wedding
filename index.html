@@ -2203,6 +2203,47 @@ document.documentElement.classList.add("wedding-hero-progressive");
   }
 }
 </style>
+<style id="wedding-invite-ribbon-then-lines-20261016">
+/* Reveal the original red ribbon first, then the four introduction lines in order.
+   The card's typography, spacing and white color scheme remain untouched. */
+.box.invite .invite-line {
+  display:block;
+}
+@media (prefers-reduced-motion:no-preference) {
+  html.wedding-hero-progressive .box.invite::before {
+    opacity:0!important;
+    transform:translate(-50%,8px)!important;
+    transition:opacity 520ms cubic-bezier(.2,.7,.23,1) 120ms,
+               transform 520ms cubic-bezier(.2,.7,.23,1) 120ms!important;
+  }
+  html.wedding-hero-progressive.wedding-hero-intro-complete .box.invite::before {
+    opacity:.95!important;
+    transform:translate(-50%,0)!important;
+  }
+  html.wedding-hero-progressive .box.invite .invite-line {
+    opacity:0;
+    transform:translate3d(0,8px,0);
+    transition:opacity 560ms cubic-bezier(.2,.7,.23,1),
+               transform 560ms cubic-bezier(.2,.7,.23,1);
+  }
+  html.wedding-hero-progressive.wedding-hero-intro-complete .box.invite .invite-line {
+    opacity:1;
+    transform:translate3d(0,0,0);
+  }
+  html.wedding-hero-progressive .box.invite .invite-line:nth-child(1) {
+    transition-delay:700ms;
+  }
+  html.wedding-hero-progressive .box.invite .invite-line:nth-child(2) {
+    transition-delay:1120ms;
+  }
+  html.wedding-hero-progressive .box.invite .invite-line:nth-child(3) {
+    transition-delay:1540ms;
+  }
+  html.wedding-hero-progressive .box.invite .invite-line:nth-child(4) {
+    transition-delay:1960ms;
+  }
+}
+</style>
 <style id="scroll-block-reveal-20261015">
 /* Inspired by the reference invitation: each content block softly rises in
    as it enters the screen.  JS marks only off-screen elements, so first-paint
@@ -2377,10 +2418,10 @@ document.documentElement.classList.add("wedding-hero-progressive");
   <section>
     <div class="box invite">
       <span class="invite-copy">
-        저희 두 사람이 서로의 곁을 지키며,<br>
-        한 길을 걸어가려 합니다.<br>
-        소중한 날 함께해 주시고 축복해 주시면<br>
-        감사하겠습니다.
+        <span class="invite-line">저희 두 사람이 서로의 곁을 지키며,</span>
+        <span class="invite-line">한 길을 걸어가려 합니다.</span>
+        <span class="invite-line">소중한 날 함께해 주시고 축복해 주시면</span>
+        <span class="invite-line">감사하겠습니다.</span>
       </span>
     </div>
   </section>
@@ -3650,10 +3691,10 @@ startBgm();
   function scheduleGallery(){
     if(scheduled)return;
     scheduled=true;
-    // Introduction fade takes 760ms; leave another 1.2s before Gallery appears.
+    // Allow the ribbon and four introduction lines to finish before Gallery appears.
     setTimeout(function(){
       root.classList.add("wedding-gallery-released");
-    },1960);
+    },2800);
   }
   if(root.classList.contains("wedding-hero-intro-complete")){
     scheduleGallery();
