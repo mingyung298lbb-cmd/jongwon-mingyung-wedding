@@ -2532,7 +2532,7 @@ document.documentElement.classList.add("wedding-hero-progressive");
         <div class="account-title">신랑 <span class="account-name">이종원</span></div>
         <div class="account-info-row">
           <p>카카오뱅크 3333-30-1777804</p>
-          <button class="copy" type="button" onclick="copyText('3333301777804')" aria-label="카카오뱅크 계좌번호 복사">복사</button>
+          <button class="copy" type="button" onclick="copyText('카카오뱅크 3333301777804')" aria-label="카카오뱅크 은행명과 계좌번호 복사">복사</button>
         </div>
       </div>
 
@@ -2540,7 +2540,7 @@ document.documentElement.classList.add("wedding-hero-progressive");
         <div class="account-title">신랑 아버지 <span class="account-name">이진곤</span></div>
         <div class="account-info-row">
           <p>농협 302-1814-6092-61</p>
-          <button class="copy" type="button" onclick="copyText('3021814609261')" aria-label="농협 계좌번호 복사">복사</button>
+          <button class="copy" type="button" onclick="copyText('농협 3021814609261')" aria-label="농협 은행명과 계좌번호 복사">복사</button>
         </div>
       </div>
 
@@ -2548,7 +2548,7 @@ document.documentElement.classList.add("wedding-hero-progressive");
         <div class="account-title">신랑 어머니 <span class="account-name">김민서</span></div>
         <div class="account-info-row">
           <p>카카오뱅크 3333-18-5516275</p>
-          <button class="copy" type="button" onclick="copyText('3333185516275')" aria-label="카카오뱅크 계좌번호 복사">복사</button>
+          <button class="copy" type="button" onclick="copyText('카카오뱅크 3333185516275')" aria-label="카카오뱅크 은행명과 계좌번호 복사">복사</button>
         </div>
       </div>
     </div>
@@ -2560,7 +2560,7 @@ document.documentElement.classList.add("wedding-hero-progressive");
         <div class="account-title">신부 <span class="account-name">이민경</span></div>
         <div class="account-info-row">
           <p>신한은행 110-437-514138</p>
-          <button class="copy" type="button" onclick="copyText('110437514138')" aria-label="신한은행 계좌번호 복사">복사</button>
+          <button class="copy" type="button" onclick="copyText('신한은행 110437514138')" aria-label="신한은행 은행명과 계좌번호 복사">복사</button>
         </div>
       </div>
 
@@ -2568,7 +2568,7 @@ document.documentElement.classList.add("wedding-hero-progressive");
         <div class="account-title">신부 아버지 <span class="account-name">이범수</span></div>
         <div class="account-info-row">
           <p>기업은행 008-064337-01-022</p>
-          <button class="copy" type="button" onclick="copyText('00806433701022')" aria-label="기업은행 계좌번호 복사">복사</button>
+          <button class="copy" type="button" onclick="copyText('기업은행 00806433701022')" aria-label="기업은행 은행명과 계좌번호 복사">복사</button>
         </div>
       </div>
 
@@ -2576,7 +2576,7 @@ document.documentElement.classList.add("wedding-hero-progressive");
         <div class="account-title">신부 어머니 <span class="account-name">조문영</span></div>
         <div class="account-info-row">
           <p>기업은행 454-036281-02-011</p>
-          <button class="copy" type="button" onclick="copyText('45403628102011')" aria-label="기업은행 계좌번호 복사">복사</button>
+          <button class="copy" type="button" onclick="copyText('기업은행 45403628102011')" aria-label="기업은행 은행명과 계좌번호 복사">복사</button>
         </div>
       </div>
     </div>
@@ -3424,7 +3424,7 @@ if(document.documentElement.classList.contains("wedding-hero-intro-complete")){
   document.addEventListener("wedding-hero-intro-complete",startInitialGuestbook,{once:true});
 }
 
-async function copyText(t,msg="계좌번호가 복사되었습니다."){
+async function copyText(t,msg="은행명과 계좌번호가 복사되었습니다."){
   try{await navigator.clipboard.writeText(t);alert(msg)}
   catch(e){prompt(msg.replace("복사되었습니다.","복사해 주세요."),t)}
 }
