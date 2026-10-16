@@ -2111,24 +2111,27 @@ main > .foot {
 /* Enable image-ready reveal before the first hero paint; no-JS stays visible. */
 document.documentElement.classList.add("wedding-hero-progressive");
 </script>
-<style id="wedding-hero-first-reveal-20261015">
-/* The full-resolution hero is still fetched at high priority. Do not animate
-   the entire large image+text layer: it can stutter during image decoding.
-   Fade only the image after it is decoded and let the much lighter text animate
-   independently. Images and their natural proportions remain unchanged. */
+<style id="wedding-hero-first-reveal-20261016">
+/* Introduction order: date -> names+heart -> venue -> decoded hero photo.
+   Unhide and start other page blocks only after the photo has appeared.
+   Original photo URL, resolution and proportions are untouched. */
 @keyframes weddingHeroInfoReveal {
   from { opacity:0; transform:translate3d(0,12px,0); }
+  to   { opacity:1; transform:translate3d(0,0,0); }
+}
+@keyframes weddingAfterHeroReveal {
+  from { opacity:0; transform:translate3d(0,10px,0); }
   to   { opacity:1; transform:translate3d(0,0,0); }
 }
 @media (prefers-reduced-motion:no-preference) {
   html.wedding-hero-progressive #heroImage {
     opacity:0;
-    transition:opacity 2448ms cubic-bezier(.2,.7,.23,1);
+    transition:opacity 1400ms cubic-bezier(.2,.7,.23,1);
   }
-  html.wedding-hero-progressive.wedding-hero-image-ready #heroImage {
+  /* Both text-finished phase AND decoded image are required. */
+  html.wedding-hero-progressive.wedding-hero-photo-phase.wedding-hero-image-ready #heroImage {
     opacity:1;
   }
-  /* Reveal all three lines in order. The heart stays WITH the names. */
   html.wedding-hero-progressive .hero-card.hero-save-card .save-info-line,
   html.wedding-hero-progressive .hero-card.hero-save-card .save-info-names,
   html.wedding-hero-progressive .hero-card.hero-save-card .save-info-venue {
@@ -2137,11 +2140,20 @@ document.documentElement.classList.add("wedding-hero-progressive");
   html.wedding-hero-progressive .hero-card.hero-save-card .save-info-line {
     animation-delay:0ms;
   }
+  /* The heart is in this same element, so it appears with both names. */
   html.wedding-hero-progressive .hero-card.hero-save-card .save-info-names {
     animation-delay:900ms;
   }
   html.wedding-hero-progressive .hero-card.hero-save-card .save-info-venue {
     animation-delay:1800ms;
+  }
+  html.wedding-hero-progressive:not(.wedding-hero-intro-complete) main > .hero ~ * {
+    opacity:0!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+  html.wedding-hero-progressive.wedding-hero-intro-complete main > .hero + section {
+    animation:weddingAfterHeroReveal 760ms cubic-bezier(.2,.7,.23,1) both;
   }
 }
 @media (prefers-reduced-motion:reduce) {
@@ -2746,7 +2758,15 @@ document.documentElement.classList.add("wedding-hero-progressive");
       showGalleryMore(flatGallery.length-shownGalleryCount,true);
     }
   });
-  showGalleryMore(initialGalleryCount);
+  // Keep gallery thumbnail requests behind the completed hero/photo intro.
+  function startInitialGallery(){
+    if(shownGalleryCount===0)showGalleryMore(initialGalleryCount);
+  }
+  if(document.documentElement.classList.contains("wedding-hero-intro-complete")){
+    startInitialGallery();
+  }else{
+    document.addEventListener("wedding-hero-intro-complete",startInitialGallery,{once:true});
+  }
 
   var currentAlbum=0;
   var currentIndex=0;
@@ -3354,14 +3374,22 @@ async function loadPublicComments(){
   }
 }
 
-const initialCachedGuestbook=readCachedGuestbook();
-if(initialCachedGuestbook!==null){
-  guestbookHasContent=true;
-  renderGuestbook(initialCachedGuestbook);
-}else{
-  showGuestbookStatus("축하 메시지를 불러오는 중입니다.",false);
+// Render cached guestbook and fetch updates only AFTER the hero photo reveal.
+function startInitialGuestbook(){
+  const initialCachedGuestbook=readCachedGuestbook();
+  if(initialCachedGuestbook!==null){
+    guestbookHasContent=true;
+    renderGuestbook(initialCachedGuestbook);
+  }else{
+    showGuestbookStatus("축하 메시지를 불러오는 중입니다.",false);
+  }
+  loadPublicComments();
 }
-loadPublicComments();
+if(document.documentElement.classList.contains("wedding-hero-intro-complete")){
+  startInitialGuestbook();
+}else{
+  document.addEventListener("wedding-hero-intro-complete",startInitialGuestbook,{once:true});
+}
 
 async function copyText(t,msg="계좌번호가 복사되었습니다."){
   try{await navigator.clipboard.writeText(t);alert(msg)}
@@ -3506,41 +3534,78 @@ startBgm();
   observer.observe(document.body,{childList:true,subtree:true});
 })();
 </script>
-<script id="wedding-hero-image-ready-20261015">
+<script id="wedding-hero-intro-order-20261016">
 (function(){
   "use strict";
+  var root=document.documentElement;
   var img=document.getElementById("heroImage");
-  if(!img)return;
-  var activated=false, fallbackTimer;
-  function ready(){
-    if(activated)return;
-    activated=true;
-    clearTimeout(fallbackTimer);
-    // Allow the browser one paint with opacity 0 before starting the fade.
+  var lastLine=document.querySelector(".hero-card.hero-save-card .save-info-venue");
+  if(!img || !lastLine){
+    root.classList.add("wedding-hero-intro-complete");
+    document.dispatchEvent(new Event("wedding-hero-intro-complete"));
+    return;
+  }
+  var reduced=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var textDone=!!reduced, photoDecoded=false, photoStarted=false, finished=false;
+  var imageFallback=null, endFallback=null;
+
+  function finish(){
+    if(finished)return;
+    finished=true;
+    clearTimeout(imageFallback);
+    clearTimeout(endFallback);
+    root.classList.add("wedding-hero-intro-complete");
+    document.dispatchEvent(new Event("wedding-hero-intro-complete"));
+  }
+  function maybeShowPhoto(){
+    if(photoStarted || !textDone || !photoDecoded)return;
+    photoStarted=true;
+    // Double RAF guarantees the image starts invisible even if already cached.
     requestAnimationFrame(function(){
       requestAnimationFrame(function(){
-        document.documentElement.classList.add("wedding-hero-image-ready");
+        img.addEventListener("transitionend",function(e){
+          if(e.target===img && e.propertyName==="opacity")finish();
+        },{once:true});
+        root.classList.add("wedding-hero-photo-phase","wedding-hero-image-ready");
+        endFallback=setTimeout(finish,reduced?100:1600);
       });
     });
   }
-  function decoded(){
-    try{
+  function markTextDone(){
+    if(textDone)return;
+    textDone=true;
+    maybeShowPhoto();
+  }
+  if(!reduced){
+    lastLine.addEventListener("animationend",function(e){
+      if(e.target===lastLine && e.animationName==="weddingHeroInfoReveal")markTextDone();
+    },{once:true});
+    // Fail safe for throttled or disabled CSS animation.
+    setTimeout(markTextDone,3000);
+  }
+  function markPhotoDecoded(){
+    if(photoDecoded)return;
+    photoDecoded=true;
+    clearTimeout(imageFallback);
+    maybeShowPhoto();
+  }
+  function onImageLoaded(){
+    try {
       if(typeof img.decode==="function"){
-        img.decode().then(ready,ready);
+        img.decode().then(markPhotoDecoded,markPhotoDecoded);
         return;
       }
     }catch(e){}
-    ready();
+    markPhotoDecoded();
   }
-  if(img.complete){
-    if(img.naturalWidth)decoded();
-    else img.addEventListener("load",decoded,{once:true});
+  if(img.complete && img.naturalWidth){
+    onImageLoaded();
   }else{
-    img.addEventListener("load",decoded,{once:true});
+    img.addEventListener("load",onImageLoaded,{once:true});
   }
-  img.addEventListener("error",ready,{once:true});
-  // Do not hide the image indefinitely if the download stalls.
-  fallbackTimer=setTimeout(ready,10000);
+  img.addEventListener("error",markPhotoDecoded,{once:true});
+  // An unreachable image must not leave the rest of the invitation hidden.
+  imageFallback=setTimeout(markPhotoDecoded,10000);
 })();
 </script>
 <script id="wedding-scroll-block-reveal-20261015">
