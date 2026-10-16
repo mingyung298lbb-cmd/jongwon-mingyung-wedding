@@ -2215,8 +2215,9 @@ document.documentElement.classList.add("wedding-hero-progressive");
 }
 </style>
 <style id="wedding-invite-ribbon-then-lines-20261016">
-/* Reveal the paper vertically from the top while the red ribbon fades in.
-   Once both finish, reveal each static-position line left to right in 1.4s. */
+/* Treat the complete introduction (white paper, red ribbon and all four
+   sentences) as ONE block. Reveal from top to bottom in exactly 2 seconds.
+   No separate line or ribbon transitions; original sizes stay unchanged. */
 .box.invite .invite-line {
   display:block;
 }
@@ -2224,44 +2225,11 @@ document.documentElement.classList.add("wedding-hero-progressive");
   html.wedding-hero-progressive .box.invite {
     -webkit-clip-path:inset(0 0 100% 0);
     clip-path:inset(0 0 100% 0);
-    transition:-webkit-clip-path 1400ms linear,clip-path 1400ms linear;
+    transition:-webkit-clip-path 2000ms linear,clip-path 2000ms linear;
   }
   html.wedding-hero-progressive.wedding-invite-reveal-start .box.invite {
     -webkit-clip-path:inset(0 0 0 0);
     clip-path:inset(0 0 0 0);
-  }
-  html.wedding-hero-progressive .box.invite::before {
-    opacity:0!important;
-    transform:translateX(-50%)!important;
-    -webkit-clip-path:none!important;
-    clip-path:none!important;
-    transition:opacity 1400ms cubic-bezier(.2,.7,.23,1)!important;
-  }
-  html.wedding-hero-progressive.wedding-invite-reveal-start .box.invite::before {
-    opacity:.95!important;
-  }
-  html.wedding-hero-progressive .box.invite .invite-line {
-    -webkit-clip-path:inset(0 100% 0 0);
-    clip-path:inset(0 100% 0 0);
-    transition:-webkit-clip-path 1400ms linear,clip-path 1400ms linear;
-  }
-  html.wedding-hero-progressive.wedding-invite-reveal-start .box.invite .invite-line {
-    -webkit-clip-path:inset(0 0 0 0);
-    clip-path:inset(0 0 0 0);
-  }
-  /* Paper + ribbon 0–1400ms; text lines 1500–2900, 3000–4400,
-     4500–5900, 6000–7400ms. Each line finishes before the next. */
-  html.wedding-hero-progressive .box.invite .invite-line:nth-child(1) {
-    transition-delay:1500ms;
-  }
-  html.wedding-hero-progressive .box.invite .invite-line:nth-child(2) {
-    transition-delay:3000ms;
-  }
-  html.wedding-hero-progressive .box.invite .invite-line:nth-child(3) {
-    transition-delay:4500ms;
-  }
-  html.wedding-hero-progressive .box.invite .invite-line:nth-child(4) {
-    transition-delay:6000ms;
   }
 }
 </style>
@@ -3736,10 +3704,10 @@ startBgm();
   function scheduleGallery(){
     if(scheduled)return;
     scheduled=true;
-    // Allow the ribbon and four introduction lines to finish before Gallery appears.
+    // One 2-second introduction reveal, followed by a short 0.4-second pause.
     setTimeout(function(){
       root.classList.add("wedding-gallery-released");
-    },7800);
+    },2400);
   }
   if(root.classList.contains("wedding-invite-reveal-start")){
     scheduleGallery();
