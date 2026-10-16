@@ -2004,13 +2004,29 @@ main > .calendar-final-section > img {
     linear-gradient(to bottom,transparent 0%,#000 5%,#000 95%,transparent 100%);
   mask-composite:intersect;
 }
+/* Place the English-only countdown immediately above the clay heart. */
+main > .calendar-final-section > .calendar-dday {
+  display:block;
+  font-family:"Noto Serif KR",serif!important;
+  font-size:8pt!important;
+  font-weight:400!important;
+  letter-spacing:.012em!important;
+  line-height:1.45!important;
+  color:#998b80!important;
+  text-align:center;
+  border:0!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  margin:0 auto!important;
+  padding:0!important;
+}
 /* Restore the original clay heart sway, centered below the final calendar. */
 main > .calendar-final-section .calendar-clay-heart-wrap {
   display:flex;
   align-items:center;
   justify-content:center;
   width:100%;
-  min-height:56px;
+  min-height:40px;
   margin:0 auto;
   padding:0;
   background:transparent;
@@ -2675,14 +2691,13 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
   <section class="calendar-final-section" aria-label="2027년 3월 결혼식 달력">
     <h2 class="title title-emphasis-115x calendar-final-heading">Calendar</h2>
     <img src="/wedding-calendar-2027-replacement.jpg?v=20261016-user-original" alt="2027년 3월 달력, 21일 일요일 결혼식. 이종원과 이민경, 오전 11시 아벤티움 웨딩홀" width="1536" height="1536" loading="lazy" decoding="async">
+    <div class="foot calendar-dday" id="weddingDdayFooter" aria-label="결혼식 디데이">
+      <span id="weddingDdayValue">D-156</span>
+    </div>
     <div class="calendar-clay-heart-wrap" role="img" aria-label="좌우로 천천히 흔들리는 클레이 하트">
       <img class="calendar-clay-heart" src="/footer-heart-clay.webp?v=20261011-zaxis-heart" alt="" width="90" height="78" loading="lazy" decoding="async">
     </div>
   </section>
-
-  <footer class="foot" id="weddingDdayFooter" aria-label="결혼식 디데이">
-    <span id="weddingDdayPrefix">결혼식까지 </span><span id="weddingDdayValue">D-156</span>
-  </footer>
 
 </main>
 
@@ -3870,8 +3885,7 @@ startBgm();
 (function(){
   "use strict";
   var value=document.getElementById("weddingDdayValue");
-  var prefix=document.getElementById("weddingDdayPrefix");
-  if(!value||!prefix)return;
+  if(!value)return;
   function updateDday(){
     // Count calendar days in Korea, regardless of the visitor's time zone.
     var parts=new Intl.DateTimeFormat("en-US",{
@@ -3883,7 +3897,6 @@ startBgm();
     var wedding=Date.UTC(2027,2,21);
     var days=Math.round((wedding-today)/86400000);
     value.textContent=days>0?"D-"+days:(days===0?"Today!":"D+"+Math.abs(days));
-    prefix.style.display=days===0?"none":"";
   }
   updateDday();
   window.addEventListener("pageshow",updateDday);
