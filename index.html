@@ -21,7 +21,7 @@
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;500;600;700&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#33362f;--muted:#777970;--green:#72856a;--line:#e1e5db;
@@ -1938,37 +1938,6 @@ main::before {opacity:.20!important;}
   .family-section .family-parents .parent-name {font-size:14px!important;}
 }
 </style>
-<!-- Keep the names hidden until their exact webfont has finished loading, avoiding a fallback-to-webfont flash. -->
-<style id="main-names-font-stable-20261011">
-html:not(.main-names-font-ready):not(.main-names-font-fallback) .hero-card.hero-save-card .save-info-names {
-  visibility:hidden!important;
-}
-html.main-names-font-fallback .hero-card.hero-save-card .save-info-names {
-  font-family:"Apple SD Gothic Neo","Malgun Gothic",sans-serif!important;
-}
-</style>
-<script id="main-names-font-load-20261011">
-(function(){
-  "use strict";
-  var root=document.documentElement, settled=false, timer;
-  function finish(loaded){
-    if(settled)return;
-    settled=true;
-    clearTimeout(timer);
-    root.classList.add(loaded?"main-names-font-ready":"main-names-font-fallback");
-  }
-  // Keep other parts of the invitation visible; only the main names wait for this font.
-  timer=setTimeout(function(){finish(false);},4000);
-  try{
-    if(document.fonts && document.fonts.load){
-      document.fonts.load('400 37px "Gowun Batang"',"이종원 이민경").then(
-        function(faces){finish(faces.length>0);},
-        function(){finish(false);}
-      );
-    }else{finish(false);}
-  }catch(e){finish(false);}
-})();
-</script>
 <style id="wedding-final-calendar-image-20261016">
 /* Lift the closing calendar into the page flow: no isolated photo-card look. */
 main > section.accounts-section {
@@ -2159,13 +2128,27 @@ document.documentElement.classList.add("wedding-hero-progressive");
   html.wedding-hero-progressive.wedding-hero-image-ready #heroImage {
     opacity:1;
   }
-  html.wedding-hero-progressive .hero-card.hero-save-card .save-info {
-    animation:weddingHeroInfoReveal 2448ms cubic-bezier(.2,.7,.23,1) both;
+  /* Reveal all three lines in order. The heart stays WITH the names. */
+  html.wedding-hero-progressive .hero-card.hero-save-card .save-info-line,
+  html.wedding-hero-progressive .hero-card.hero-save-card .save-info-names,
+  html.wedding-hero-progressive .hero-card.hero-save-card .save-info-venue {
+    animation:weddingHeroInfoReveal 900ms cubic-bezier(.2,.7,.23,1) both;
+  }
+  html.wedding-hero-progressive .hero-card.hero-save-card .save-info-line {
+    animation-delay:0ms;
+  }
+  html.wedding-hero-progressive .hero-card.hero-save-card .save-info-names {
+    animation-delay:900ms;
+  }
+  html.wedding-hero-progressive .hero-card.hero-save-card .save-info-venue {
+    animation-delay:1800ms;
   }
 }
 @media (prefers-reduced-motion:reduce) {
   html.wedding-hero-progressive #heroImage,
-  html.wedding-hero-progressive .hero-card.hero-save-card .save-info {
+  html.wedding-hero-progressive .hero-card.hero-save-card .save-info-line,
+  html.wedding-hero-progressive .hero-card.hero-save-card .save-info-names,
+  html.wedding-hero-progressive .hero-card.hero-save-card .save-info-venue {
     opacity:1!important;
     transform:none!important;
     animation:none!important;
