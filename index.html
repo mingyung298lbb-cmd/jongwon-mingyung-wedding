@@ -2242,12 +2242,21 @@ main > .hero.hero-save + section > .box.invite {
 }
 </style>
 <style id="wedding-invite-ribbon-then-lines-20261016">
-/* One 2-second top-to-bottom reveal for the complete introduction:
-   paper, red ribbon and all four sentences. Only the moving leading edge
-   is feathered; after 2 seconds every pixel is fully opaque.
-   220% mask height ensures the final visible window is entirely solid. */
+/* Reveal paper, ribbon and all four sentences as one top-down block over
+   2.5 seconds; only the moving lower edge is feathered. */
 .box.invite .invite-line {
   display:block;
+}
+/* RSVP shortcut must wait for the *end* of the invitation reveal, not merely
+   the earlier hero-photo completion or the first frame of the invitation. */
+html.wedding-hero-progressive:not(.wedding-invite-reveal-finished) main > .rsvp-jump-wrap {
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-wrap {
+  opacity:1!important;
+  visibility:visible!important;
 }
 @media (prefers-reduced-motion:no-preference) {
   html.wedding-hero-progressive .box.invite {
@@ -2261,11 +2270,14 @@ main > .hero.hero-save + section > .box.invite {
     mask-repeat:no-repeat;
     -webkit-mask-position:0 100%;
     mask-position:0 100%;
-    transition:-webkit-mask-position 2000ms linear,mask-position 2000ms linear;
+    transition:-webkit-mask-position 2500ms linear,mask-position 2500ms linear;
   }
   html.wedding-hero-progressive.wedding-invite-reveal-start .box.invite {
     -webkit-mask-position:0 0;
     mask-position:0 0;
+  }
+  html.wedding-hero-progressive main > .rsvp-jump-wrap {
+    transition:opacity 400ms ease;
   }
 }
 </style>
@@ -3712,15 +3724,31 @@ startBgm();
 <script id="wedding-invite-font-gated-reveal-20261016">
 (function(){
   "use strict";
-  var root=document.documentElement, started=false;
+  var root=document.documentElement, started=false, finished=false;
+  var card=document.querySelector("main > .hero.hero-save + section > .box.invite");
+  var reduced=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function finish(){
+    if(finished)return;
+    finished=true;
+    root.classList.add("wedding-invite-reveal-finished");
+    document.dispatchEvent(new Event("wedding-invite-reveal-finished"));
+  }
   function show(){
     if(started)return;
     started=true;
+    if(card && !reduced){
+      // Detect the real end where supported; the timeout is a safety fallback.
+      card.addEventListener("transitionend",function(e){
+        if(e.target===card && e.propertyName.indexOf("mask-position")!==-1)finish();
+      });
+      setTimeout(finish,2550);
+    }
     root.classList.add("wedding-invite-reveal-start");
     document.dispatchEvent(new Event("wedding-invite-reveal-start"));
+    if(!card || reduced)requestAnimationFrame(finish);
   }
   function afterHero(){
-    var timer=setTimeout(show,3500); // Avoid indefinitely hiding copy on bad networks.
+    var timer=setTimeout(show,3500); // Do not hide copy indefinitely on bad networks.
     Promise.resolve(window.weddingInviteFontPromise).then(function(){
       clearTimeout(timer);
       requestAnimationFrame(show);
@@ -3740,15 +3768,15 @@ startBgm();
   function scheduleGallery(){
     if(scheduled)return;
     scheduled=true;
-    // One 2-second introduction reveal, followed by a short 0.4-second pause.
+    // Wait for the completed 2.5s card reveal, then pause 0.4s.
     setTimeout(function(){
       root.classList.add("wedding-gallery-released");
-    },2400);
+    },400);
   }
-  if(root.classList.contains("wedding-invite-reveal-start")){
+  if(root.classList.contains("wedding-invite-reveal-finished")){
     scheduleGallery();
   }else{
-    document.addEventListener("wedding-invite-reveal-start",scheduleGallery,{once:true});
+    document.addEventListener("wedding-invite-reveal-finished",scheduleGallery,{once:true});
   }
 })();
 </script>
@@ -3765,7 +3793,6 @@ startBgm();
   // Gallery photos and expanded comments retain their existing "more" animations.
   const selectors=[
     "main > section > .title",
-    "main > .rsvp-jump-wrap",
     "#gallerySection > .gallery",
     "#gallerySection > .gallery-more-wrap",
     ".family-section .family-only",
