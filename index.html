@@ -3385,6 +3385,7 @@ function renderGuestbook(comments,animateExpansion){
   // Full view shows newest first; the height-bounded carousel preserves
   // oldest-first ordering and puts any comment that won't fit on the next slide.
   if(guestbookExpanded){
+    list.classList.remove("guestbook-carousel"); // Preserve the original full-view grid and spacing.
     const visibleComments=guestbookExpanded?ordered.slice().reverse():ordered;
     const animateFullView=animateExpansion && guestbookExpanded &&
       !(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
