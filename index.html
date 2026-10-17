@@ -2065,7 +2065,7 @@ main > .foot {
 }
 </style>
 <style id="guestbook-carousel-20261015">
-/* Public messages: three at a time, horizontally sliding every 4s.
+/* Public messages: fit cards to the original carousel height, slide every 4s.
    Keep the existing 2px white-beige comment-card borders unchanged. */
 #guestbookList.guestbook-carousel {
   display:block;
@@ -3336,9 +3336,9 @@ function renderGuestbook(comments,animateExpansion){
   }
 
   // Measure actual rendered card heights at the current screen width.
-  // The height budget equals the EXISTING 3-card carousel's tallest page:
-  // appearance/typography/visible area stay unchanged, but the number of
-  // messages on each page is decided by height instead of a fixed count.
+  // The height budget equals the ORIGINAL first slide's height (up to 3 cards).
+  // New comments do not enlarge the frame; as many as fit share each slide,
+  // otherwise the next card starts on the next slide.
   list.classList.add("guestbook-carousel");
   const probe=document.createElement("div");
   probe.className="guestbook-carousel-page";
@@ -3355,12 +3355,10 @@ function renderGuestbook(comments,animateExpansion){
   const gap=parseFloat(styles.rowGap)||9;
   const inset=(parseFloat(styles.paddingTop)||0)+(parseFloat(styles.paddingBottom)||0);
   probe.remove();
-  let heightBudget=0;
-  for(let i=0;i<heights.length;i+=3){
-    const group=heights.slice(i,i+3);
-    heightBudget=Math.max(heightBudget,inset+group.reduce((sum,height)=>sum+height,0)+gap*(group.length-1));
-  }
-  heightBudget=Math.ceil(heightBudget);
+  const referenceHeights=heights.slice(0,3);
+  const heightBudget=Math.ceil(
+    inset+referenceHeights.reduce((sum,height)=>sum+height,0)+gap*(referenceHeights.length-1)
+  );
 
   const batches=[];
   let start=0,used=inset;
