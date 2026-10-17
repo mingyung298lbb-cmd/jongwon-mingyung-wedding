@@ -2065,7 +2065,7 @@ main > .foot {
 }
 </style>
 <style id="guestbook-carousel-20261015">
-/* Public messages: fit cards to the original carousel height, slide every 4s.
+/* Public messages: fit cards to the original carousel height, slide every 3.4s.
    Keep the existing 2px white-beige comment-card borders unchanged. */
 #guestbookList.guestbook-carousel {
   display:block;
@@ -2078,11 +2078,6 @@ main > .foot {
   align-items:stretch;
   transition:transform 600ms ease-in-out;
   will-change:transform;
-  touch-action:pan-y; /* Horizontal swipes stay in the carousel; vertical page scrolling works. */
-  cursor:grab;
-}
-#guestbookList .guestbook-carousel-track.guestbook-dragging {
-  cursor:grabbing;
 }
 #guestbookList .guestbook-carousel-track.guestbook-no-transition {
   transition:none!important;
@@ -3422,8 +3417,7 @@ function renderGuestbook(comments,animateExpansion){
     list.appendChild(track);
     return;
   }
-  // Duplicate the end pages, allowing seamless manual swipes in BOTH directions
-  // while retaining the 4s auto-slide and 600ms easing.
+  // Retain the seamless automatic carousel loop with 600ms easing.
   const count=pages.length;
   const reducedMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const lastCopy=pages[count-1].cloneNode(true);
@@ -3435,7 +3429,6 @@ function renderGuestbook(comments,animateExpansion){
   // The first REAL page is now position 1: [last clone, pages..., first clone].
   let current=1;
   let sliding=false;
-  let swipe=null;
   track.classList.add("guestbook-no-transition");
   track.style.transform="translate3d(-100%,0,0)";
   list.appendChild(track);
@@ -3469,7 +3462,7 @@ function renderGuestbook(comments,animateExpansion){
   });
 
   function slideBy(step){
-    if(sliding||swipe)return;
+    if(sliding)return;
     if(reducedMotion){
       current=((current-1+step+count)%count)+1;
       track.style.transform="translate3d(-"+(current*100)+"%,0,0)";
@@ -3484,69 +3477,10 @@ function renderGuestbook(comments,animateExpansion){
     guestbookCarouselResetTimer=setTimeout(settleSlide,760);
   }
 
-  function restartGuestbookAutoplay(){
-    if(guestbookCarouselTimer!==null)clearInterval(guestbookCarouselTimer);
-    guestbookCarouselTimer=setInterval(()=>{
-      if(!document.hidden&&!swipe)slideBy(1);
-    },4000);
-  }
-
-  // Drag with a finger (or mouse). Respond only to horizontal intent so normal
-  // vertical scrolling through the invitation remains uninterrupted.
-  track.addEventListener("pointerdown",event=>{
-    if(sliding||swipe||!event.isPrimary||(event.pointerType==="mouse"&&event.button!==0))return;
-    swipe={id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,started:Date.now(),dragging:false};
-    if(event.pointerType==="mouse")event.preventDefault();
-    try{track.setPointerCapture(event.pointerId);}catch(e){}
-    if(guestbookCarouselTimer!==null){
-      clearInterval(guestbookCarouselTimer);
-      guestbookCarouselTimer=null;
-    }
-  });
-  track.addEventListener("pointermove",event=>{
-    if(!swipe||event.pointerId!==swipe.id)return;
-    const dx=event.clientX-swipe.x;
-    const dy=event.clientY-swipe.y;
-    if(!swipe.dragging){
-      if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){
-        swipe=null;
-        restartGuestbookAutoplay();
-        return;
-      }
-      if(Math.abs(dx)<8||Math.abs(dx)<Math.abs(dy))return;
-      swipe.dragging=true;
-      track.classList.add("guestbook-no-transition","guestbook-dragging");
-    }
-    const width=track.getBoundingClientRect().width||1;
-    swipe.dx=Math.max(-width*.8,Math.min(width*.8,dx));
-    track.style.transform="translate3d(calc(-"+(current*100)+"% + "+swipe.dx+"px),0,0)";
-  });
-
-  function releaseSwipe(event,cancelled){
-    if(!swipe||event.pointerId!==swipe.id)return;
-    const previous=swipe;
-    swipe=null;
-    if(previous.dragging){
-      track.classList.remove("guestbook-no-transition","guestbook-dragging");
-      void track.offsetWidth;
-      const width=track.getBoundingClientRect().width||1;
-      const committed=!cancelled&&(
-        Math.abs(previous.dx)>Math.max(40,width*.14)||
-        (Math.abs(previous.dx)>30&&Date.now()-previous.started<250)
-      );
-      if(committed){
-        slideBy(previous.dx<0?1:-1);
-      }else{
-        sliding=true;
-        track.style.transform="translate3d(-"+(current*100)+"%,0,0)";
-        guestbookCarouselResetTimer=setTimeout(settleSlide,760);
-      }
-    }
-    restartGuestbookAutoplay();
-  }
-  track.addEventListener("pointerup",event=>releaseSwipe(event,false));
-  track.addEventListener("pointercancel",event=>releaseSwipe(event,true));
-  restartGuestbookAutoplay();
+  // Automatic-only playback: keep the original easing and height-based pages.
+  guestbookCarouselTimer=setInterval(()=>{
+    if(!document.hidden)slideBy(1);
+  },3400);
 }
 
 // Repack only when the available width changes (e.g. phone orientation).
