@@ -2078,6 +2078,11 @@ main > .foot {
   align-items:stretch;
   transition:transform 600ms ease-in-out;
   will-change:transform;
+  touch-action:pan-y; /* Horizontal swipes stay in the carousel; vertical page scrolling works. */
+  cursor:grab;
+}
+#guestbookList .guestbook-carousel-track.guestbook-dragging {
+  cursor:grabbing;
 }
 #guestbookList .guestbook-carousel-track.guestbook-no-transition {
   transition:none!important;
@@ -3368,54 +3373,131 @@ function renderGuestbook(comments,animateExpansion){
     pages.push(page);
     track.appendChild(page);
   }
-  // An extra copy of the first group allows a smooth last-to-first slide.
-  const firstCopy=pages[0].cloneNode(true);
-  firstCopy.setAttribute("aria-hidden","true");
-  track.appendChild(firstCopy);
-  list.appendChild(track);
-
+  // Duplicate the end pages, allowing seamless manual swipes in BOTH directions
+  // while retaining the existing 3-messages-per-page, 4s auto-slide and 600ms easing.
   const count=pages.length;
   const reducedMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let current=0;
+  const lastCopy=pages[count-1].cloneNode(true);
+  const firstCopy=pages[0].cloneNode(true);
+  lastCopy.setAttribute("aria-hidden","true");
+  firstCopy.setAttribute("aria-hidden","true");
+  track.insertBefore(lastCopy,track.firstChild);
+  track.appendChild(firstCopy);
+  // The first REAL page is now position 1: [last clone, pages..., first clone].
+  let current=1;
+  let sliding=false;
+  let swipe=null;
+  track.classList.add("guestbook-no-transition");
+  track.style.transform="translate3d(-100%,0,0)";
+  list.appendChild(track);
+  void track.offsetWidth;
+  track.classList.remove("guestbook-no-transition");
+
   function markCurrent(index){
-    pages.forEach((page,i)=>page.setAttribute("aria-hidden",i!==index?"true":"false"));
+    const actual=index===0?count:(index===count+1?1:index);
+    pages.forEach((page,i)=>page.setAttribute("aria-hidden",i!==actual-1?"true":"false"));
   }
-  markCurrent(0);
-  function resetToFirst(){
-    if(current!==count)return;
+  markCurrent(current);
+
+  function settleSlide(){
     if(guestbookCarouselResetTimer!==null){
       clearTimeout(guestbookCarouselResetTimer);
       guestbookCarouselResetTimer=null;
     }
-    track.classList.add("guestbook-no-transition");
-    current=0;
-    track.style.transform="translate3d(0,0,0)";
-    markCurrent(0);
-    void track.offsetWidth; // Flush the instant reset before resuming transitions.
-    track.classList.remove("guestbook-no-transition");
+    // A clone is only a temporary transition frame; jump invisibly to its real twin.
+    if(current===0||current===count+1){
+      current=current===0?count:1;
+      track.classList.add("guestbook-no-transition");
+      track.style.transform="translate3d(-"+(current*100)+"%,0,0)";
+      void track.offsetWidth;
+      track.classList.remove("guestbook-no-transition");
+    }
+    markCurrent(current);
+    sliding=false;
   }
   track.addEventListener("transitionend",event=>{
-    if(event.target===track&&event.propertyName==="transform")resetToFirst();
+    if(event.target===track&&event.propertyName==="transform"&&sliding)settleSlide();
   });
 
-  guestbookCarouselTimer=setInterval(()=>{
-    if(document.hidden)return;
+  function slideBy(step){
+    if(sliding||swipe)return;
     if(reducedMotion){
-      current=(current+1)%count;
+      current=((current-1+step+count)%count)+1;
       track.style.transform="translate3d(-"+(current*100)+"%,0,0)";
       markCurrent(current);
       return;
     }
-    if(current===count)resetToFirst();
-    current++;
+    sliding=true;
+    current+=step;
     track.style.transform="translate3d(-"+(current*100)+"%,0,0)";
-    if(current===count){
-      // Fallback if transitionend is missed on a throttled browser.
-      guestbookCarouselResetTimer=setTimeout(resetToFirst,750);
-    }else{
-      markCurrent(current);
+    markCurrent(current);
+    // Fall back if mobile Safari throttles/misses transitionend.
+    guestbookCarouselResetTimer=setTimeout(settleSlide,760);
+  }
+
+  function restartGuestbookAutoplay(){
+    if(guestbookCarouselTimer!==null)clearInterval(guestbookCarouselTimer);
+    guestbookCarouselTimer=setInterval(()=>{
+      if(!document.hidden&&!swipe)slideBy(1);
+    },4000);
+  }
+
+  // Drag with a finger (or mouse). Respond only to horizontal intent so normal
+  // vertical scrolling through the invitation remains uninterrupted.
+  track.addEventListener("pointerdown",event=>{
+    if(sliding||swipe||!event.isPrimary||(event.pointerType==="mouse"&&event.button!==0))return;
+    swipe={id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,started:Date.now(),dragging:false};
+    if(event.pointerType==="mouse")event.preventDefault();
+    try{track.setPointerCapture(event.pointerId);}catch(e){}
+    if(guestbookCarouselTimer!==null){
+      clearInterval(guestbookCarouselTimer);
+      guestbookCarouselTimer=null;
     }
-  },4000);
+  });
+  track.addEventListener("pointermove",event=>{
+    if(!swipe||event.pointerId!==swipe.id)return;
+    const dx=event.clientX-swipe.x;
+    const dy=event.clientY-swipe.y;
+    if(!swipe.dragging){
+      if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){
+        swipe=null;
+        restartGuestbookAutoplay();
+        return;
+      }
+      if(Math.abs(dx)<8||Math.abs(dx)<Math.abs(dy))return;
+      swipe.dragging=true;
+      track.classList.add("guestbook-no-transition","guestbook-dragging");
+    }
+    const width=track.getBoundingClientRect().width||1;
+    swipe.dx=Math.max(-width*.8,Math.min(width*.8,dx));
+    track.style.transform="translate3d(calc(-"+(current*100)+"% + "+swipe.dx+"px),0,0)";
+  });
+
+  function releaseSwipe(event,cancelled){
+    if(!swipe||event.pointerId!==swipe.id)return;
+    const previous=swipe;
+    swipe=null;
+    if(previous.dragging){
+      track.classList.remove("guestbook-no-transition","guestbook-dragging");
+      void track.offsetWidth;
+      const width=track.getBoundingClientRect().width||1;
+      const committed=!cancelled&&(
+        Math.abs(previous.dx)>Math.max(40,width*.14)||
+        (Math.abs(previous.dx)>30&&Date.now()-previous.started<250)
+      );
+      if(committed){
+        slideBy(previous.dx<0?1:-1);
+      }else{
+        sliding=true;
+        track.style.transform="translate3d(-"+(current*100)+"%,0,0)";
+        guestbookCarouselResetTimer=setTimeout(settleSlide,760);
+      }
+    }
+    restartGuestbookAutoplay();
+  }
+  track.addEventListener("pointerup",event=>releaseSwipe(event,false));
+  track.addEventListener("pointercancel",event=>releaseSwipe(event,true));
+  restartGuestbookAutoplay();
 }
 
 const guestbookViewAllButton=document.getElementById("guestbookViewAll");
