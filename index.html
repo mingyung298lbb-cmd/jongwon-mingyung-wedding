@@ -3254,6 +3254,7 @@ let guestbookCarouselTimer=null;
 let guestbookCarouselResetTimer=null;
 let guestbookExpanded=false;
 let guestbookLastComments=[];
+let guestbookLayoutWidth=0;
 
 function stopGuestbookCarousel(){
   if(guestbookCarouselTimer!==null){
@@ -3305,16 +3306,12 @@ function renderGuestbook(comments,animateExpansion){
     .sort((a,b)=>a.time-b.time||a.index-b.index)
     .map(row=>row.item);
 
-  if(ordered.length<=3)guestbookExpanded=false;
   const viewAllWrap=document.getElementById("guestbookViewAllWrap");
   const viewAllButton=document.getElementById("guestbookViewAll");
-  if(viewAllWrap&&viewAllButton){
-    viewAllWrap.hidden=ordered.length<=3;
-    viewAllButton.textContent=guestbookExpanded?"접기 · 슬라이드 보기":"전체보기";
-    viewAllButton.setAttribute("aria-expanded",guestbookExpanded?"true":"false");
-  }
 
   if(!ordered.length){
+    guestbookExpanded=false;
+    if(viewAllWrap)viewAllWrap.hidden=true;
     const empty=document.createElement("div");
     empty.className="comment-empty";
     empty.textContent="아직 공개된 축하 메시지가 없습니다.";
@@ -3338,9 +3335,56 @@ function renderGuestbook(comments,animateExpansion){
     return card;
   }
 
-  // Full view shows newest first, so the oldest comment is at the bottom.
-  // The three-at-a-time carousel below keeps its original oldest-first order.
-  if(ordered.length<=3||guestbookExpanded){
+  // Measure actual rendered card heights at the current screen width.
+  // The height budget equals the EXISTING 3-card carousel's tallest page:
+  // appearance/typography/visible area stay unchanged, but the number of
+  // messages on each page is decided by height instead of a fixed count.
+  list.classList.add("guestbook-carousel");
+  const probe=document.createElement("div");
+  probe.className="guestbook-carousel-page";
+  probe.style.cssText="position:absolute;left:-9999px;top:0;visibility:hidden;pointer-events:none;width:"+(list.clientWidth||320)+"px;";
+  list.appendChild(probe);
+  const heights=ordered.map(item=>{
+    const card=makeCommentCard(item);
+    probe.appendChild(card);
+    const height=card.getBoundingClientRect().height;
+    probe.removeChild(card);
+    return height;
+  });
+  const styles=getComputedStyle(probe);
+  const gap=parseFloat(styles.rowGap)||9;
+  const inset=(parseFloat(styles.paddingTop)||0)+(parseFloat(styles.paddingBottom)||0);
+  probe.remove();
+  let heightBudget=0;
+  for(let i=0;i<heights.length;i+=3){
+    const group=heights.slice(i,i+3);
+    heightBudget=Math.max(heightBudget,inset+group.reduce((sum,height)=>sum+height,0)+gap*(group.length-1));
+  }
+  heightBudget=Math.ceil(heightBudget);
+
+  const batches=[];
+  let start=0,used=inset;
+  heights.forEach((height,i)=>{
+    const extra=height+(i>start?gap:0);
+    if(i>start&&used+extra>heightBudget+.5){
+      batches.push({start:start,end:i});
+      start=i;
+      used=inset;
+    }
+    used+=height+(i>start?gap:0);
+  });
+  batches.push({start:start,end:ordered.length});
+  if(batches.length===1)guestbookExpanded=false;
+  if(viewAllWrap&&viewAllButton){
+    viewAllWrap.hidden=batches.length===1;
+    viewAllButton.textContent=guestbookExpanded?"접기 · 슬라이드 보기":"전체보기";
+    viewAllButton.setAttribute("aria-expanded",guestbookExpanded?"true":"false");
+  }
+  guestbookLayoutWidth=Math.round(list.getBoundingClientRect().width);
+
+  // Full view shows newest first; the height-bounded carousel preserves
+  // oldest-first ordering and puts any comment that won't fit on the next slide.
+  if(guestbookExpanded){
     const visibleComments=guestbookExpanded?ordered.slice().reverse():ordered;
     const animateFullView=animateExpansion && guestbookExpanded &&
       !(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -3363,18 +3407,24 @@ function renderGuestbook(comments,animateExpansion){
   list.classList.add("guestbook-carousel");
   const track=document.createElement("div");
   track.className="guestbook-carousel-track";
+  track.style.minHeight=heightBudget+"px";
   const pages=[];
-  for(let i=0;i<ordered.length;i+=3){
+  batches.forEach(batch=>{
     const page=document.createElement("div");
     page.className="guestbook-carousel-page";
     page.setAttribute("role","group");
-    page.setAttribute("aria-label","축하 메시지 "+(i+1)+"~"+Math.min(i+3,ordered.length)+" / "+ordered.length);
-    ordered.slice(i,i+3).forEach(item=>page.appendChild(makeCommentCard(item)));
+    page.setAttribute("aria-label","축하 메시지 "+(batch.start+1)+"~"+batch.end+" / "+ordered.length);
+    ordered.slice(batch.start,batch.end).forEach(item=>page.appendChild(makeCommentCard(item)));
     pages.push(page);
     track.appendChild(page);
+  });
+  if(pages.length===1){
+    // All comments fit: keep the same visible area, without pointless looping.
+    list.appendChild(track);
+    return;
   }
   // Duplicate the end pages, allowing seamless manual swipes in BOTH directions
-  // while retaining the existing 3-messages-per-page, 4s auto-slide and 600ms easing.
+  // while retaining the 4s auto-slide and 600ms easing.
   const count=pages.length;
   const reducedMotion=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const lastCopy=pages[count-1].cloneNode(true);
@@ -3500,6 +3550,16 @@ function renderGuestbook(comments,animateExpansion){
   restartGuestbookAutoplay();
 }
 
+// Repack only when the available width changes (e.g. phone orientation).
+// A mobile browser's collapsing address bar does not reinitialize the carousel.
+let guestbookResizeTimer=null;
+window.addEventListener("resize",()=>{
+  const list=document.getElementById("guestbookList");
+  if(!list||!guestbookLastComments.length||guestbookExpanded)return;
+  if(Math.abs(list.getBoundingClientRect().width-guestbookLayoutWidth)<2)return;
+  clearTimeout(guestbookResizeTimer);
+  guestbookResizeTimer=setTimeout(()=>renderGuestbook(guestbookLastComments),180);
+});
 const guestbookViewAllButton=document.getElementById("guestbookViewAll");
 if(guestbookViewAllButton){
   guestbookViewAllButton.addEventListener("click",()=>{
