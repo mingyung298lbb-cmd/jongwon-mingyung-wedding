@@ -4333,7 +4333,9 @@ startBgm();
   const pending=[];
   nodes.forEach(function(el){
     const rect=el.getBoundingClientRect();
-    if(rect.top<visibleNow-30 && rect.bottom>0)return;
+    // The location map must reveal on entry even when it is already visible
+    // during initial page setup; other initially visible blocks keep the safeguard.
+    if(!el.matches(".map-img") && rect.top<visibleNow-30 && rect.bottom>0)return;
     el.classList.add("wedding-scroll-reveal");
     pending.push(el);
   });
