@@ -2782,68 +2782,62 @@ main > section > .box,
 </style>
 
 
-<style id="remove-all-pink-borders-and-shadows-20261106">
-/* Final palette correction: replace every blush/lavender frame and shadow
-   with a restrained pale-green treatment. Keep the heart pink. */
+<style id="remove-pink-with-account-block-preserved-20261106">
+/* Pale-green replacement for pink/lavender outlines and shadows. */
 :root{
   --green:#72856a!important;
   --line:#dce7d5!important;
   --shadow:0 6px 18px rgba(105,133,91,.09)!important;
 }
-/* Catch borders from every earlier theme override, including side-specific borders. */
-*,*::before,*::after{
+*:not(.account):not(.account-group),
+*:not(.account)::before,
+*:not(.account)::after{
   border-color:#dce7d5!important;
 }
-/* Explicitly retain the requested pure-white frames on the large blocks. */
+/* Preserve the established white frames on the main content blocks. */
 .hero-card.hero-save-card,
 .hero-card.hero-save-card .save-photo-wrap,
 .hero-card.hero-save-card .save-photo,
 #heroImage,
-.box,
-.family-panel,
-.family-card,
+.box:not(.account),
+.family-panel,.family-card,
 #gallerySection .gallery .gcard,
-.map-img,
-.route,
-.accounts-section .account,
+.map-img,.route,
 #rsvpSection > .box,
 #locationSection .box,
 #guestbookSection > .box{
   border-color:#fff!important;
 }
-/* Individual guestbook messages use pale green, not white or pink. */
+/* Account-transfer cards retain their original block treatment. */
+.accounts-section .account,
+.accounts-section .account-group,
+.accounts-section .box.account,
+.account-group,
+.box.account{
+  border-color:rgba(207,216,199,.9)!important;
+  box-shadow:var(--shadow)!important;
+  filter:none!important;
+}
+/* Individual guestbook comments use pale green borders. */
 #guestbookList .guestbook-item,
 #guestbookSection .guestbook-item{
   border:2px solid #d9e5d3!important;
 }
-/* Replace pink/lavender shadows throughout the invitation UI. */
-.hero-card,.box,.invite,.family-panel,.family-card,.gcard,.map-img,.route,
-.account,.account-group,.guestbook-item,.rsvp-jump,.choice,.choice-label,
+/* Recolor only existing shadow treatments; do not touch animation/transition rules. */
+.hero-card,.box:not(.account),.invite,.family-panel,.family-card,.gcard,
+.map-img,.route,.guestbook-item,.rsvp-jump,.choice,.choice-label,
 .form-control,.form-field input,.form-field select,.form-field textarea,
-.form-submit,.copy,.copy-mini,.bgm-toggle,.calendar-img,.close,
-#main,.main{
+.form-submit,.copy,.copy-mini,.bgm-toggle,.calendar-img,.close,#main,.main{
   box-shadow:0 5px 16px rgba(105,133,91,.09)!important;
 }
-/* Focus rings and decorative drop shadows also use green. */
 .choice:has(input:checked),.choice-input:checked+.choice-label,
 .form-field input:focus,.form-field select:focus,
 .form-field textarea:focus,.form-control:focus{
   box-shadow:0 0 0 3px rgba(130,158,112,.14)!important;
 }
-.invite::before{
-  filter:drop-shadow(0 .18px 0 rgba(105,133,91,.10))!important;
-}
-/* The heart is the sole intentionally pink accent. */
+.invite::before{filter:drop-shadow(0 .18px 0 rgba(105,133,91,.10))!important;}
+/* Preserve the pink heart accent. */
 .hero-card.hero-save-card .save-heart{color:#d49ab8!important;}
-
-/* The "마음 전하실 곳" account block is excluded from the shadow treatment. */
-.accounts-section .account,
-.accounts-section .account-group,
-.account-group,
-.account{
-  box-shadow:none!important;
-  filter:none!important;
-}
 </style>
 
 </head>
