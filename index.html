@@ -2590,6 +2590,69 @@ body::before{background-image:none!important;opacity:0!important;}
 /* Restore the invitation heart to the light-green accent. */
 .save-heart,.hero-card.hero-save-card .save-heart{color:#b97578!important;}
 </style>
+
+<style id="restore-original-green-palette-20261106">
+/* Restore the invitation's original muted green palette. Keep the heart pink. */
+:root{
+  --ink:#33362f!important;
+  --muted:#777970!important;
+  --green:#72856a!important;
+  --line:#e1e5db!important;
+  --paper:rgba(255,255,252,.94)!important;
+  --shadow:0 8px 24px rgba(57,70,48,.06)!important;
+}
+html,body{background-color:#f7f9f4!important;color:#33362f!important}
+main{background:rgba(250,252,247,.84)!important;box-shadow:0 0 0 1px rgba(190,204,180,.22)!important}
+.hero-card.hero-save-card{background:#f8faf5!important}
+.hero-card.hero-save-card .save-info,
+.hero-card.hero-save-card .save-info-line,
+.hero-card.hero-save-card .save-info-names,
+.hero-card.hero-save-card .save-info-venue{color:#41483d!important}
+.hero-card.hero-save-card .save-heart{color:#b97578!important}
+.box.invite{
+  background-color:#fbfcf8!important;
+  background-image:
+    radial-gradient(circle at 18% 22%,rgba(91,112,79,.035) 0 .55px,transparent .85px),
+    radial-gradient(circle at 74% 38%,rgba(91,112,79,.025) 0 .5px,transparent .8px),
+    radial-gradient(circle at 42% 82%,rgba(91,112,79,.022) 0 .5px,transparent .78px)!important;
+  border-color:#e1e8da!important;
+}
+.invite-copy{color:#41483d!important}
+.title,.family-side,.account-group-title{color:#72856a!important}
+.title::before,.title::after{background:#cbd6c3!important}
+.box{background:rgba(255,255,252,.95)!important;border-color:#e1e8da!important}
+.rsvp-jump{background:#fbfcf8!important;color:#66745f!important;border-color:#d8e1d2!important}
+.gcard{background:#f4f7ef!important;border-color:#dce5d5!important}
+.family-panel{background:rgba(220,232,211,.48)!important;border-color:#d0dfc7!important}
+.family-card{background:#fffefa!important;border-color:#e0e8da!important}
+.family-side,.account-group-title,.form-field label,.guestbook-name{color:#72856a!important}
+.parent-line,.parent-name{color:#41483d!important}
+.parent-role,.label{color:#858d7e!important}
+.row,.route{border-color:#e1e8da!important}
+.value,.account-title,.account p,.rsvp-intro,.invite-copy{color:#4c5348!important}
+.map-img{background:#f8faf5!important;border-color:#e1e8da!important}
+.route{background:rgba(255,255,252,.9)!important;color:#4c5348!important}
+.route b{color:#637c5b!important}
+.choice,.choice-label,.form-control,.form-field input,.form-field select,.form-field textarea,.guestbook-item{
+  background:#fffefa!important;border-color:#dfe7d9!important;color:#41483d!important
+}
+.choice:has(input:checked),.choice-input:checked+.choice-label{
+  background:rgba(114,133,106,.12)!important;border-color:rgba(114,133,106,.62)!important;color:#637c5b!important
+}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus,.form-control:focus{
+  border-color:#9eaf94!important;box-shadow:0 0 0 3px rgba(114,133,106,.10)!important
+}
+.form-submit,.copy{background:#72856a!important;color:#fff!important;border-color:#72856a!important}
+.form-submit:active,.copy:active{background:#63785a!important}
+.copy-mini{background:#f8faf5!important;border-color:#d9e3d2!important;color:#637c5b!important}
+.bgm-toggle{background:rgba(255,255,252,.94)!important;color:#596b51!important;border-color:#e1e8da!important}
+.foot{border-color:#e1e8da!important;color:#858d7e!important}
+#gallerySection .gallery .gcard{background:#f4f7ef!important;border-color:#dce5d5!important}
+#gallerySection .gallery .gcard:focus-visible{outline-color:#829d72!important}
+#gallerySection .gallery-more{border-color:#d8e1d2!important;background:#fbfcf8!important;color:#637c5b!important}
+#gallerySection .gallery-more:hover,#gallerySection .gallery-more:focus-visible{background:#eef3e9!important;border-color:#b9c9ae!important}
+</style>
+
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" type="button" aria-label="배경음악 끄기" aria-pressed="true">
