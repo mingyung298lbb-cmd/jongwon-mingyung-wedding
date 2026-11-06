@@ -2585,8 +2585,16 @@ main::before{opacity:.17!important;}
 </style>
 
 <style id="requested-background-heart-fix-20261106">
-/* Remove only the repeating background-paper texture; keep the existing layout and surfaces. */
-body::before{background-image:none!important;opacity:0!important;}
+/* Remove the repeated paper artwork and fine-line texture from the whole page.
+   Keep all content surfaces, layout, photos, borders and reveal animations unchanged. */
+body::before,
+main::before{
+  background-image:none!important;
+  opacity:0!important;
+}
+.box.invite{
+  background-image:none!important;
+}
 /* Restore the invitation heart to the light-green accent. */
 .save-heart,.hero-card.hero-save-card .save-heart{color:#b97578!important;}
 </style>
