@@ -2818,10 +2818,11 @@ main > section > .box,
   box-shadow:var(--shadow)!important;
   filter:none!important;
 }
-/* Individual guestbook comments use pale green borders. */
+/* Individual guestbook comments: pale-green border, no added shadow. */
 #guestbookList .guestbook-item,
 #guestbookSection .guestbook-item{
   border:2px solid #d9e5d3!important;
+  box-shadow:none!important;
 }
 /* Recolor only existing shadow treatments; do not touch animation/transition rules. */
 .hero-card,.box:not(.account),.invite,.family-panel,.family-card,.gcard,
