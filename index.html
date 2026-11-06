@@ -2712,6 +2712,11 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
   </div>
   <div id="emptyModal" class="empty-modal">사진 준비 예정</div>
   <button id="modalNext" class="nav next hidden" type="button" aria-label="다음 사진">›</button>
+  <div id="modalZoomControls" class="modal-zoom-controls" role="group" aria-label="사진 크기 조절">
+    <button id="modalZoomOut" type="button" aria-label="사진 축소">−</button>
+    <button id="modalZoomReset" type="button" aria-label="사진 원래 크기">↺</button>
+    <button id="modalZoomIn" type="button" aria-label="사진 확대">＋</button>
+  </div>
   <div id="modalCounter" class="counter"></div>
 </div>
 
@@ -2919,6 +2924,32 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
   var nextBtn=document.getElementById("modalNext");
   var closeBtn=document.getElementById("modalClose");
   var counter=document.getElementById("modalCounter");
+  var zoomOutBtn=document.getElementById("modalZoomOut");
+  var zoomResetBtn=document.getElementById("modalZoomReset");
+  var zoomInBtn=document.getElementById("modalZoomIn");
+  var zoomScale=1;
+  var pinchStartDistance=0;
+  var pinchStartScale=1;
+  var pinchGesture=false;
+  var suppressSwipeUntil=0;
+
+  function applyZoom(){
+    modalImage.style.transform="scale("+zoomScale.toFixed(3)+")";
+    if(zoomOutBtn)zoomOutBtn.disabled=zoomScale<=0.55;
+    if(zoomInBtn)zoomInBtn.disabled=zoomScale>=3;
+    if(zoomResetBtn)zoomResetBtn.disabled=Math.abs(zoomScale-1)<0.01;
+  }
+  function setZoom(value){
+    zoomScale=Math.max(0.55,Math.min(3,value));
+    applyZoom();
+  }
+  function resetZoom(){
+    zoomScale=1;
+    applyZoom();
+  }
+  if(zoomOutBtn)zoomOutBtn.addEventListener("click",function(){setZoom(zoomScale/1.25);});
+  if(zoomInBtn)zoomInBtn.addEventListener("click",function(){setZoom(zoomScale*1.25);});
+  if(zoomResetBtn)zoomResetBtn.addEventListener("click",resetZoom);
 
   // 페이지 최초 진입에서는 갤러리 원본을 미리 받지 않습니다.
   // 갤러리를 연 뒤에만 필요한 사진을 디코딩하고, 주변 사진만 제한적으로 미리 받습니다.
@@ -2974,6 +3005,7 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
   }
 
   function renderModal(){
+    resetZoom();
     var photos=flatMode?flatUrls:(albums[currentAlbum]||[]);
     var empty=photos.length===0;
     var seq=++renderSeq;
@@ -3140,11 +3172,39 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
   });
 
   var touchStartX=0;
+  modalImage.addEventListener("touchstart",function(e){
+    if(e.touches && e.touches.length===2){
+      pinchGesture=true;
+      pinchStartDistance=Math.hypot(
+        e.touches[0].clientX-e.touches[1].clientX,
+        e.touches[0].clientY-e.touches[1].clientY
+      );
+      pinchStartScale=zoomScale;
+    }
+  },{passive:true});
+  modalImage.addEventListener("touchmove",function(e){
+    if(!pinchGesture || !e.touches || e.touches.length!==2 || !pinchStartDistance)return;
+    e.preventDefault();
+    var distance=Math.hypot(
+      e.touches[0].clientX-e.touches[1].clientX,
+      e.touches[0].clientY-e.touches[1].clientY
+    );
+    setZoom(pinchStartScale*distance/pinchStartDistance);
+  },{passive:false});
+  modalImage.addEventListener("touchend",function(e){
+    if(pinchGesture && (!e.touches || e.touches.length<2)){
+      pinchGesture=false;
+      pinchStartDistance=0;
+      suppressSwipeUntil=Date.now()+500;
+    }
+  },{passive:true});
+  var touchStartX=0;
   modal.addEventListener("touchstart",function(e){
     if(e.changedTouches && e.changedTouches.length){ touchStartX=e.changedTouches[0].clientX; }
   },false);
   modal.addEventListener("touchend",function(e){
     if(!e.changedTouches || !e.changedTouches.length){ return; }
+    if(pinchGesture || Date.now()<suppressSwipeUntil || Math.abs(zoomScale-1)>0.01){return;}
     var dx=e.changedTouches[0].clientX-touchStartX;
     if(Math.abs(dx)<45){ return; }
     lastGallerySwipeTime=Date.now();
@@ -3985,6 +4045,53 @@ startBgm();
 /* Change only the gallery photo card border color. */
 #gallerySection .gallery .gcard{
   border-color:#ffffff!important;
+}
+</style>
+
+<style id="gallery-image-zoom-controls-20261106">
+#galleryModal .modal-img{
+  transform:scale(1);
+  transform-origin:center center;
+  transition:transform .08s linear;
+  touch-action:none;
+}
+#galleryModal .modal-zoom-controls{
+  position:fixed;
+  right:14px;
+  bottom:calc(12px + env(safe-area-inset-bottom));
+  z-index:10001;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+#galleryModal .modal-zoom-controls button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:34px;
+  height:34px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.96);
+  color:#222;
+  font-family:Arial,sans-serif;
+  font-size:20px;
+  font-weight:400;
+  line-height:1;
+  box-shadow:none;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+#galleryModal #modalZoomReset{font-size:18px;}
+#galleryModal .modal-zoom-controls button:active{background:#e9eee5;}
+#galleryModal.empty-state .modal-zoom-controls{display:none;}
+@media(max-width:380px){
+  #galleryModal .modal-zoom-controls{right:9px;gap:5px;}
+  #galleryModal .modal-zoom-controls button{width:31px;height:31px;}
+}
+@media(prefers-reduced-motion:reduce){
+  #galleryModal .modal-img{transition:none;}
 }
 </style>
 </body>
