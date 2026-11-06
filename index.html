@@ -2584,6 +2584,12 @@ main::before{opacity:.17!important;}
 }
 </style>
 
+<style id="requested-background-heart-fix-20261106">
+/* Remove only the repeating background-paper texture; keep the existing layout and surfaces. */
+body::before{background-image:none!important;opacity:0!important;}
+/* Restore the invitation heart to the light-green accent. */
+.save-heart,.hero-card.hero-save-card .save-heart{color:#829d72!important;}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" type="button" aria-label="배경음악 끄기" aria-pressed="true">
