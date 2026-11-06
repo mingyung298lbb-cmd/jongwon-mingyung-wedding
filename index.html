@@ -4444,5 +4444,25 @@ startBgm();
   box-shadow:none!important;
 }
 </style>
+
+<style id="restore-paper-background-and-grain-20261106">
+/* Restore the existing botanical page background and subtle paper grain.
+   Do not restore the former diagonal stripe texture. */
+body::before{
+  background-image:url("wedding-pattern.png?v=3")!important;
+  background-repeat:repeat!important;
+  background-size:740px auto!important;
+  background-position:center top!important;
+  opacity:.20!important;
+}
+.box.invite{
+  background-color:#fbfcf8!important;
+  background-image:
+    radial-gradient(circle at 18% 22%,rgba(91,112,79,.035) 0 .55px,transparent .85px),
+    radial-gradient(circle at 74% 38%,rgba(91,112,79,.025) 0 .5px,transparent .8px),
+    radial-gradient(circle at 42% 82%,rgba(91,112,79,.022) 0 .5px,transparent .78px)!important;
+}
+</style>
+
 </body>
 </html>
