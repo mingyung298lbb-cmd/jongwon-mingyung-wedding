@@ -2817,10 +2817,16 @@ main > section > .box,
   border-color:#fff!important;
 }
 /* Account-transfer cards retain their original block treatment. */
-.accounts-section .account,
+/* Keep each account card visually independent; the group is only a wrapper. */
 .accounts-section .account-group,
+.account-group{
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+.accounts-section .account,
 .accounts-section .box.account,
-.account-group,
 .box.account{
   border-color:rgba(207,216,199,.9)!important;
   box-shadow:var(--shadow)!important;
