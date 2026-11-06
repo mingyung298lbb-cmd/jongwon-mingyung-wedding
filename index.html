@@ -2653,6 +2653,38 @@ main{background:rgba(250,252,247,.84)!important;box-shadow:0 0 0 1px rgba(190,20
 #gallerySection .gallery-more:hover,#gallerySection .gallery-more:focus-visible{background:#eef3e9!important;border-color:#b9c9ae!important}
 </style>
 
+
+<style id="hero-background-and-guestbook-green-fix-20261106">
+/* Make every exposed hero-paper layer use one identical muted green-white. */
+main > .hero.hero-save,
+main > .hero.hero-save .hero-card.hero-save-card,
+main > .hero.hero-save .hero-card.hero-save-card .save-photo-wrap,
+main > .hero.hero-save .hero-card.hero-save-card #heroImage,
+main > .hero.hero-save .hero-card.hero-save-card .save-info{
+  background:#f8faf5!important;
+  background-color:#f8faf5!important;
+}
+/* Keep the heart pink; only unify the hero's surrounding paper surfaces. */
+main > .hero.hero-save .hero-card.hero-save-card .save-heart{
+  color:#b97578!important;
+}
+/* Explicit ID-scoped override beats the older blush theme's submit-button rule. */
+#guestbookSection #commentSubmit,
+#guestbookSection #commentSubmit:hover,
+#guestbookSection #commentSubmit:focus-visible{
+  background:#72856a!important;
+  background-color:#72856a!important;
+  border:1px solid #72856a!important;
+  color:#fff!important;
+  box-shadow:0 3px 10px rgba(87,111,76,.12)!important;
+}
+#guestbookSection #commentSubmit:active{
+  background:#63785a!important;
+  background-color:#63785a!important;
+  border-color:#63785a!important;
+}
+</style>
+
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" type="button" aria-label="배경음악 끄기" aria-pressed="true">
