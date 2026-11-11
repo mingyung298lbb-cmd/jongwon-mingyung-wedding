@@ -2159,7 +2159,7 @@ if (document.fonts && document.fonts.load) {
 </script>
 <script id="wedding-hero-progressive-boot-20261015">
 /* Enable image-ready reveal before the first hero paint; no-JS stays visible. */
-document.documentElement.classList.add("wedding-hero-progressive");
+document.documentElement.classList.add("wedding-hero-progressive","wedding-sequence-active");
 </script>
 <style id="wedding-hero-first-reveal-20261016">
 /* Introduction order: date -> names+heart -> venue -> decoded hero photo.
@@ -4063,7 +4063,7 @@ startBgm();
   // Other content blocks keep their existing scroll-triggered reveal.
   if(typeof window.IntersectionObserver!=="function")return;
   var selectors=[
-    "main > section > .title:not(#gallerySection > .title)",
+    "main > section:not(#gallerySection) > .title",
     "#gallerySection > .gallery-more-wrap",
     "main > section > .box > .row",
     "main > section > .box > .map-img",
