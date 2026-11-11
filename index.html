@@ -1433,6 +1433,9 @@ section {
 </style>
 
 <style id="gallery-individual-cards-more-20261009">
+/* Keep expanded gallery cards in the DOM while the gallery is folded. */
+#gallerySection .gallery .gcard.gallery-collapsed-card{display:none!important;}
+
 /* 원본 앨범 1→2→3→4, 지정된 사진 순서를 유지한 4열 그리드 */
 #gallerySection .gallery {
   display:grid!important;
@@ -2865,11 +2868,15 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
           var stop=Math.min(begin+rowSize,limit);
           var fragment=document.createDocumentFragment();
           for(var i=begin;i<stop;i++){
-            var card=addGalleryCard(flatGallery[i],i);
+            var card=galleryGrid.children[i];
+            if(card){
+              card.classList.remove("gallery-collapsed-card");
+            }else{
+              card=addGalleryCard(flatGallery[i],i);
+              galleryGrid.appendChild(card);
+            }
             card.classList.add("more-row-reveal");
-            fragment.appendChild(card);
           }
-          galleryGrid.appendChild(fragment);
           shownGalleryCount=stop;
           if(row===rowCount-1){
             finishGalleryReveal();
@@ -2879,11 +2886,14 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
       }
       return;
     }
-    var fragment=document.createDocumentFragment();
     for(var i=shownGalleryCount;i<limit;i++){
-      fragment.appendChild(addGalleryCard(flatGallery[i],i));
+      var card=galleryGrid.children[i];
+      if(card){
+        card.classList.remove("gallery-collapsed-card");
+      }else{
+        galleryGrid.appendChild(addGalleryCard(flatGallery[i],i));
+      }
     }
-    galleryGrid.appendChild(fragment);
     shownGalleryCount=limit;
     refreshGalleryButton();
   }
@@ -2891,9 +2901,11 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
     if(galleryRevealRunning)return;
     if(shownGalleryCount>=flatGallery.length){
       finishGalleryReveal();
-      galleryGrid.replaceChildren();
-      shownGalleryCount=0;
-      showGalleryMore(initialGalleryCount);
+      for(var i=initialGalleryCount;i<galleryGrid.children.length;i++){
+        galleryGrid.children[i].classList.add("gallery-collapsed-card");
+      }
+      shownGalleryCount=initialGalleryCount;
+      refreshGalleryButton();
       galleryGrid.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
     }else{
       showGalleryMore(flatGallery.length-shownGalleryCount,true);
