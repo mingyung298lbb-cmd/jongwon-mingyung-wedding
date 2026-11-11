@@ -3930,22 +3930,141 @@ startBgm();
   }
 })();
 </script>
-<script id="wedding-scroll-block-reveal-20261015">
+<style id="wedding-gallery-family-sequence-20261111">
+/* iPhone Safari-safe, explicit reveal order: gallery rows, then each family card. */
+@media (prefers-reduced-motion:no-preference) {
+  html.wedding-sequence-active #galleryGrid .gcard {
+    opacity:0;
+    transform:translate3d(0,14px,0);
+    transition:opacity 560ms cubic-bezier(.2,.7,.23,1),
+               transform 560ms cubic-bezier(.2,.7,.23,1);
+    will-change:opacity,transform;
+  }
+  html.wedding-sequence-active #galleryGrid .gcard.wedding-sequence-visible {
+    opacity:1;
+    transform:translate3d(0,0,0);
+  }
+  html.wedding-sequence-active:not(.wedding-family-released) .family-section {
+    opacity:0!important;
+    visibility:hidden!important;
+    pointer-events:none!important;
+  }
+  html.wedding-sequence-active.wedding-family-released .family-section {
+    opacity:1;
+    visibility:visible;
+    transition:opacity 560ms ease;
+  }
+  html.wedding-sequence-active.wedding-family-released .family-card {
+    opacity:0;
+    transform:translate3d(0,14px,0);
+    transition:opacity 560ms cubic-bezier(.2,.7,.23,1),
+               transform 560ms cubic-bezier(.2,.7,.23,1);
+    will-change:opacity,transform;
+  }
+  html.wedding-sequence-active.wedding-family-released .family-card.wedding-family-visible {
+    opacity:1;
+    transform:translate3d(0,0,0);
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  html.wedding-sequence-active .family-section,
+  html.wedding-sequence-active .family-card,
+  html.wedding-sequence-active #galleryGrid .gcard {
+    opacity:1!important;
+    visibility:visible!important;
+    transform:none!important;
+    transition:none!important;
+    animation:none!important;
+  }
+}
+</style>
+<script id="wedding-gallery-family-sequence-20261111">
 (function(){
   "use strict";
-  if(typeof window.IntersectionObserver!=="function" ||
-     (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)){
+  var root=document.documentElement;
+  var grid=document.getElementById("galleryGrid");
+  var family=document.querySelector(".family-section");
+  var cards=family?Array.prototype.slice.call(family.querySelectorAll(".family-card")):[];
+  var reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var started=false;
+
+  if(!grid||!family){
+    root.classList.add("wedding-family-released");
     return;
   }
+  root.classList.add("wedding-sequence-active");
 
-  // Animate independent blocks, rather than whole sections. Nested containers
-  // are deliberately excluded to prevent doubled transforms or layout shifts.
-  // Gallery photos and expanded comments retain their existing "more" animations.
-  const selectors=[
-    "main > section > .title",
-    "#gallerySection > .gallery",
+  function finishWithoutMotion(){
+    root.classList.add("wedding-family-released");
+    Array.prototype.forEach.call(grid.querySelectorAll(".gcard"),function(card){
+      card.classList.add("wedding-sequence-visible");
+    });
+    cards.forEach(function(card){card.classList.add("wedding-family-visible");});
+  }
+  if(reduced){finishWithoutMotion();return;}
+
+  function beginSequence(){
+    if(started||!root.classList.contains("wedding-gallery-released"))return;
+    var photos=Array.prototype.slice.call(grid.querySelectorAll(".gcard"));
+    if(!photos.length)return;
+    started=true;
+
+    // Reveal four photos together per visual row, from top to bottom.
+    var rowSize=4;
+    var rowCount=Math.ceil(photos.length/rowSize);
+    photos.forEach(function(photo){photo.classList.remove("wedding-sequence-visible");});
+    for(var row=0;row<rowCount;row++){
+      (function(rowIndex){
+        window.setTimeout(function(){
+          photos.slice(rowIndex*rowSize,(rowIndex+1)*rowSize).forEach(function(photo){
+            photo.classList.add("wedding-sequence-visible");
+          });
+          if(rowIndex===rowCount-1){
+            window.setTimeout(revealFamily,620);
+          }
+        },rowIndex*420);
+      })(row);
+    }
+  }
+
+  function revealFamily(){
+    root.classList.add("wedding-family-released");
+    cards.forEach(function(card,index){
+      window.setTimeout(function(){
+        card.classList.add("wedding-family-visible");
+      },index*520);
+    });
+  }
+
+  // Gallery thumbnails are inserted after the hero intro; wait for both the
+  // gallery release and its first rendered cards before starting the sequence.
+  function checkStart(){
+    if(root.classList.contains("wedding-gallery-released")&&grid.querySelector(".gcard")){
+      beginSequence();
+    }
+  }
+  if(typeof MutationObserver==="function"){
+    var observer=new MutationObserver(checkStart);
+    observer.observe(root,{attributes:true,attributeFilter:["class"]});
+    observer.observe(grid,{childList:true});
+  }
+  checkStart();
+
+  // Safety fallback for Safari tab restoration or a delayed gallery script.
+  window.setTimeout(function(){
+    if(!started){
+      if(!grid.querySelector(".gcard")){
+        root.classList.add("wedding-gallery-released");
+      }
+      checkStart();
+    }
+  },12000);
+
+  // Other content blocks keep their existing scroll-triggered reveal.
+  if(typeof window.IntersectionObserver!=="function")return;
+  var selectors=[
+    "main > section > .title:not(#gallerySection > .title)",
     "#gallerySection > .gallery-more-wrap",
-    ".family-section .family-only",
     "main > section > .box > .row",
     "main > section > .box > .map-img",
     "main > section .route-frame",
@@ -3962,43 +4081,28 @@ startBgm();
     "main > .calendar-final-section",
     "main > .foot"
   ];
-  const nodes=Array.from(document.querySelectorAll(selectors.join(",")));
-  if(!nodes.length)return;
-
-  const visibleNow=window.innerHeight||document.documentElement.clientHeight;
-  // All nodes receive their state in one pass. Already-visible content should
-  // never disappear after page load or on a restored scroll position.
-  const pending=[];
+  var nodes=Array.prototype.slice.call(document.querySelectorAll(selectors.join(",")));
+  var visibleNow=window.innerHeight||document.documentElement.clientHeight;
+  var pending=[];
   nodes.forEach(function(el){
-    const rect=el.getBoundingClientRect();
-    if(rect.top<visibleNow-30 && rect.bottom>0)return;
+    var rect=el.getBoundingClientRect();
+    if(rect.top<visibleNow-30&&rect.bottom>0)return;
     el.classList.add("wedding-scroll-reveal");
     pending.push(el);
   });
   if(!pending.length)return;
-
-  const observer=new window.IntersectionObserver(function(entries){
-    const arriving=entries
-      .filter(function(entry){return entry.isIntersecting;})
+  var observer=new window.IntersectionObserver(function(entries){
+    var arriving=entries.filter(function(entry){return entry.isIntersecting;})
       .sort(function(a,b){return a.boundingClientRect.top-b.boundingClientRect.top;});
-    if(!arriving.length)return;
     arriving.forEach(function(entry,index){
-      const el=entry.target;
+      var el=entry.target;
       observer.unobserve(el);
-      // When adjacent blocks enter together, reveal each a little later.
-      el.style.setProperty("--scroll-reveal-delay",Math.min(index*648,1944)+"ms");
-      requestAnimationFrame(function(){
+      el.style.setProperty("--scroll-reveal-delay",Math.min(index*320,960)+"ms");
+      window.requestAnimationFrame(function(){
         el.classList.add("wedding-scroll-visible");
-        el.addEventListener("transitionend",function done(event){
-          if(event.target!==el||event.propertyName!=="opacity")return;
-          el.removeEventListener("transitionend",done);
-          el.style.removeProperty("--scroll-reveal-delay");
-          el.style.willChange="auto";
-        });
       });
     });
   },{root:null,rootMargin:"0px 0px 12% 0px",threshold:0.01});
-
   pending.forEach(function(el){observer.observe(el);});
 })();
 </script>
