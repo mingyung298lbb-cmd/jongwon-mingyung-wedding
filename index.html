@@ -3966,14 +3966,14 @@ startBgm();
     visibility:visible;
     transition:opacity 560ms ease;
   }
-  html.wedding-sequence-active.wedding-family-released .family-card {
+  html.wedding-sequence-active.wedding-family-released .family-only {
     opacity:0;
     transform:translate3d(0,14px,0);
     transition:opacity 560ms cubic-bezier(.2,.7,.23,1),
                transform 560ms cubic-bezier(.2,.7,.23,1);
     will-change:opacity,transform;
   }
-  html.wedding-sequence-active.wedding-family-released .family-card.wedding-family-visible {
+  html.wedding-sequence-active.wedding-family-released .family-only.wedding-family-visible {
     opacity:1;
     transform:translate3d(0,0,0);
   }
@@ -3996,7 +3996,7 @@ startBgm();
   var root=document.documentElement;
   var grid=document.getElementById("galleryGrid");
   var family=document.querySelector(".family-section");
-  var cards=family?Array.prototype.slice.call(family.querySelectorAll(".family-card")):[];
+  var familyRow=family?family.querySelector(".family-only"):null;
   var reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var started=false;
 
@@ -4011,7 +4011,7 @@ startBgm();
     Array.prototype.forEach.call(grid.querySelectorAll(".gcard"),function(card){
       card.classList.add("wedding-sequence-visible");
     });
-    cards.forEach(function(card){card.classList.add("wedding-family-visible");});
+    if(familyRow)familyRow.classList.add("wedding-family-visible");
   }
   if(reduced){finishWithoutMotion();return;}
 
@@ -4041,11 +4041,8 @@ startBgm();
 
   function revealFamily(){
     root.classList.add("wedding-family-released");
-    cards.forEach(function(card,index){
-      window.setTimeout(function(){
-        card.classList.add("wedding-family-visible");
-      },index*520);
-    });
+    // Reveal both family cards together as one row, with no per-card delay.
+    if(familyRow)familyRow.classList.add("wedding-family-visible");
   }
 
   // Gallery thumbnails are inserted after the hero intro; wait for both the
