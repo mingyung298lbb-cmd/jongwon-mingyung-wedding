@@ -2450,17 +2450,27 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
 }
 </style>
 <style id="desktop-page-background-scroll-fix-20261127">
-/* Keep the botanical paper texture attached to the document, not the viewport.
-   A single page-height layer prevents the background and content from scrolling
-   at different rates on desktop browsers. */
+/* Desktop: keep both paper-pattern layers fixed in the viewport;
+   the invitation sections themselves continue to scroll normally. */
 @media(min-width:768px){
   body{min-height:100vh!important;}
   body::before{
-    position:absolute!important;
+    position:fixed!important;
     inset:0!important;
-    min-height:100%!important;
   }
-  main::before{content:none!important;display:none!important;}
+  main::before{
+    content:""!important;
+    display:block!important;
+    position:fixed!important;
+    top:0!important;
+    bottom:0!important;
+    left:50%!important;
+    right:auto!important;
+    width:min(100vw,540px)!important;
+    height:100vh!important;
+    transform:translateX(-50%)!important;
+    inset-inline:auto!important;
+  }
 }
 #gallerySection .gallery .gcard.prepared-slot{
   display:flex!important;
