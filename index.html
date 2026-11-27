@@ -2449,6 +2449,31 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
   #gallerySection .gcard img {transition:none!important;}
 }
 </style>
+<style id="desktop-page-background-scroll-fix-20261127">
+/* Keep the botanical paper texture attached to the document, not the viewport.
+   A single page-height layer prevents the background and content from scrolling
+   at different rates on desktop browsers. */
+body{min-height:100vh!important;}
+body::before{
+  position:absolute!important;
+  inset:0!important;
+  min-height:100%!important;
+}
+main::before{content:none!important;display:none!important;}
+#gallerySection .gallery .gcard.prepared-slot{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px dashed rgba(164,178,158,.72)!important;
+  background:rgba(248,250,246,.82)!important;
+  color:#8b9487!important;
+  box-shadow:none!important;
+  cursor:default!important;
+  font-size:12px!important;
+  letter-spacing:.04em!important;
+  aspect-ratio:5/7!important;
+}
+</style>
 </head>
 <body>
 <button id="bgmToggle" class="bgm-toggle" type="button" aria-label="배경음악 끄기" aria-pressed="true">
@@ -2732,7 +2757,7 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
       sourceGallery.push({url:url,albumIndex:albumIndex,photoIndex:photoIndex});
     });
   });
-  var displayOrder=[0,1,2,16,17,18,20,19,28,3,4,5,6,7,8,9,10,11,12,13,14,15,21,22,23,24,25,26,27];
+  var displayOrder=[0,1,2,16,17,18,20,19,28,4,5,6,7,8,9,10,11,12,13,14,15,21,22,23,24,25,26,27];
   var flatGallery=displayOrder.map(function(i){return sourceGallery[i];});
   var flatUrls=flatGallery.map(function(item){return item.url;});
   var galleryGrid=document.getElementById("galleryGrid");
@@ -2811,6 +2836,19 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
     });
     return card;
   }
+  function appendPreparedGallerySlots(){
+    if(galleryGrid.querySelector(".prepared-slot"))return;
+    for(var slot=1;slot<=4;slot++){
+      var card=document.createElement("div");
+      card.className="gcard empty prepared-slot";
+      card.setAttribute("aria-label","추가 사진 "+slot+"번 준비 예정");
+      card.textContent="사진 준비 예정";
+      galleryGrid.appendChild(card);
+    }
+  }
+  function removePreparedGallerySlots(){
+    galleryGrid.querySelectorAll(".prepared-slot").forEach(function(card){card.remove();});
+  }
   function refreshGalleryButton(){
     var remaining=flatGallery.length-shownGalleryCount;
     galleryMore.hidden=flatGallery.length<=initialGalleryCount;
@@ -2880,6 +2918,7 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
           shownGalleryCount=stop;
           if(row===rowCount-1){
             finishGalleryReveal();
+            if(stop===flatGallery.length)appendPreparedGallerySlots();
             refreshGalleryButton();
           }
         },row*320));
@@ -2895,12 +2934,14 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
       }
     }
     shownGalleryCount=limit;
+    if(shownGalleryCount===flatGallery.length)appendPreparedGallerySlots();
     refreshGalleryButton();
   }
   galleryMore.addEventListener("click",function(){
     if(galleryRevealRunning)return;
     if(shownGalleryCount>=flatGallery.length){
       finishGalleryReveal();
+      removePreparedGallerySlots();
       for(var i=initialGalleryCount;i<galleryGrid.children.length;i++){
         galleryGrid.children[i].classList.add("gallery-collapsed-card");
       }
