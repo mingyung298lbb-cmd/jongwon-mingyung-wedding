@@ -2450,8 +2450,8 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
 }
 </style>
 <style id="fixed-invitation-background-20261127">
-/* Keep both paper-pattern layers fixed on every screen size.
-   Use viewport-sized layers so the scrollbar gutter is covered as well. */
+/* Desktop: keep both paper-pattern layers fixed and cover the scrollbar gutter.
+   Mobile: let the central paper pattern scroll naturally with the invitation. */
 body::before{
   position:fixed!important;
   inset:0 auto auto 0!important;
@@ -2474,6 +2474,18 @@ main::before{
   width:min(100vw,540px)!important;
   height:100vh!important;
   transform:translateX(-50%)!important;
+}
+@media (max-width: 600px){
+  main::before{
+    position:absolute!important;
+    top:0!important;
+    bottom:auto!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    height:100%!important;
+    transform:none!important;
+  }
 }
 #gallerySection .gallery .gcard.prepared-slot{
   display:flex!important;
