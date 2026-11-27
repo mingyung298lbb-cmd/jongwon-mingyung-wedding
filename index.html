@@ -2449,27 +2449,31 @@ html.wedding-hero-progressive.wedding-invite-reveal-finished main > .rsvp-jump-w
   #gallerySection .gcard img {transition:none!important;}
 }
 </style>
-<style id="desktop-page-background-scroll-fix-20261127">
-/* Desktop: keep both paper-pattern layers fixed in the viewport;
-   the invitation sections themselves continue to scroll normally. */
-@media(min-width:768px){
-  body{min-height:100vh!important;}
-  body::before{
-    position:fixed!important;
-    inset:0!important;
-  }
-  main::before{
-    content:""!important;
-    display:block!important;
-    position:fixed!important;
-    top:0!important;
-    bottom:0!important;
-    left:50%!important;
-    right:auto!important;
-    width:min(100vw,540px)!important;
-    height:100vh!important;
-    transform:translateX(-50%)!important;
-  }
+<style id="fixed-invitation-background-20261127">
+/* Keep both paper-pattern layers fixed on every screen size.
+   Use viewport-sized layers so the scrollbar gutter is covered as well. */
+body::before{
+  position:fixed!important;
+  inset:0 auto auto 0!important;
+  width:100vw!important;
+  height:100vh!important;
+}
+main{
+  /* Preserve horizontal clipping without creating a scroll container
+     that can interfere with the fixed background layer. */
+  overflow-x:clip!important;
+}
+main::before{
+  content:""!important;
+  display:block!important;
+  position:fixed!important;
+  top:0!important;
+  bottom:0!important;
+  left:50%!important;
+  right:auto!important;
+  width:min(100vw,540px)!important;
+  height:100vh!important;
+  transform:translateX(-50%)!important;
 }
 #gallerySection .gallery .gcard.prepared-slot{
   display:flex!important;
